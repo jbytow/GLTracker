@@ -11,7 +11,7 @@ class FoodItem(models.Model):
     proteins = models.DecimalField(max_digits=5, decimal_places=2, default=0)
     glycemic_index = models.DecimalField(max_digits=5, decimal_places=2, default=0)
     glycemic_load = models.DecimalField(max_digits=5, decimal_places=2, default=0)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
 
     def __str__(self):
         return self.name

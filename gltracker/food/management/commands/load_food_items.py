@@ -38,7 +38,8 @@ class Command(BaseCommand):
                     carbohydrates=carbohydrates,
                     fats=fats,
                     glycemic_index=glycemic_index,
-                    glycemic_load=glycemic_load
+                    glycemic_load=glycemic_load,
+                    user_id=None
                 )
                 food_item.save()
 
