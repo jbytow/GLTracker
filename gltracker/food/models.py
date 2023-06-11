@@ -10,7 +10,18 @@ class FoodItem(models.Model):
     fats = models.DecimalField(max_digits=5, decimal_places=2, default=0)
     proteins = models.DecimalField(max_digits=5, decimal_places=2, default=0)
     glycemic_index = models.DecimalField(max_digits=5, decimal_places=2, default=0)
-    glycemic_load = models.DecimalField(max_digits=5, decimal_places=2, default=0)
+    glycemic_load = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
+
+    def save(self, *args, **kwargs):
+        if self.glycemic_load is None:
+            self.glycemic_load = self.calculate_glycemic_load()
+        super().save(*args, **kwargs)
+
+    def calculate_glycemic_load(self):
+        # Glycemic load calculation logic
+        glycemic_load = self.carbohydrates * self.glycemic_index / 100
+        return glycemic_load
+
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
 
     def __str__(self):

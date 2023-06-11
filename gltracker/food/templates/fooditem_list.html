@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% for item in public_items %}
+    <h3>{{ item.name }}</h3>
+    <p>{{ item.description }}</p>
+    <!-- # Default, database fooditems -->
+{% endfor %}
+
+{% for item in user_items %}
+    <h3>{{ item.name }}</h3>
+    <p>{{ item.description }}</p>
+    <!-- # User fooditems -->
+{% endfor %}
+
+{% endblock %}

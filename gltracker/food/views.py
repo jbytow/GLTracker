@@ -9,8 +9,15 @@ def index(request):
 
 
 def fooditem_list(request):
-    food_items = FoodItem.objects.all()
-    return render(request, 'fooditem_list.html', {'food_items': food_items})
+    public_items = FoodItem.objects.filter(user=None)  # Default, database fooditems
+    user_items = FoodItem.objects.filter(user=request.user)  # User fooditems
+
+    context = {
+        'public_items': public_items,
+        'user_items': user_items,
+    }
+
+    return render(request, 'fooditem_list.html', context)
 
 
 @login_required
@@ -21,13 +28,7 @@ def add_fooditem(request):
             fooditem = form.save(commit=False)
             fooditem.user = request.user
             fooditem.save()
-            return redirect('my_food_items')
+            return redirect('fooditem_list')
     else:
         form = FoodItemForm()
     return render(request, 'add_fooditem.html', {'form': form})
-
-
-@login_required
-def my_food_items(request):
-    food_items = FoodItem.objects.filter(user=request.user)
-    return render(request, 'my_food_items.html', {'food_items': food_items})
