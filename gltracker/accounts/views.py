@@ -1,8 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 
-from django.contrib.auth.forms import authenticate
-from django.contrib.auth import login, logout
+from django.contrib.auth import login, logout, authenticate
 
 from django.contrib.auth.decorators import login_required
 
@@ -14,7 +13,6 @@ def register_page(request):
     if request.user.is_authenticated:
         return redirect('index')
     else:
-        form = CreateUserForm()
         if request.method == "POST":
             form = CreateUserForm(request.POST)
             if form.is_valid():
@@ -23,11 +21,12 @@ def register_page(request):
                 Profile.objects.create(
                     user=user,
                     name=user.username,
-                    )
+                )
 
                 messages.success(request, 'Account was successfully created')
-
                 return redirect('login')
+        else:
+            form = CreateUserForm()
 
         context = {'form': form}
         return render(request, 'register.html', context)
@@ -36,22 +35,20 @@ def register_page(request):
 def login_page(request):
     if request.user.is_authenticated:
         return redirect('index')
-    else:
-        if request.method == 'POST':
-            username = request.POST.get('username')
-            password = request.POST.get('password')
 
-            user = authenticate(request, username=username, password=password)
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
 
-            if user is not None:
-                login(request, user)
-                return redirect('index')
-            else:
-                messages.info(request, 'Username or password is incorrect')
+        user = authenticate(request, username=username, password=password)
 
-        context = {}
+        if user is not None:
+            login(request, user)
+            return redirect('index')
+        else:
+            messages.error(request, 'Invalid username or password.')
 
-        return render(request, 'login.html', context)
+    return render(request, 'login.html')
 
 
 def logout_user(request):

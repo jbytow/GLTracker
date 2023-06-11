@@ -23,7 +23,7 @@ import food.views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', food.views.index),
+    path('', food.views.index, name="index"),
     path('accounts/', include('accounts.urls')),
     path('food/', include('food.urls')),
 
