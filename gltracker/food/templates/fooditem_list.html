@@ -1,17 +1,67 @@
 {% extends 'base.html' %}
 
+{% load static %}
+
 {% block content %}
 
-{% for item in public_items %}
-    <h3>{{ item.name }}</h3>
-    <p>{{ item.description }}</p>
-    <!-- # Default, database fooditems -->
-{% endfor %}
+<h2><strong>My Added Products</strong></h2>     <!-- # User fooditems -->
+<div class="table-container">
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Kcal</th>
+    <th>Carbohydrates</th>
+    <th>Fats</th>
+    <th>Proteins</th>
+    <th>Glycemic Index</th>
+    <th>Glycemic Load</th>
+  </tr>
 
-{% for item in user_items %}
-    <h3>{{ item.name }}</h3>
-    <p>{{ item.description }}</p>
-    <!-- # User fooditems -->
-{% endfor %}
+  {% for item in user_items %}
+    <tr>
+      <td>{{ item.name }}</td>
+      <td>{{ item.kcal }}</td>
+      <td>{{ item.carbohydrates }}</td>
+      <td>{{ item.fats }}</td>
+      <td>{{ item.proteins }}</td>
+      <td>{{ item.glycemic_index }}</td>
+      <td>{{ item.glycemic_load }}</td>
+    </tr>
+  {% endfor %}
+</table>
+</div>
+
+<h2><strong>Default Products List</strong></h2>     <!-- # Default, database fooditems -->
+<div class="table-container">
+<table id="food-table">
+  <thead>
+    <tr>
+      <th onclick="sortTable(0)">Name</th>
+      <th onclick="sortTable(1)">Calories</th>
+      <th onclick="sortTable(2)">Carbohydrates</th>
+      <th onclick="sortTable(3)">Fats</th>
+      <th onclick="sortTable(4)">Proteins</th>
+      <th onclick="sortTable(5)">Glycemic Index</th>
+      <th onclick="sortTable(6)">Glycemic Load</th>
+    </tr>
+  </thead>
+  <tbody>
+
+  {% for item in public_items %}
+    <tr>
+      <td>{{ item.name }}</td>
+      <td>{{ item.kcal }}</td>
+      <td>{{ item.carbohydrates }}</td>
+      <td>{{ item.fats }}</td>
+      <td>{{ item.proteins }}</td>
+      <td>{{ item.glycemic_index }}</td>
+      <td>{{ item.glycemic_load }}</td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+</div>
+
+<script src="{% static 'js/foodItemList.js' %}"></script>
 
 {% endblock %}
