@@ -1,26 +1,22 @@
 function sortTable(columnIndex) {
-  let table, rows, switching, i, x, y, shouldSwitch;
-  table = document.getElementById("food-table");
-  switching = true;
+  const table = document.getElementById('food-table');
+  const rows = Array.from(table.getElementsByTagName('tr'));
 
-  while (switching) {
-    switching = false;
-    rows = table.getElementsByTagName("tr");
+  const sortedRows = rows.slice(1);
 
-    for (i = 1; i < rows.length - 1; i++) {
-      shouldSwitch = false;
-      x = rows[i].getElementsByTagName("td")[columnIndex];
-      y = rows[i + 1].getElementsByTagName("td")[columnIndex];
+  sortedRows.sort((a, b) => {
+    const cellA = a.getElementsByTagName('td')[columnIndex].innerText;
+    const cellB = b.getElementsByTagName('td')[columnIndex].innerText;
+    return cellA.localeCompare(cellB, undefined, { numeric: true, sensitivity: 'base' });
+  });
 
-      if (parseFloat(x.innerHTML) < parseFloat(y.innerHTML)) {
-        shouldSwitch = true;
-        break;
-      }
-    }
+  sortedRows.unshift(rows[0]);
 
-    if (shouldSwitch) {
-      rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
-      switching = true;
-    }
+  while (table.firstChild) {
+    table.removeChild(table.firstChild);
   }
+
+  sortedRows.forEach(row => {
+    table.appendChild(row);
+  });
 }
