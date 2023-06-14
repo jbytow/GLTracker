@@ -4,11 +4,20 @@ function sortTable(columnIndex) {
 
   const sortedRows = rows.slice(1);
 
+  const ascending = table.getAttribute('data-sort') === 'asc';
+
   sortedRows.sort((a, b) => {
     const cellA = a.getElementsByTagName('td')[columnIndex].innerText;
     const cellB = b.getElementsByTagName('td')[columnIndex].innerText;
-    return cellA.localeCompare(cellB, undefined, { numeric: true, sensitivity: 'base' });
+
+    if (ascending) {
+      return cellA.localeCompare(cellB, undefined, { numeric: true, sensitivity: 'base' });
+    } else {
+      return cellB.localeCompare(cellA, undefined, { numeric: true, sensitivity: 'base' });
+    }
   });
+
+  table.setAttribute('data-sort', ascending ? 'desc' : 'asc');
 
   sortedRows.unshift(rows[0]);
 

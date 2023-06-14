@@ -2,20 +2,75 @@
 
 {% load static %}
 
+<style>
+    .arrow-up,
+    .arrow-down {
+        font-size: 8px;
+    }
+    .custom-button {
+     font-size: 8px;
+    }
+</style>
+
 {% block content %}
 
 <h2><strong>My Added Products</strong></h2>     <!-- # User fooditems -->
 <div class="table-container">
-<table>
-  <tr>
-    <th>Name</th>
-    <th>Kcal</th>
-    <th>Carbohydrates</th>
-    <th>Fats</th>
-    <th>Proteins</th>
-    <th>Glycemic Index</th>
-    <th>Glycemic Load</th>
-  </tr>
+<table id="food-table-user">
+  <thead>
+    <tr>
+      <th onclick="sortTable(0)">
+        Name
+        <button class="btn btn-sm custom-button">
+          <i class="fas fa-arrow-up"></i>
+          <i class="fas fa-arrow-down"></i>
+        </button>
+      </th>
+      <th onclick="sortTable(1)">
+        Calories
+        <button class="btn btn-sm custom-button">
+          <i class="fas fa-arrow-up"></i>
+          <i class="fas fa-arrow-down"></i>
+        </button>
+      </th>
+      <th onclick="sortTable(2)">
+        Carbohydrates
+        <button class="btn btn-sm custom-button">
+          <i class="fas fa-arrow-up"></i>
+          <i class="fas fa-arrow-down"></i>
+        </button>
+      </th>
+      <th onclick="sortTable(3)">
+        Fats
+        <button class="btn btn-sm custom-button">
+          <i class="fas fa-arrow-up"></i>
+          <i class="fas fa-arrow-down"></i>
+        </button>
+      </th>
+      <th onclick="sortTable(4)">
+        Proteins
+        <button class="btn btn-sm custom-button">
+          <i class="fas fa-arrow-up"></i>
+          <i class="fas fa-arrow-down"></i>
+        </button>
+      </th>
+      <th onclick="sortTable(5)">
+        Glycemic Index
+        <button class="btn btn-sm custom-button">
+          <i class="fas fa-arrow-up"></i>
+          <i class="fas fa-arrow-down"></i>
+        </button>
+      </th>
+      <th onclick="sortTable(6)">
+        Glycemic Load
+        <button class="btn btn-sm custom-button">
+          <i class="fas fa-arrow-up"></i>
+          <i class="fas fa-arrow-down"></i>
+        </button>
+      </th>
+    </tr>
+  </thead>
+  <tbody>
 
   {% for item in user_items %}
     <tr>
@@ -28,21 +83,64 @@
       <td>{{ item.glycemic_load }}</td>
     </tr>
   {% endfor %}
+  </tbody>
 </table>
 </div>
 
 <h2><strong>Default Products List</strong></h2>     <!-- # Default, database fooditems -->
 <div class="table-container">
-<table id="food-table">
+<table id="food-table-default">
   <thead>
     <tr>
-      <th onclick="sortTable(0)">Name</th>
-      <th onclick="sortTable(1)">Calories</th>
-      <th onclick="sortTable(2)">Carbohydrates</th>
-      <th onclick="sortTable(3)">Fats</th>
-      <th onclick="sortTable(4)">Proteins</th>
-      <th onclick="sortTable(5)">Glycemic Index</th>
-      <th onclick="sortTable(6)">Glycemic Load</th>
+      <th onclick="sortTable(0)">
+        Name
+        <button class="btn btn-sm custom-button">
+          <i class="fas fa-arrow-up"></i>
+          <i class="fas fa-arrow-down"></i>
+        </button>
+      </th>
+      <th onclick="sortTable(1)">
+        Calories
+        <button class="btn btn-sm custom-button">
+          <i class="fas fa-arrow-up"></i>
+          <i class="fas fa-arrow-down"></i>
+        </button>
+      </th>
+      <th onclick="sortTable(2)">
+        Carbohydrates
+        <button class="btn btn-sm custom-button">
+          <i class="fas fa-arrow-up"></i>
+          <i class="fas fa-arrow-down"></i>
+        </button>
+      </th>
+      <th onclick="sortTable(3)">
+        Fats
+        <button class="btn btn-sm custom-button">
+          <i class="fas fa-arrow-up"></i>
+          <i class="fas fa-arrow-down"></i>
+        </button>
+      </th>
+      <th onclick="sortTable(4)">
+        Proteins
+        <button class="btn btn-sm custom-button">
+          <i class="fas fa-arrow-up"></i>
+          <i class="fas fa-arrow-down"></i>
+        </button>
+      </th>
+      <th onclick="sortTable(5)">
+        Glycemic Index
+        <button class="btn btn-sm custom-button">
+          <i class="fas fa-arrow-up"></i>
+          <i class="fas fa-arrow-down"></i>
+        </button>
+      </th>
+      <th onclick="sortTable(6)">
+        Glycemic Load
+        <button class="btn btn-sm custom-button">
+          <i class="fas fa-arrow-up"></i>
+          <i class="fas fa-arrow-down"></i>
+        </button>
+      </th>
     </tr>
   </thead>
   <tbody>
