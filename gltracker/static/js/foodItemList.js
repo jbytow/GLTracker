@@ -1,8 +1,10 @@
-function sortTable(columnIndex) {
-  const table = document.getElementById('food-table');
+function sortTable(tableId, header) {
+  const table = document.getElementById(tableId);
   const rows = Array.from(table.getElementsByTagName('tr'));
 
   const sortedRows = rows.slice(1);
+
+  const columnIndex = parseInt(header.getAttribute('data-column-index'));
 
   const ascending = table.getAttribute('data-sort') === 'asc';
 
@@ -29,3 +31,5 @@ function sortTable(columnIndex) {
     table.appendChild(row);
   });
 }
+
+
