@@ -33,27 +33,29 @@ function sortTable(tableId, header) {
   });
 }
 
+//deleting FoodItems
 function deleteFoodItem(foodItemId) {
-    // Zapytanie AJAX do usunięcia elementu
-    var url = '/food/food_item/delete/' + foodItemId + '/';
-    var csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
+    var confirmation = confirm("Are you sure you want to delete that product?");
+    if (confirmation) {
+        var url = '/food/food_item/delete/' + foodItemId + '/';
+        var csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
 
-    fetch(url, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRFToken': csrfToken,
-        },
-    })
-    .then(function(response) {
-        if (response.ok) {
-            // Przekieruj na inną stronę po usunięciu
-            window.location.href = '/food/fooditem_list/';
-        } else {
-            console.error('Błąd podczas usuwania elementu');
-        }
-    })
-    .catch(function(error) {
-        console.error('Błąd podczas wysyłania zapytania AJAX:', error);
-    });
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrfToken,
+            },
+        })
+        .then(function(response) {
+            if (response.ok) {
+                window.location.href = '/food/fooditem_list/';
+            } else {
+                console.error('Error during removal of the element');
+            }
+        })
+        .catch(function(error) {
+            console.error('Error during sending AJAX query:', error);
+        });
+    }
 }

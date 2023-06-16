@@ -37,4 +37,17 @@
 .table-container td {
   font-size: 12px;
 }
+
+.add-button {
+  background-color: #337ab7;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 4px;
+  text-decoration: none;
+}
+
+.add-button i {
+  margin-right: 5px;
+}
+
 </style>

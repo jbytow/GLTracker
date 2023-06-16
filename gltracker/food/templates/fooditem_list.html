@@ -14,7 +14,14 @@
 
 {% block content %}
 
-<h2><strong>My Added Products</strong></h2>     <!-- # User fooditems -->
+<div style="display: flex; align-items: center;">
+  <h2 style="margin-right: auto;"><strong>My Added Products</strong></h2>
+  <a href="{% url 'add_fooditem' %}" class="add-button">
+    <i class="fas fa-plus"></i>
+    Add Product
+  </a>
+</div>
+     <!-- # User fooditems -->
 <div class="table-container">
 <table id="food-table-user">
   <thead>
