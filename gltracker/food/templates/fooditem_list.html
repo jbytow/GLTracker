@@ -74,7 +74,12 @@
 
   {% for item in user_items %}
     <tr>
-      <td>{{ item.name }}</td>
+      <td>
+        {{ item.name }}
+          <button class="btn btn-sm custom-button delete-button" onclick="deleteFoodItem({{ item.id }})">
+            <i class="fas fa-trash"></i>
+          </button>
+      </td>
       <td>{{ item.kcal }}</td>
       <td>{{ item.carbohydrates }}</td>
       <td>{{ item.fats }}</td>

@@ -1,5 +1,6 @@
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
+from django.views.generic import View
 from .models import FoodItem
 from .forms import FoodItemForm
 
@@ -32,3 +33,10 @@ def add_fooditem(request):
     else:
         form = FoodItemForm()
     return render(request, 'add_fooditem.html', {'form': form})
+
+
+class FoodItemDeleteView(View):
+    def post(self, request, food_item_id):
+        food_item = get_object_or_404(FoodItem, id=food_item_id)
+        food_item.delete()
+        return redirect('fooditem_list')

@@ -22,4 +22,19 @@
 .table-container th {
   background-color: #f2f2f2;
 }
+
+.table-container th:nth-child(1),
+.table-container td:nth-child(1) {
+  width: 250px;
+}
+
+.table-container th:not(:first-child),
+.table-container td:not(:first-child) {
+  width: 200px;
+}
+
+.table-container th,
+.table-container td {
+  font-size: 12px;
+}
 </style>
