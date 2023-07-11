@@ -2,6 +2,8 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.db.models import Avg
 
+import os
+
 
 class FoodItem(models.Model):
     name = models.CharField(max_length=200)
@@ -28,9 +30,19 @@ class FoodItem(models.Model):
         return self.name
 
 
+def meal_default_image():
+    return 'images/mealdefault.png'
+
+
+def meal_image_upload_to(instance, filename):
+    path = os.path.join('meal_images', instance.name, filename)
+    return path
+
+
 class Meal(models.Model):
     name = models.CharField(max_length=200)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    image = models.ImageField(upload_to=meal_image_upload_to, blank=True, null=True, default=meal_default_image)
 
     def calculate_total_macros(self):
         total_kcal = 0
