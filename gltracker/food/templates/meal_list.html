@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+
+
+{% block content %}
+  <h2>My Meals</h2>
+
+<div class="meal-tiles">
+  {% for meal in meals %}
+    <div class="meal-tile">
+      {% if meal.image %}
+        <img src="{{ meal.image.url }}" alt="{{ meal.name }}" class="meal-image">
+      {% else %}
+        <img src="{% static 'images/mealdefault.png' %}" alt="Default Image" class="meal-image">
+      {% endif %}
+      <h3>{{ meal.name }}</h3>
+      {% with macros=meal.calculate_total_macros %}
+        <p>Total Kcal: {{ macros.total_kcal }}</p>
+        <p>Total Carbohydrates: {{ macros.total_carbohydrates }}</p>
+        <p>Total Fats: {{ macros.total_fats }}</p>
+        <p>Total Protein: {{ macros.total_proteins }}</p>
+        <p>Total Glycemic Load: {{ macros.total_glycemic_load }}</p>
+        <p>Average Glycemic Index: {{ macros.average_glycemic_index }}</p>
+      {% endwith %}
+    </div>
+  {% empty %}
+    <p>No meals found.</p>
+  {% endfor %}
+</div>
+{% endblock %}

@@ -42,13 +42,13 @@ def meal_image_upload_to(instance, filename):
 class Meal(models.Model):
     name = models.CharField(max_length=200)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    image = models.ImageField(upload_to=meal_image_upload_to, blank=True, null=True, default=meal_default_image)
+    image = models.ImageField(upload_to=meal_image_upload_to, blank=True, null=True)
 
     def calculate_total_macros(self):
         total_kcal = 0
         total_carbohydrates = 0
         total_fats = 0
-        total_protein = 0
+        total_proteins = 0
         total_glycemic_load = 0
         total_glycemic_index = 0
 
@@ -59,7 +59,7 @@ class Meal(models.Model):
             total_kcal += food_item.kcal * quantity/100
             total_carbohydrates += food_item.carbohydrates * quantity/100
             total_fats += food_item.fats * quantity/100
-            total_protein += food_item.protein * quantity/100
+            total_proteins += food_item.proteins * quantity/100
             total_glycemic_load += food_item.glycemic_load * quantity/100
             total_glycemic_index += food_item.glycemic_index * quantity/100
 
@@ -70,7 +70,7 @@ class Meal(models.Model):
             'total_kcal': total_kcal,
             'total_carbohydrates': total_carbohydrates,
             'total_fats': total_fats,
-            'total_protein': total_protein,
+            'total_proteins': total_proteins,
             'total_glycemic_load': total_glycemic_load,
             'average_glycemic_index': average_glycemic_index
         }
