@@ -51,20 +51,35 @@ class Meal(models.Model):
         total_proteins = 0
         total_glycemic_load = 0
         total_glycemic_index = 0
+        total_weight = 0
 
         meal_items = self.mealitem_set.all()
         for meal_item in meal_items:
             quantity = meal_item.quantity
             food_item = meal_item.food_item
-            total_kcal += food_item.kcal * quantity/100
+            total_weight += quantity
+
+            total_kcal += food_item.kcal * quantity/100 #food items have nutrition facts per 100g
             total_carbohydrates += food_item.carbohydrates * quantity/100
             total_fats += food_item.fats * quantity/100
             total_proteins += food_item.proteins * quantity/100
             total_glycemic_load += food_item.glycemic_load * quantity/100
             total_glycemic_index += food_item.glycemic_index * quantity/100
 
-        num_items = meal_items.count()
-        average_glycemic_index = total_glycemic_index / num_items if num_items > 0 else 0
+        if total_weight != 0:
+            total_kcal_per_100g = round((total_kcal / total_weight) * 100, 2)
+            total_carbohydrates_per_100g = round((total_carbohydrates / total_weight) * 100, 2)
+            total_fats_per_100g = round((total_fats / total_weight) * 100, 2)
+            total_proteins_per_100g = round((total_proteins / total_weight) * 100, 2)
+            total_glycemic_load_per_100g = round((total_glycemic_load / total_weight) * 100, 2)
+        else:
+            total_kcal_per_100g = 0
+            total_carbohydrates_per_100g = 0
+            total_fats_per_100g = 0
+            total_proteins_per_100g = 0
+            total_glycemic_load_per_100g = 0
+
+        average_glycemic_index = round(total_glycemic_index / len(meal_items) if len(meal_items) > 0 else 0, 2)
 
         return {
             'total_kcal': total_kcal,
@@ -72,6 +87,11 @@ class Meal(models.Model):
             'total_fats': total_fats,
             'total_proteins': total_proteins,
             'total_glycemic_load': total_glycemic_load,
+            'total_kcal_per_100g': total_kcal_per_100g,
+            'total_carbohydrates_per_100g': total_carbohydrates_per_100g,
+            'total_fats_per_100g': total_fats_per_100g,
+            'total_proteins_per_100g': total_proteins_per_100g,
+            'total_glycemic_load_per_100g': total_glycemic_load_per_100g,
             'average_glycemic_index': average_glycemic_index
         }
 
