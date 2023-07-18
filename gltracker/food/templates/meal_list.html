@@ -7,43 +7,58 @@
 {% block content %}
   <h2>My Meals</h2>
 
-<div class='py-4 mt-auto'>
-    <div class='container px-4' >
+  <div class='py-4 mt-auto'>
+    <div class='container px-4'>
 
-        <div class="row meal-tiles">
-          {% for meal in meals %}
-            <div class="col-sm-12 col-md-12 col-lg-4 col-xl-3 d-flex align-items-stretch meal-tile">
-              <div class="card bg-secondary mb-3 meal-tile-border">
+      <div class="row meal-tiles">
+        {% for meal in meals %}
+          <div class="col-sm-12 col-md-12 col-lg-4 col-xl-3 d-flex align-items-stretch meal-tile">
+            <div class="card bg-secondary mb-3 meal-tile-border">
+                {% if meal.image %}
+                  <img src="{{ meal.image.url }}" alt="{{ meal.name }}" class="img-fluid" style="height: 200px;">
+                {% else %}
+                  <img src="{% static 'images/mealdefault.png' %}" alt="Default Image" class="img-fluid" style="height: 200px;">
+                {% endif %}
 
-                <div class="card-body">
-                  {% if meal.image %}
-                    <img src="{{ meal.image.url }}" alt="{{ meal.name }}" class="meal-image" style="width: 200px; height: 200px;">
-                  {% else %}
-                    <img src="{% static 'images/mealdefault.png' %}" alt="Default Image" class="meal-image" style="width: 200px; height: 200px;">
-                  {% endif %}
+              <div class="card-body">
 
-                  <h3>{{ meal.name }}</h3>
-                  {% with macros=meal.calculate_total_macros %}
-                    <p>Total Kcal per 100g: {{ macros.total_kcal_per_100g }}</p>
-                    <p>Total Carbohydrates per 100g: {{ macros.total_carbohydrates_per_100g }}</p>
-                    <p>Total Fats per 100g: {{ macros.total_fats_per_100g }}</p>
-                    <p>Total Protein per 100g: {{ macros.total_proteins_per_100g }}</p>
-                    <p>Total Glycemic Load per 100g: {{ macros.total_glycemic_load_per_100g }}</p>
-                    <p>Average Glycemic Index: {{ macros.average_glycemic_index }}</p>
-                  {% endwith %}
-                </div>
 
+                <h3>{{ meal.name }}</h3>
+                {% with macros=meal.calculate_total_macros %}
+                  <p>Total Kcal per 100g: {{ macros.total_kcal_per_100g }}</p>
+                  <p>Total Carbohydrates per 100g: {{ macros.total_carbohydrates_per_100g }}</p>
+                  <p>Total Fats per 100g: {{ macros.total_fats_per_100g }}</p>
+                  <p>Total Protein per 100g: {{ macros.total_proteins_per_100g }}</p>
+                  <p>Total Glycemic Load per 100g: {{ macros.total_glycemic_load_per_100g }}</p>
+                  <p>Average Glycemic Index: {{ macros.average_glycemic_index }}</p>
+                {% endwith %}
               </div>
+
             </div>
-          {% empty %}
-            <div class="col-12">
-              <p>No meals found.</p>
-            </div>
-          {% endfor %}
-        </div>
+          </div>
+        {% empty %}
+          <div class="col-12">
+            <p>No meals found.</p>
+          </div>
+        {% endfor %}
+      </div>
+
+<!--<div class="pagination">-->
+<!--  <span class="step-links">-->
+<!--    {% if page_obj.has_previous %}-->
+<!--      <a href="?page=1">&laquo; first</a>-->
+<!--      <a href="?page={{ page_obj.previous_page_number }}">previous</a>-->
+<!--    {% endif %}-->
+
+<!--    <span class="current-page">{{ page_obj.number }}</span>-->
+
+<!--    {% if page_obj.has_next %}-->
+<!--      <a href="?page={{ page_obj.next_page_number }}">next</a>-->
+<!--      <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>-->
+<!--    {% endif %}-->
+<!--  </span>-->
+<!--</div>-->
 
     </div>
-</div>
-
-
+  </div>
 {% endblock %}
