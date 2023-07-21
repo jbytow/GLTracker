@@ -42,6 +42,23 @@
         {% endfor %}
       </div>
 
+      <div class="pagination">
+    <span class="step-links">
+        {% if meals_paginated.has_previous %}
+            <a href="?page=1">&laquo; pierwsza</a>
+            <a href="?page={{ meals_paginated.previous_page_number }}">poprzednia</a>
+        {% endif %}
+
+        <span class="current">
+            Strona {{ meals_paginated.number }} z {{ meals_paginated.paginator.num_pages }}.
+        </span>
+
+        {% if meals_paginated.has_next %}
+            <a href="?page={{ meals_paginated.next_page_number }}">następna</a>
+            <a href="?page={{ meals_paginated.paginator.num_pages }}">ostatnia &raquo;</a>
+        {% endif %}
+    </span>
+</div>
 
     </div>
   </div>
