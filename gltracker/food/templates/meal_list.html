@@ -13,7 +13,7 @@
       <div class="row meal-tiles">
         {% for meal in meals %}
           <div class="col-sm-12 col-md-12 col-lg-4 col-xl-3 d-flex align-items-stretch meal-tile">
-            <div class="card bg-secondary mb-3 meal-tile-border">
+            <div class="card mb-3 meal-tile-border">
                 {% if meal.image %}
                   <img src="{{ meal.image.url }}" alt="{{ meal.name }}" class="img-fluid" style="height: 200px;">
                 {% else %}
@@ -22,15 +22,14 @@
 
               <div class="card-body">
 
-
-                <h3>{{ meal.name }}</h3>
+                <h4 class='card-title'> <strong>{{ meal.name }}</strong></h4>
                 {% with macros=meal.calculate_total_macros %}
-                  <p>Total Kcal per 100g: {{ macros.total_kcal_per_100g }}</p>
-                  <p>Total Carbohydrates per 100g: {{ macros.total_carbohydrates_per_100g }}</p>
-                  <p>Total Fats per 100g: {{ macros.total_fats_per_100g }}</p>
-                  <p>Total Protein per 100g: {{ macros.total_proteins_per_100g }}</p>
-                  <p>Total Glycemic Load per 100g: {{ macros.total_glycemic_load_per_100g }}</p>
-                  <p>Average Glycemic Index: {{ macros.average_glycemic_index }}</p>
+                  <p>Kcal in 100g: {{ macros.total_kcal_per_100g }}</p>
+                  <p>Carbohydrates in 100g: {{ macros.total_carbohydrates_per_100g }}</p>
+                  <p>Fats in 100g: {{ macros.total_fats_per_100g }}</p>
+                  <p>Proteins in 100g: {{ macros.total_proteins_per_100g }}</p>
+                  <p>Glycemic Load in 100g: {{ macros.total_glycemic_load_per_100g }}</p>
+                  <p>Glycemic Index: {{ macros.average_glycemic_index }}</p>
                 {% endwith %}
               </div>
 
@@ -42,6 +41,11 @@
           </div>
         {% endfor %}
       </div>
+
+
+    </div>
+  </div>
+{% endblock %}
 
 <!--<div class="pagination">-->
 <!--  <span class="step-links">-->
@@ -58,7 +62,3 @@
 <!--    {% endif %}-->
 <!--  </span>-->
 <!--</div>-->
-
-    </div>
-  </div>
-{% endblock %}
