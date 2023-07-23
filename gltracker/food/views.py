@@ -49,10 +49,10 @@ def meal_list(request):
     paginator = Paginator(meals, 4)
     page = request.GET.get('page')
     try:
-        meals_paginated = paginator.page(page)
+        pages = paginator.page(page)
     except PageNotAnInteger:
-        meals_paginated = paginator.page(1)
+        pages = paginator.page(1)
     except EmptyPage:
-        meals_paginated = paginator.page(paginator.num_pages)
+        pages = paginator.page(paginator.num_pages)
 
-    return render(request, 'meal_list.html', {'meals': meals_paginated})
+    return render(request, 'meal_list.html', {'meals': meals, 'pages': pages})
