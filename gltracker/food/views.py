@@ -2,6 +2,8 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.views.generic import View
+from django.http import HttpResponseForbidden
+
 from .models import FoodItem, Meal
 from .forms import FoodItemForm
 
@@ -10,6 +12,7 @@ def index(request):
     return render(request, "index.html")
 
 
+@login_required()
 def fooditem_list(request):
     public_items = FoodItem.objects.filter(user=None)  # Default, database fooditems
     user_items = FoodItem.objects.filter(user=request.user)  # User fooditems
@@ -56,3 +59,16 @@ def meal_list(request):
         pages = paginator.page(paginator.num_pages)
 
     return render(request, 'meal_list.html', {'meals': meals, 'pages': pages})
+
+
+@login_required()
+def meal_details_view(request, meal_id):
+    meal = get_object_or_404(Meal, id=meal_id)
+
+    if request.user != meal.user:
+        return HttpResponseForbidden("You do not have permission to view this meal.")
+
+    meal_details = meal.calculate_total_macros()
+
+    return render(request, 'meal_details.html', {'meal': meal, 'meal_details': meal_details})
+
