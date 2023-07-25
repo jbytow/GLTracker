@@ -4,27 +4,43 @@
 
 {% block title %}Food Tracker | {{ meal.name }}{% endblock %}
 
-{% block body %}
+{% block content %}
 <div class='py-4 mt-auto'>
     <div class='container-fluid px-4'>
         <a href="{% url 'index' %}" class='btn btn-outline-primary my-3'>Go Back</a>
 
         <h3>{{ meal.name }}</h3>
-        {% if meal.image %}
-        <img src="{{ meal.image.url }}" alt="{{ meal.name }}" class="img-fluid" style="width: 300px; height: 300px;">
-        {% else %}
-        <img src="{% static 'images/mealdefault.png' %}" alt="Default Image" class="img-fluid" style="width: 300px; height: 300px;">
-        {% endif %}
 
-        <div class='card text-white bg-info mb-3'>
-            <div class='card-header'>
-                <div class='d-flex w-100 justify-content-between'>
-                    <h5 class='card-title mb-1'>
-                        Calories per 100g:
-                    </h5>
-                    <p><strong>{{ meal_details.total_kcal_per_100g }}</strong></p>
-                </div>
+        <div class='row justify-content-center'>
+            <div class='col-6'>
+                {% if meal.image %}
+                <img src="{{ meal.image.url }}" alt="{{ meal.name }}" class="img-fluid" style="width: 600px; height: 600px;">
+                {% else %}
+                <img src="{% static 'images/mealdefault.png' %}" alt="Default Image" class="img-fluid" style="width: 600px; height: 600px;">
+                {% endif %}
             </div>
+            <div class='col-6'>
+                <div class='card text-white bg-info mb-3'>
+                    <div class='card-header'>
+                        <div class='d-flex w-100 justify-content-between'>
+                            <h5 class='card-title mb-1'>
+                                Calories per 100g:
+                            </h5>
+                            <p><strong>{{ meal_details.total_kcal_per_100g }}</strong></p>
+                        </div>
+                        <div class='d-flex w-100 justify-content-between'>
+                            <h5 class='card-title mb-1'>
+                                Glycemic Index:
+                            </h5>
+                            <p><strong>{{ meal_details.average_glycemic_index }}</strong></p>
+                        </div>
+                        <div class='d-flex w-100 justify-content-between'>
+                            <h5 class='card-title mb-1'>
+                                Glycemic Load per 100g:
+                            </h5>
+                            <p><strong>{{ meal_details.total_glycemic_load_per_100g }}</strong></p>
+                        </div>
+                     </div>
             <div class='card-body'>
                 <div class='d-flex w-100 justify-content-between'>
                     <h5 class='card-title'>
@@ -45,11 +61,6 @@
                 <div class='d-flex w-100 justify-content-between'>
                     <p class='mb-1'>Protein:</p>
                     <p><strong>{{ meal_details.total_proteins_per_100g }}</strong></p>
-                </div>
-
-                <div class='d-flex w-100 justify-content-between'>
-                    <p class='mb-1'>Glycemic Load:</p>
-                    <p><strong>{{ meal_details.total_glycemic_load_per_100g }}</strong></p>
                 </div>
             </div>
         </div>

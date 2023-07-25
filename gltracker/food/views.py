@@ -4,6 +4,8 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.views.generic import View
 from django.http import HttpResponseForbidden
 
+import logging
+
 from .models import FoodItem, Meal
 from .forms import FoodItemForm
 
