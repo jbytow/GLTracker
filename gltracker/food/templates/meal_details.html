@@ -5,6 +5,10 @@
 {% block title %}Food Tracker | {{ meal.name }}{% endblock %}
 
 {% block content %}
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="{% static 'js/foodDetails.js' %}"></script>
+
 <div class='py-4 mt-auto'>
     <div class='container-fluid px-4'>
         <a href="{% url 'index' %}" class='btn btn-outline-primary my-3'>Go Back</a>
@@ -65,17 +69,20 @@
             </div>
         </div>
 
-        <div class='card bg-secondary mb-3'>
-            <div class='card-header'>
-                <h4>Macronutrients breakdown</h4>
-            </div>
-            <div class='card-body justify-content-center'>
-                <div class='chart-bar'>
-                    <canvas id='myBarChart'></canvas>
-                </div>
+
+
+    <div class='card bg-secondary mb-3'>
+        <div class='card-header'>
+            <h4>Macronutrients breakdown</h4>
+        </div>
+        <div class='card-body justify-content-center'>
+            <div class='chart-bar'>
+                <canvas id='myBarChart' data-fats="{{ meal_details.total_fats_per_100g }}" data-carbs="{{ meal_details.total_carbohydrates_per_100g }}" data-proteins="{{ meal_details.total_proteins_per_100g }}"></canvas>
             </div>
         </div>
-
+    </div>
+        </div>
+        </div>
     </div>
 </div>
 {% endblock %}
