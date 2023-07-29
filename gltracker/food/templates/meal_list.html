@@ -31,6 +31,12 @@
                   <p>Glycemic Load in 100g: {{ macros.total_glycemic_load_per_100g }}</p>
                   <p>Glycemic Index: {{ macros.average_glycemic_index }}</p>
                 {% endwith %}
+
+                  <div class='mt-auto'>
+                      <a href="{% url 'meal_details' meal.id %}" type='button' class='btn btn-link'>
+                          View details
+                      </a>
+                  </div>
               </div>
 
             </div>
