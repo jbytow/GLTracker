@@ -52,6 +52,7 @@ class Meal(models.Model):
         total_glycemic_load = 0
         total_glycemic_index = 0
         total_weight = 0
+        weighted_glycemic_index = 0
 
         meal_items = self.mealitem_set.all()
         for meal_item in meal_items:
@@ -64,7 +65,8 @@ class Meal(models.Model):
             total_fats += food_item.fats * quantity/100
             total_proteins += food_item.proteins * quantity/100
             total_glycemic_load += food_item.glycemic_load * quantity/100
-            total_glycemic_index += food_item.glycemic_index * quantity/100
+            total_glycemic_index += food_item.glycemic_index
+            weighted_glycemic_index += food_item.glycemic_index * quantity
 
         if total_weight != 0:
             total_kcal_per_100g = round((total_kcal / total_weight) * 100, 2)
@@ -79,7 +81,7 @@ class Meal(models.Model):
             total_proteins_per_100g = 0
             total_glycemic_load_per_100g = 0
 
-        average_glycemic_index = round(total_glycemic_index / len(meal_items) if len(meal_items) > 0 else 0, 2)
+        average_glycemic_index = round(weighted_glycemic_index / total_weight, 2)
 
         return {
             'total_kcal': total_kcal,

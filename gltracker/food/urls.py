@@ -9,5 +9,6 @@ urlpatterns = [
     path('food_item/delete/<int:food_item_id>/', food.views.FoodItemDeleteView.as_view(), name='delete_food_item'),
     path('meals/', food.views.meal_list, name='meal_list'),
     path('meals/<int:meal_id>', food.views.meal_details_view, name='meal_details'),
+    path('add_meal/', food.views.add_meal, name='add_meal'),
 
 ]

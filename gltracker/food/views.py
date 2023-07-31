@@ -7,7 +7,7 @@ from django.http import HttpResponseForbidden
 import logging
 
 from .models import FoodItem, Meal
-from .forms import FoodItemForm
+from .forms import FoodItemForm, MealForm, MealItemFormSet
 
 
 def index(request):
@@ -73,4 +73,24 @@ def meal_details_view(request, meal_id):
     meal_details = meal.calculate_total_macros()
 
     return render(request, 'meal_details.html', {'meal': meal, 'meal_details': meal_details})
+
+
+@login_required()
+def add_meal(request):
+    if request.method == 'POST':
+        form = MealForm(request.user, request.POST, request.FILES)
+        formset = MealItemFormSet(request.POST, instance=Meal())
+
+        if form.is_valid() and formset.is_valid():
+            meal = form.save()
+            formset.instance = meal
+            formset.save()
+
+            return redirect('meal_list')
+
+    else:
+        form = MealForm(user=request.user)
+        formset = MealItemFormSet(instance=Meal())
+
+    return render(request, 'add_meal.html', {'form': form, 'formset': formset})
 
