@@ -3,11 +3,10 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.views.generic import View
 from django.http import HttpResponseForbidden
+from django.forms import formset_factory
 
-import logging
-
-from .models import FoodItem, Meal
-from .forms import FoodItemForm, MealForm, MealItemFormSet
+from .models import FoodItem, Meal, MealItem
+from .forms import FoodItemForm, MealItemForm, MealForm
 
 
 def index(request):
@@ -77,20 +76,24 @@ def meal_details_view(request, meal_id):
 
 @login_required()
 def add_meal(request):
+    MealItemFormSet = formset_factory(MealItemForm, extra=4)
+
     if request.method == 'POST':
         form = MealForm(request.user, request.POST, request.FILES)
-        formset = MealItemFormSet(request.POST, instance=Meal())
+        formset = MealItemFormSet(request.POST)
 
         if form.is_valid() and formset.is_valid():
             meal = form.save()
-            formset.instance = meal
-            formset.save()
+            for form in formset:
+                meal_item = form.save(commit=False)
+                meal_item.meal = meal
+                meal_item.save()
 
             return redirect('meal_list')
 
     else:
         form = MealForm(user=request.user)
-        formset = MealItemFormSet(instance=Meal())
+        formset = MealItemFormSet()
 
     return render(request, 'add_meal.html', {'form': form, 'formset': formset})
 

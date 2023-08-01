@@ -7,9 +7,12 @@
     {{ form.as_p }}
     {{ formset.management_form }}
     {% for form in formset %}
+        <h3>Meal Item {{ forloop.counter }}</h3>
         {{ form.as_p }}
+        <hr>
     {% endfor %}
     <input type="submit" value="Add Meal">
 </form>
+
 
 {% endblock %}

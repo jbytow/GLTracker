@@ -43,6 +43,7 @@ class Meal(models.Model):
     name = models.CharField(max_length=200)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     image = models.ImageField(upload_to=meal_image_upload_to, blank=True, null=True)
+    meal_items = models.ManyToManyField('FoodItem', through='MealItem', related_name='meals')
 
     def calculate_total_macros(self):
         total_kcal = 0
@@ -60,7 +61,7 @@ class Meal(models.Model):
             food_item = meal_item.food_item
             total_weight += quantity
 
-            total_kcal += food_item.kcal * quantity #food items have nutrition facts per 100g
+            total_kcal += food_item.kcal * quantity
             total_carbohydrates += food_item.carbohydrates * quantity
             total_fats += food_item.fats * quantity
             total_proteins += food_item.proteins * quantity
@@ -103,7 +104,7 @@ class Meal(models.Model):
 
 class MealItem(models.Model):
     meal = models.ForeignKey(Meal, on_delete=models.CASCADE)
-    food_item = models.ForeignKey(FoodItem, on_delete=models.CASCADE)
+    food_item = models.ForeignKey('FoodItem', on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(default=1)
 
     def __str__(self):

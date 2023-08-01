@@ -1,5 +1,5 @@
 from django import forms
-from .models import FoodItem, Meal, MealItem
+from .models import FoodItem, MealItem, Meal
 
 
 class FoodItemForm(forms.ModelForm):
@@ -12,9 +12,6 @@ class MealItemForm(forms.ModelForm):
     class Meta:
         model = MealItem
         fields = ['food_item', 'quantity']
-
-
-MealItemFormSet = forms.inlineformset_factory(Meal, MealItem, form=MealItemForm, extra=1, can_delete=True)
 
 
 class MealForm(forms.ModelForm):
@@ -33,3 +30,5 @@ class MealForm(forms.ModelForm):
         if commit:
             meal.save()
         return meal
+
+
