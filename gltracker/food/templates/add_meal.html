@@ -1,18 +1,31 @@
 {% extends 'base.html' %}
 
+{% load static %}
+
 {% block content %}
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="{% static 'js/mealForm.js' %}"></script>
+
   <h2>Add a New Meal</h2>
 <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
     {{ form.as_p }}
-    {{ formset.management_form }}
-    {% for form in formset %}
-        <h3>Meal Item {{ forloop.counter }}</h3>
-        {{ form.as_p }}
-        <hr>
-    {% endfor %}
+    <label for="id_extra_forms">Liczba dodatkowych formularzy:</label>
+    <input type="number" name="extra_forms" id="id_extra_forms" min="1" value="1">
+    <div id="formset-container">
+        {{ formset.management_form }}
+        {% for form in formset %}
+            <div class="mealitem-form">
+                {{ form.as_p }}
+            </div>
+        {% endfor %}
+    </div>
+    <button id="add-form">Dodaj formularz</button>
     <input type="submit" value="Add Meal">
 </form>
+
+
 
 
 {% endblock %}

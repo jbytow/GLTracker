@@ -76,7 +76,7 @@ def meal_details_view(request, meal_id):
 
 @login_required()
 def add_meal(request):
-    MealItemFormSet = formset_factory(MealItemForm, extra=4)
+    MealItemFormSet = formset_factory(MealItemForm, extra=1)
 
     if request.method == 'POST':
         form = MealForm(request.user, request.POST, request.FILES)
