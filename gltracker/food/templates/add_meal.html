@@ -11,21 +11,17 @@
 <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
     {{ form.as_p }}
-    <label for="id_extra_forms">Liczba dodatkowych formularzy:</label>
-    <input type="number" name="extra_forms" id="id_extra_forms" min="1" value="1">
+    {{ formset.management_form }}
     <div id="formset-container">
-        {{ formset.management_form }}
         {% for form in formset %}
             <div class="mealitem-form">
                 {{ form.as_p }}
+                <button type="button" class="remove-form">Remove</button>
             </div>
         {% endfor %}
     </div>
-    <button id="add-form">Dodaj formularz</button>
-    <input type="submit" value="Add Meal">
+    <button type="button" id="add-form">Add another product</button>
+    <input type="submit" value="Dodaj Meal">
 </form>
-
-
-
 
 {% endblock %}
