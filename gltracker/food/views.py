@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.views.generic import View
 from django.http import HttpResponseForbidden
-from django.forms import formset_factory
+from django.forms import formset_factory, modelformset_factory
 
 from .models import FoodItem, Meal, MealItem
 from .forms import FoodItemForm, MealItemForm, MealForm
@@ -75,7 +75,7 @@ def meal_details_view(request, meal_id):
 
 
 @login_required()
-def add_meal(request):
+def add_meal(request, id=None):
     MealItemFormSet = formset_factory(MealItemForm, extra=1)
 
     if request.method == 'POST':
@@ -96,4 +96,24 @@ def add_meal(request):
         formset = MealItemFormSet()
 
     return render(request, 'add_meal.html', {'form': form, 'formset': formset})
+
+def recipe_update_view(request, id=None):
+    obj = get_object_or_404(Recipe, id=id, user=request.user)
+    RecipeIngredientFormset = modelformset_factory(RecipeIngredient, form=RecipeIngredientForm, extra=0)
+    qs = obj.recipeingredient_set.all()
+    formset = RecipeIngredientFormset(request.POST or None, queryset=qs)
+    context = {
+        "form": form,
+        "formset": formset,
+        "object": obj
+    }
+    if all([form.is_valid(), formset.is_valid()]):
+        parent = form.save()
+        #formset.save()
+        for form in formset:
+            child = form.save(commit=False)
+            child.recipe = parent
+            child.save()
+        context['message'] = 'Data saved.'
+    return render(request, "recipes/create-update.html", context)
 
