@@ -4,25 +4,32 @@
 
 {% block content %}
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="{% static 'js/mealForm.js' %}"></script>
+<!--<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>-->
+<!--<script src="{% static 'js/mealForm.js' %}"></script>-->
 
-  <h2>Add a New Meal</h2>
-<form method="post" enctype="multipart/form-data">
+<!--  <h2>Add a New Meal</h2>-->
+<!--<form method="post" enctype="multipart/form-data">-->
+<!--    {% csrf_token %}-->
+<!--    {{ form.as_p }}-->
+<!--    {{ formset.management_form }}-->
+<!--    <div id="formset-container">-->
+<!--        {% for form in formset %}-->
+<!--            <div class="mealitem-form">-->
+<!--                {{ form.as_p }}-->
+<!--                <button type="button" class="remove-form">Remove</button>-->
+<!--            </div>-->
+<!--        {% endfor %}-->
+<!--    </div>-->
+<!--    <input type="hidden" id="id_form-TOTAL_FORMS" name="form-TOTAL_FORMS" value="{{ formset.total_form }}" />-->
+<!--    <button type="button" id="add-form">Add another product</button>-->
+<!--    <input type="submit" value="Dodaj Meal">-->
+<!--</form>-->
+
+<form action='.' method="Post">
     {% csrf_token %}
     {{ form.as_p }}
-    {{ formset.management_form }}
-    <div id="formset-container">
-        {% for form in formset %}
-            <div class="mealitem-form">
-                {{ form.as_p }}
-                <button type="button" class="remove-form">Remove</button>
-            </div>
-        {% endfor %}
-    </div>
-    <input type="hidden" id="id_form-TOTAL_FORMS" name="form-TOTAL_FORMS" value="{{ formset.total_form }}" />
-    <button type="button" id="add-form">Add another product</button>
-    <input type="submit" value="Dodaj Meal">
+
+    {% if formsets
 </form>
 
 {% endblock %}
