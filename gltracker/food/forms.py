@@ -32,18 +32,25 @@ class MealForm(forms.ModelForm):
         return meal
 
 
+class RecipeIngredientForm(forms.ModelForm):
+    class Meta:
+        model = MealItem
+        fields = ['food_item', 'quantity']
+
+
 class RecipeForm(forms.ModelForm):
     error_css_class = 'error-field'
     required_css_class = 'required-field'
     name = forms.CharField(widget=forms.TextInput(attrs={"class": "form-control",
-    "placeholder": "Recipe name"}))
+                                                         "placeholder": "Recipe name"}))
+
     class Meta:
         model = Meal
-        fields = ['name', 'description', 'directions']
+        fields = ['name', 'image']
 
         def __init__(self, *args, **kwargs):
             super().__init__(*args, **kwargs)
-            #django-crispy-forms
+            # django-crispy-forms
             for field in self.fields:
                 new_data = {
                     "placeholder": f'Meal{str(field)}',

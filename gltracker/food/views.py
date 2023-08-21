@@ -6,7 +6,7 @@ from django.http import HttpResponseForbidden
 from django.forms import formset_factory, modelformset_factory
 
 from .models import FoodItem, Meal, MealItem
-from .forms import FoodItemForm, MealItemForm, MealForm
+from .forms import FoodItemForm, MealItemForm, MealForm, RecipeForm, RecipeIngredientForm
 
 
 def index(request):
@@ -95,12 +95,14 @@ def add_meal(request, id=None):
         form = MealForm(user=request.user)
         formset = MealItemFormSet()
 
-    return render(request, 'add_meal.html', {'form': form, 'formset': formset})
+    return render(request, 'add_update_meal.html', {'form': form, 'formset': formset})
+
 
 def recipe_update_view(request, id=None):
-    obj = get_object_or_404(Recipe, id=id, user=request.user)
-    RecipeIngredientFormset = modelformset_factory(RecipeIngredient, form=RecipeIngredientForm, extra=0)
-    qs = obj.recipeingredient_set.all()
+    obj = get_object_or_404(Meal, id=id, user=request.user)
+    RecipeIngredientFormset = modelformset_factory(MealItem, form=RecipeIngredientForm, extra=0)
+    qs = obj.mealitem_set.all()
+    form = RecipeForm(request.POST or None, instance = obj)
     formset = RecipeIngredientFormset(request.POST or None, queryset=qs)
     context = {
         "form": form,
@@ -115,5 +117,5 @@ def recipe_update_view(request, id=None):
             child.recipe = parent
             child.save()
         context['message'] = 'Data saved.'
-    return render(request, "recipes/create-update.html", context)
+    return render(request, "add_update_meal.html", context)
 
