@@ -4,7 +4,7 @@
 
 {% block content %}
 
-<!--<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>-->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <!--<script src="{% static 'js/mealForm.js' %}"></script>-->
 
 <!--  <h2>Add a New Meal</h2>-->
@@ -25,20 +25,49 @@
 <!--    <input type="submit" value="Dodaj Meal">-->
 <!--</form>-->
 
-<form action='.' method="Post">
-    {% csrf_token %}
-    {% for field in form %}
-    <div class="{% if field.field.required %}{{ form.required_css_class }}{% endif %}">
-        {{ field}}
-    </div>
-    {% endfor %}
+    <form action='.' method="Post">
+        {% csrf_token %}
+        {% for field in form %}
+        <div class="{% if field.field.required %}{{ form.required_css_class }}{% endif %}">
+            {{ field.errors }}
+            {{ field.label_tag }} {{ field }}
+            {% if field.help_text %}
+                <p class="help">{{ field.help_text|safe }}</p>
+            {% endif %}
+        </div>
+        {% endfor %}
 
 
-    {% if formset %}
-    <h3>Ingredients</h3>
-    {{ formset.as_p }}
-    {% endif %}
-    <button style="margin-top:10px;" type="submit" >Save</button>
-</form>
+        {% if formset %}
+        <h3>Ingredients</h3>
+        {{ formset.management_form }}
+        <div id="ingredient-form-list">
+            {% for form in formset %}
+                    <div class="ingredient-form">
+                        {{ form.as_p }}
+                    </div>
+            {% endfor %}
+        </div>
 
-{% endblock %}
+
+        <div id="empty-form" class="">{{ formset.empty_form }}</div>
+        <button id="add-more" type="button">Add More</button>
+        {% endif %}
+        <button style="margin-top:10px;" type="submit" >Save</button>
+    </form>
+
+    <script>
+        const addMoreBtn = document.getElementById('add-more');
+        addMoreBtn.addEventListener('click', add_new_form);
+
+        function add_new_form(event) {
+            if (event) {
+                event.preventDefault()
+            }
+            const formCopyTarget = document.getElementById('ingredient-form-list')
+            const emptyFormEl = document.getElementById('empty-form').cloneNode(true)
+            emptyFormEl.setAttribute('class', 'ingredient-form')
+            formCopyTarget.append(emptyFormEl)
+        }
+    </script>
+    {% endblock %}

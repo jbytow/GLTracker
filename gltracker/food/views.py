@@ -100,9 +100,10 @@ def add_meal(request, id=None):
 
 def recipe_update_view(request, id=None):
     obj = get_object_or_404(Meal, id=id, user=request.user)
-    RecipeIngredientFormset = modelformset_factory(MealItem, form=RecipeIngredientForm, extra=0)
+    form = RecipeForm(request.POST or None, instance=obj)
+    RecipeIngredientFormset = modelformset_factory(MealItem,
+                                                   form=RecipeIngredientForm, extra=0)
     qs = obj.mealitem_set.all()
-    form = RecipeForm(request.POST or None, instance = obj)
     formset = RecipeIngredientFormset(request.POST or None, queryset=qs)
     context = {
         "form": form,
