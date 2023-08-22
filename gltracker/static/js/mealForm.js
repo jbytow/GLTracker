@@ -18,5 +18,3 @@ function add_new_form(event) {
     totalNewForms.setAttribute('value', currentFormCount + 1)
     formCopyTarget.append(copyEmptyFormEl)
 }
-
-

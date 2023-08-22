@@ -102,7 +102,7 @@ def recipe_update_view(request, id=None):
     obj = get_object_or_404(Meal, id=id, user=request.user)
     form = RecipeForm(request.POST or None, instance=obj)
     RecipeIngredientFormset = modelformset_factory(MealItem,
-                                                   form=RecipeIngredientForm, extra=0)
+                                                   form=RecipeIngredientForm, extra=0, can_delete=True)
     qs = obj.mealitem_set.all()
     formset = RecipeIngredientFormset(request.POST or None, queryset=qs)
     context = {
@@ -110,14 +110,19 @@ def recipe_update_view(request, id=None):
         "formset": formset,
         "object": obj
     }
+    if request.method == 'POST':
+        if all([form.is_valid(), formset.is_valid()]):
+            parent = form.save(commit=False)
+            parent.save()
+            for form in formset:
+                child = form.save(commit=False)
+                child.meal = parent
+                child.save()
 
-    if all([form.is_valid(), formset.is_valid()]):
-        parent = form.save(commit=False)
-        parent.save
-        for form in formset:
-            child = form.save(commit=False)
-            child.meal = parent
-            child.save()
+        for deleted_form in formset.deleted_forms:
+            if deleted_form.instance.pk is not None:
+                deleted_form.instance.delete()
+
         context['message'] = 'Data saved.'
     return render(request, "add_update_meal.html", context)
 
