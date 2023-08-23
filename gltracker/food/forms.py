@@ -13,6 +13,10 @@ class MealItemForm(forms.ModelForm):
         model = MealItem
         fields = ['food_item', 'quantity']
 
+    def __init__(self, user, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['food_item'].queryset = FoodItem.objects.filter(user=user) | FoodItem.objects.filter(user=None)
+
 
 class MealForm(forms.ModelForm):
     error_css_class = 'error-field'

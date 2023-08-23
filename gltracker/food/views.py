@@ -47,6 +47,7 @@ class FoodItemDeleteView(View):
         return redirect('fooditem_list')
 
 
+@login_required()
 def meal_list(request):
     meals = Meal.objects.filter(user=request.user)
 
@@ -82,16 +83,21 @@ def meal_create_update(request, id=None):
         obj = None
 
     form = MealForm(request.POST or None, request.FILES or None, instance=obj)
-
-    MealItemFormset = modelformset_factory(MealItem,
-                                                   form=MealItemForm, extra=0, can_delete=True)
+    MealItemFormset = modelformset_factory(
+        MealItem,
+        form=MealItemForm,
+        extra=0,
+        can_delete=True,
+    )
 
     if obj:
-        qs = obj.mealitem_set.all()
+        qs_user = obj.mealitem_set.filter(user=request.user)
+        qs_list = obj.mealitem_set.filter(user=None)
     else:
-        qs = MealItem.objects.none()
+        qs_user = MealItem.objects.none()
+        qs_list = MealItem.objects.none()
 
-    formset = MealItemFormset(request.POST or None, queryset=qs)
+    formset = MealItemFormset(request.POST or None, form_kwargs={'user': request.user}, queryset=qs_user | qs_list)
 
     context = {
         "form": form,
