@@ -64,9 +64,15 @@
 
 
 .ingredient-form {
-    border-bottom: 1px solid black
+    border-bottom: 1px solid black;
+    margin-bottom: 15px;
 }
 .hidden {
     display: none
 }
+
+.field-separator {
+    margin-bottom: 10px;
+}
+
 </style>

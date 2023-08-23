@@ -7,28 +7,29 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script  defer src="{% static 'js/mealForm.js' %}"></script>
 
-    <h2>Meal Name:</h2>
+    <h3>Meal Name:</h3>
     <form action='.' method="Post" enctype="multipart/form-data">
         {% csrf_token %}
-            {% for field in form %}
-    <div class="{% if field.field.required %}{{ form.required_css_class }}{% endif %}">
-        {% if field.name == 'image' %}
-            {% if form.instance.image %}
-                <img src="{{ form.instance.image.url }}" alt="Meal Image", class="img-fluid" style="width: 200px; height: 200px;">
+        {% for field in form %}
+        <div class="{% if field.field.required %}{{ form.required_css_class }}{% endif %}">
+            {% if field.name == 'image' %}
+                {% if form.instance.image %}
+                    <img src="{{ form.instance.image.url }}" alt="Meal Image", class="img-fluid" style="width: 200px; height: 200px;">
+                {% endif %}
+                {{ field.errors }}
+                {{ field.label_tag }} {{ field }}
+                {% if field.help_text %}
+                    <p class="help">{{ field.help_text|safe }}</p>
+                {% endif %}
+            {% else %}
+                {{ field.errors }}
+                {{ field }}
+                {% if field.help_text %}
+                    <p class="help">{{ field.help_text|safe }}</p>
+                {% endif %}
             {% endif %}
-            {{ field.errors }}
-            {{ field.label_tag }} {{ field }}
-            {% if field.help_text %}
-                <p class="help">{{ field.help_text|safe }}</p>
-            {% endif %}
-        {% else %}
-            {{ field.errors }}
-            {{ field }}
-            {% if field.help_text %}
-                <p class="help">{{ field.help_text|safe }}</p>
-            {% endif %}
-        {% endif %}
-    </div>
+         </div>
+        <div class="field-separator"></div>
     {% endfor %}
 
         {% if formset %}
@@ -41,7 +42,6 @@
                     </div>
             {% endfor %}
         </div>
-
 
         <div id="empty-form" class="hidden">{{ formset.empty_form.as_p }}</div>
         <button id="add-more" type="button">Add Ingredients</button>
