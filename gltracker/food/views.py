@@ -3,10 +3,10 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.views.generic import View
 from django.http import HttpResponseForbidden
-from django.forms import formset_factory, modelformset_factory
+from django.forms import modelformset_factory
 
 from .models import FoodItem, Meal, MealItem
-from .forms import FoodItemForm, MealItemForm, MealForm, RecipeForm, RecipeIngredientForm
+from .forms import FoodItemForm, MealItemForm, MealForm
 
 
 def index(request):
@@ -75,54 +75,44 @@ def meal_details_view(request, meal_id):
 
 
 @login_required()
-def add_meal(request, id=None):
-    MealItemFormSet = formset_factory(MealItemForm, extra=1)
-
-    if request.method == 'POST':
-        form = MealForm(request.user, request.POST, request.FILES)
-        formset = MealItemFormSet(request.POST)
-
-        if form.is_valid() and formset.is_valid():
-            meal = form.save()
-            for form in formset:
-                meal_item = form.save(commit=False)
-                meal_item.meal = meal
-                meal_item.save()
-
-            return redirect('meal_list')
-
+def meal_create_update(request, id=None):
+    if id:
+        obj = get_object_or_404(Meal, id=id, user=request.user)
     else:
-        form = MealForm(user=request.user)
-        formset = MealItemFormSet()
+        obj = None
 
-    return render(request, 'add_update_meal.html', {'form': form, 'formset': formset})
+    form = MealForm(request.POST or None, request.FILES or None, instance=obj)
 
+    MealItemFormset = modelformset_factory(MealItem,
+                                                   form=MealItemForm, extra=0, can_delete=True)
 
-def recipe_update_view(request, id=None):
-    obj = get_object_or_404(Meal, id=id, user=request.user)
-    form = RecipeForm(request.POST or None, instance=obj)
-    RecipeIngredientFormset = modelformset_factory(MealItem,
-                                                   form=RecipeIngredientForm, extra=0, can_delete=True)
-    qs = obj.mealitem_set.all()
-    formset = RecipeIngredientFormset(request.POST or None, queryset=qs)
+    if obj:
+        qs = obj.mealitem_set.all()
+    else:
+        qs = MealItem.objects.none()
+
+    formset = MealItemFormset(request.POST or None, queryset=qs)
+
     context = {
         "form": form,
         "formset": formset,
         "object": obj
     }
+
     if request.method == 'POST':
         if all([form.is_valid(), formset.is_valid()]):
             parent = form.save(commit=False)
+            parent.user = request.user
             parent.save()
             for form in formset:
                 child = form.save(commit=False)
                 child.meal = parent
                 child.save()
 
-        for deleted_form in formset.deleted_forms:
-            if deleted_form.instance.pk is not None:
-                deleted_form.instance.delete()
+            for deleted_form in formset.deleted_forms:
+                if deleted_form.instance.pk is not None:
+                    deleted_form.instance.delete()
 
-        context['message'] = 'Data saved.'
+            context['message'] = 'Data saved.'
+
     return render(request, "add_update_meal.html", context)
-

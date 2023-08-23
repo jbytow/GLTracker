@@ -7,37 +7,29 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script  defer src="{% static 'js/mealForm.js' %}"></script>
 
-<!--  <h2>Add a New Meal</h2>-->
-<!--<form method="post" enctype="multipart/form-data">-->
-<!--    {% csrf_token %}-->
-<!--    {{ form.as_p }}-->
-<!--    {{ formset.management_form }}-->
-<!--    <div id="formset-container">-->
-<!--        {% for form in formset %}-->
-<!--            <div class="mealitem-form">-->
-<!--                {{ form.as_p }}-->
-<!--                <button type="button" class="remove-form">Remove</button>-->
-<!--            </div>-->
-<!--        {% endfor %}-->
-<!--    </div>-->
-<!--    <input type="hidden" id="id_form-TOTAL_FORMS" name="form-TOTAL_FORMS" value="{{ formset.total_form }}" />-->
-<!--    <button type="button" id="add-form">Add another product</button>-->
-<!--    <input type="submit" value="Dodaj Meal">-->
-<!--</form>-->
-
-    <h2>Meal</h2>
-    <form action='.' method="Post">
+    <h2>Meal Name:</h2>
+    <form action='.' method="Post" enctype="multipart/form-data">
         {% csrf_token %}
-        {% for field in form %}
-        <div class="{% if field.field.required %}{{ form.required_css_class }}{% endif %}">
+            {% for field in form %}
+    <div class="{% if field.field.required %}{{ form.required_css_class }}{% endif %}">
+        {% if field.name == 'image' %}
+            {% if form.instance.image %}
+                <img src="{{ form.instance.image.url }}" alt="Meal Image", class="img-fluid" style="width: 200px; height: 200px;">
+            {% endif %}
             {{ field.errors }}
             {{ field.label_tag }} {{ field }}
             {% if field.help_text %}
                 <p class="help">{{ field.help_text|safe }}</p>
             {% endif %}
-        </div>
-        {% endfor %}
-
+        {% else %}
+            {{ field.errors }}
+            {{ field }}
+            {% if field.help_text %}
+                <p class="help">{{ field.help_text|safe }}</p>
+            {% endif %}
+        {% endif %}
+    </div>
+    {% endfor %}
 
         {% if formset %}
         <h3>Ingredients</h3>
