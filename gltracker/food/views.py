@@ -91,13 +91,11 @@ def meal_create_update(request, id=None):
     )
 
     if obj:
-        qs_user = obj.mealitem_set.filter(user=request.user)
-        qs_list = obj.mealitem_set.filter(user=None)
+        qs = obj.mealitem_set.all()
     else:
-        qs_user = MealItem.objects.none()
-        qs_list = MealItem.objects.none()
+        qs = MealItem.objects.none()
 
-    formset = MealItemFormset(request.POST or None, form_kwargs={'user': request.user}, queryset=qs_user | qs_list)
+    formset = MealItemFormset(request.POST or None, form_kwargs={'user': request.user}, queryset=qs)
 
     context = {
         "form": form,

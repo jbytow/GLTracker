@@ -9,9 +9,11 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="{% static 'js/mealDetails.js' %}"></script>
 
-<div class='py-4 mt-auto'>
+<a href="{% url 'meal_list' %}" class='btn btn-outline-primary my-1 ml-4 mr-auto'>Go Back</a>
+<a href="{% url 'edit_meal' meal.id %}" class='btn btn-outline-primary my-1 ml-auto mr-4 text-right float-right'>Edit Meal</a>
+<div class='py-1 mt-auto'>
     <div class='container-fluid px-4'>
-        <a href="{% url 'index' %}" class='btn btn-outline-primary my-3'>Go Back</a>
+
 
         <h3>{{ meal.name }}</h3>
 
