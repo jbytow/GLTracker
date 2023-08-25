@@ -72,7 +72,9 @@ def meal_details_view(request, meal_id):
 
     meal_details = meal.calculate_total_macros()
 
-    return render(request, 'meal_details.html', {'meal': meal, 'meal_details': meal_details})
+    message = request.session.pop('message', None)
+
+    return render(request, 'meal_details.html', {'meal': meal, 'meal_details': meal_details, 'message': message})
 
 
 @login_required()
@@ -117,6 +119,8 @@ def meal_create_update(request, id=None):
                 if deleted_form.instance.pk is not None:
                     deleted_form.instance.delete()
 
-            context['message'] = 'Data saved.'
+            request.session['message'] = 'Data Saved'
+
+            return redirect('meal_details', meal_id=parent.id)
 
     return render(request, "add_update_meal.html", context)
