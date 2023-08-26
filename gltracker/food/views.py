@@ -40,18 +40,14 @@ def fooditem_add(request):
     return render(request, 'add_fooditem.html', {'form': form})
 
 
-# def fooditem_delete(request, fooditem_id):
-#     food_item = get_object_or_404(FoodItem, id=fooditem_id)
-#
-#     if request.method == 'POST':
-#         food_item.delete()
-#         return redirect('fooditem_list')
+def fooditem_delete(request, food_item_id):
+    food_item = get_object_or_404(FoodItem, id=food_item_id)
 
-class FoodItemDeleteView(View):
-    def post(self, request, food_item_id):
-        food_item = get_object_or_404(FoodItem, id=food_item_id)
+    if request.method == 'POST':
         food_item.delete()
         return redirect('fooditem_list')
+
+    return redirect('fooditem_list')
 
 
 @login_required()
