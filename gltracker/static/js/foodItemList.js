@@ -37,7 +37,7 @@ function sortTable(tableId, header) {
 function deleteFoodItem(foodItemId) {
     var confirmation = confirm("Are you sure you want to delete that product?");
     if (confirmation) {
-        var url = '/food/food_item/delete/' + foodItemId + '/';
+        var url = '/food/fooditem/delete/' + foodItemId + '/';
         var csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
 
         fetch(url, {
