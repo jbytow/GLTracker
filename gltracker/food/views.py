@@ -3,7 +3,6 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.http import HttpResponseForbidden
 from django.forms import modelformset_factory
-from django.views.generic import View
 
 from .models import FoodItem, Meal, MealItem
 from .forms import FoodItemForm, MealItemForm, MealForm
@@ -67,17 +66,17 @@ def meal_list(request):
 
 
 @login_required()
-def meal_details_view(request, meal_id):
+def meal_details(request, meal_id):
     meal = get_object_or_404(Meal, id=meal_id)
 
     if request.user != meal.user:
         return HttpResponseForbidden("You do not have permission to view this meal.")
 
-    meal_details = meal.calculate_total_macros()
+    meal_macros = meal.calculate_total_macros()
 
     message = request.session.pop('message', None)
 
-    return render(request, 'meal_details.html', {'meal': meal, 'meal_details': meal_details, 'message': message})
+    return render(request, 'meal_details.html', {'meal': meal, 'meal_macros': meal_macros, 'message': message})
 
 
 @login_required()
