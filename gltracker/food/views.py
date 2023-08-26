@@ -1,9 +1,9 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.views.generic import View
 from django.http import HttpResponseForbidden
 from django.forms import modelformset_factory
+from django.views.generic import View
 
 from .models import FoodItem, Meal, MealItem
 from .forms import FoodItemForm, MealItemForm, MealForm
@@ -27,7 +27,7 @@ def fooditem_list(request):
 
 
 @login_required
-def add_fooditem(request):
+def fooditem_add(request):
     if request.method == 'POST':
         form = FoodItemForm(request.POST)
         if form.is_valid():
@@ -39,6 +39,13 @@ def add_fooditem(request):
         form = FoodItemForm()
     return render(request, 'add_fooditem.html', {'form': form})
 
+
+# def fooditem_delete(request, fooditem_id):
+#     food_item = get_object_or_404(FoodItem, id=fooditem_id)
+#
+#     if request.method == 'POST':
+#         food_item.delete()
+#         return redirect('fooditem_list')
 
 class FoodItemDeleteView(View):
     def post(self, request, food_item_id):
