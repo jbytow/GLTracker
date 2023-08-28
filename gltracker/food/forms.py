@@ -5,7 +5,7 @@ from .models import FoodItem, MealItem, Meal
 class FoodItemForm(forms.ModelForm):
     class Meta:
         model = FoodItem
-        exclude = ['user']
+        exclude = ['user', 'is_active']
 
 
 class MealItemForm(forms.ModelForm):
@@ -15,7 +15,8 @@ class MealItemForm(forms.ModelForm):
 
     def __init__(self, user, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['food_item'].queryset = FoodItem.objects.filter(user=user) | FoodItem.objects.filter(user=None)
+        self.fields['food_item'].queryset = FoodItem.objects.filter(user=user, is_active=True) | FoodItem.objects.filter(user=None)
+        self.fields['food_item'].empty_label = None
 
 
 class MealForm(forms.ModelForm):

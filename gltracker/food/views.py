@@ -15,7 +15,7 @@ def index(request):
 @login_required()
 def fooditem_list(request):
     public_items = FoodItem.objects.filter(user=None)  # Default, database fooditems
-    user_items = FoodItem.objects.filter(user=request.user)  # User fooditems
+    user_items = FoodItem.objects.filter(user=request.user, is_active=True)  # User fooditems
 
     context = {
         'public_items': public_items,
@@ -39,11 +39,12 @@ def fooditem_add(request):
     return render(request, 'add_fooditem.html', {'form': form})
 
 
-def fooditem_delete(request, food_item_id):
+def fooditem_delete(request, food_item_id):   # doesn't really delete but change record to inactive
     food_item = get_object_or_404(FoodItem, id=food_item_id)
 
     if request.method == 'POST':
-        food_item.delete()
+        food_item.is_active = False
+        food_item.save()
         return redirect('fooditem_list')
 
     return redirect('fooditem_list')
