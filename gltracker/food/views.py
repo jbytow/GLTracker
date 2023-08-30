@@ -127,3 +127,14 @@ def meal_create_update(request, id=None):
             return redirect('meal_details', meal_id=parent.id)
 
     return render(request, "add_update_meal.html", context)
+
+
+@login_required()
+def meal_delete(request, meal_id):
+    meal = get_object_or_404(Meal, id=meal_id, user=request.user)
+
+    if request.method == 'POST':
+        meal.delete()
+        return redirect('meal_list')
+
+    return redirect('meal_list')

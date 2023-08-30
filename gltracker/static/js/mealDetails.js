@@ -35,3 +35,11 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 });
+
+function confirmDelete() {
+    var confirmation = confirm("Are you sure you want to delete this meal?");
+    if (confirmation) {
+        document.getElementById('delete-form').submit();
+    }
+    return false;
+}

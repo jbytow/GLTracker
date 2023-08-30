@@ -11,5 +11,6 @@ urlpatterns = [
     path('meals/<int:meal_id>', food.views.meal_details, name='meal_details'),
     path('meals/add/', food.views.meal_create_update, name='add_meal'),
     path('meals/<int:id>/edit/', food.views.meal_create_update, name='edit_meal'),
+    path('meal/<int:meal_id>/delete/', food.views.meal_delete, name='meal_delete')
 
 ]

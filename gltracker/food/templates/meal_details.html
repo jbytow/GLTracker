@@ -16,6 +16,10 @@
 {% endif %}
 
 <a href="{% url 'meal_list' %}" class='btn btn-outline-primary my-1 ml-4 mr-auto'>Go Back</a>
+<form action="{% url 'meal_delete' meal.id %}" method="POST" class="d-inline" id="delete-form">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger my-1 mr-4 text-right float-right" onclick="return confirmDelete();">Delete Meal</button>
+</form>
 <a href="{% url 'edit_meal' meal.id %}" class='btn btn-outline-primary my-1 ml-auto mr-4 text-right float-right'>Edit Meal</a>
 <div class='py-1 mt-auto'>
     <div class='container-fluid px-4'>
