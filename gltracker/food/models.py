@@ -76,14 +76,14 @@ class Meal(models.Model):
             total_fats_per_100g = round((total_fats / total_weight), 2)
             total_proteins_per_100g = round((total_proteins / total_weight), 2)
             total_glycemic_load_per_100g = round((total_glycemic_load / total_weight), 2)
+            average_glycemic_index = round(weighted_glycemic_index / total_weight, 2)
         else:
             total_kcal_per_100g = 0
             total_carbohydrates_per_100g = 0
             total_fats_per_100g = 0
             total_proteins_per_100g = 0
             total_glycemic_load_per_100g = 0
-
-        average_glycemic_index = round(weighted_glycemic_index / total_weight, 2)
+            average_glycemic_index = 0
 
         return {
             'total_kcal': total_kcal,
