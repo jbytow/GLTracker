@@ -5,8 +5,8 @@ from django.contrib.auth import login, logout, authenticate
 
 from django.contrib.auth.decorators import login_required
 
-from .forms import CreateUserForm
-from .models import Profile
+from .forms import CreateUserForm, WeightLogForm
+from .models import Profile, Weight
 
 
 def register_page(request):
@@ -54,3 +54,21 @@ def login_page(request):
 def logout_user(request):
     logout(request)
     return redirect('index')
+
+
+def profile_page(request):
+    if request.method == 'POST':
+        form = WeightLogForm(request.POST)
+        if form.is_valid():
+            weight_log = form.save(commit=False)
+            weight_log.profile = request.user.profile
+            weight_log.save()
+    else:
+        form = WeightLogForm()
+
+    user_weight_log = Weight.objects.filter(profile__user=request.user)
+
+    return render(request, 'profile.html', {
+        'user_weight_log': user_weight_log,
+        'form': form,
+    })
