@@ -21,4 +21,4 @@ class Weight(models.Model):
         return None
 
     def __str__(self):
-        return f"{self.user.username} - {self.date}"
+        return f"{self.profile.user.username} - {self.entry_date}"

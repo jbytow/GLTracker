@@ -16,3 +16,6 @@ class WeightLogForm(forms.ModelForm):
     class Meta:
         model = Weight
         fields = ['entry_date', 'weight']
+        widgets = {
+            'entry_date': DateInput(attrs={'type': 'date'}),
+        }

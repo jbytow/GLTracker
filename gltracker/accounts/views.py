@@ -56,13 +56,15 @@ def logout_user(request):
     return redirect('index')
 
 
+@login_required()
 def profile_page(request):
     if request.method == 'POST':
         form = WeightLogForm(request.POST)
         if form.is_valid():
             weight_log = form.save(commit=False)
-            weight_log.profile = request.user.profile
+            weight_log.profile = Profile.objects.get(user=request.user)
             weight_log.save()
+            return redirect('profile')
     else:
         form = WeightLogForm()
 
