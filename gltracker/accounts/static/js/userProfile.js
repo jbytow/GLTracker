@@ -1,3 +1,30 @@
+function deleteFoodItem(foodItemId) {
+    var confirmation = confirm("Are you sure you want to delete that product?");
+    if (confirmation) {
+        var url = '/accounts/profile/delete/' + foodItemId + '/';
+        var csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
+
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrfToken,
+            },
+        })
+        .then(function(response) {
+            if (response.ok) {
+                window.location.href = '/food/fooditem_list/';
+            } else {
+                console.error('Error during removal of the element');
+            }
+        })
+        .catch(function(error) {
+            console.error('Error during sending AJAX query:', error);
+        });
+    }
+}
+
+
 var table  = document.getElementById('weightable');
 
 var recorded_weight = [];

@@ -14,6 +14,8 @@
 
 {% block content %}
 
+<script src defer="{% static 'js/foodItemList.js' %}"></script>
+
 <div style="display: flex; align-items: center;">
   <h2 style="margin-right: auto;"><strong>My Added Products</strong></h2>
   <a href="{% url 'fooditem_add' %}" class="add-button">
@@ -172,6 +174,6 @@
 </table>
 </div>
 
-<script src="{% static 'js/foodItemList.js' %}"></script>
+
 
 {% endblock %}

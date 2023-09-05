@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 
 from django.contrib.auth import login, logout, authenticate
@@ -74,3 +74,13 @@ def profile_page(request):
         'user_weight_log': user_weight_log,
         'form': form,
     })
+
+@login_required()
+def weight_delete(request, weight_id):
+    weight = get_object_or_404(Weight, id=weight_id)
+
+    if request.method == 'POST':
+        weight.delete()
+        return redirect('profile')
+
+    return redirect('profile')
