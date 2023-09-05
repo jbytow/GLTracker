@@ -9,7 +9,7 @@ class Profile(models.Model):
     target_weight = models.DecimalField(max_digits=7, decimal_places=2, null=True)
 
 
-class Weight(models.Model):
+class WeightRecord(models.Model):
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
     weight = models.DecimalField(max_digits=7, decimal_places=2)
     entry_date = models.DateField()

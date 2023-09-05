@@ -14,7 +14,7 @@
 
 {% block content %}
 
-<script src defer="{% static 'js/foodItemList.js' %}"></script>
+<script src="{% static 'js/foodItemList.js' %}"></script>
 
 <div style="display: flex; align-items: center;">
   <h2 style="margin-right: auto;"><strong>My Added Products</strong></h2>
@@ -81,20 +81,20 @@
   </thead>
   <tbody>
 
-  {% for item in user_items %}
+  {% for fooditem in user_items %}
     <tr>
       <td>
-        {{ item.name }}
-          <button class="btn btn-sm custom-button delete-button" onclick="deleteFoodItem({{ item.id }})">
+        {{ fooditem.name }}
+          <button class="btn btn-sm custom-button delete-button" onclick="deleteFoodItem({{ fooditem.id }})">
             <i class="fas fa-trash"></i>
           </button>
       </td>
-      <td>{{ item.kcal }}</td>
-      <td>{{ item.carbohydrates }}</td>
-      <td>{{ item.fats }}</td>
-      <td>{{ item.proteins }}</td>
-      <td>{{ item.glycemic_index }}</td>
-      <td>{{ item.glycemic_load }}</td>
+      <td>{{ fooditem.kcal }}</td>
+      <td>{{ fooditem.carbohydrates }}</td>
+      <td>{{ fooditem.fats }}</td>
+      <td>{{ fooditem.proteins }}</td>
+      <td>{{ fooditem.glycemic_index }}</td>
+      <td>{{ fooditem.glycemic_load }}</td>
     </tr>
   {% endfor %}
   </tbody>

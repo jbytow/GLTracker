@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from django import forms
 from django.forms.widgets import DateInput
 
-from .models import Weight
+from .models import WeightRecord
 
 
 class CreateUserForm(UserCreationForm):
@@ -14,7 +14,7 @@ class CreateUserForm(UserCreationForm):
 
 class WeightLogForm(forms.ModelForm):
     class Meta:
-        model = Weight
+        model = WeightRecord
         fields = ['entry_date', 'weight']
         widgets = {
             'entry_date': DateInput(attrs={'type': 'date'}),

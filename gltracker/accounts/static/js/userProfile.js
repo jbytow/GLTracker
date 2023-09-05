@@ -1,7 +1,7 @@
-function deleteFoodItem(foodItemId) {
-    var confirmation = confirm("Are you sure you want to delete that product?");
+function deleteWeightRecord(weightRecordId) {
+    var confirmation = confirm("Are you sure you want to delete that weight record?");
     if (confirmation) {
-        var url = '/accounts/profile/delete/' + foodItemId + '/';
+        var url = '/accounts/profile/delete/' + weightRecordId + '/';
         var csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
 
         fetch(url, {
@@ -13,7 +13,7 @@ function deleteFoodItem(foodItemId) {
         })
         .then(function(response) {
             if (response.ok) {
-                window.location.href = '/food/fooditem_list/';
+                window.location.href = '/accounts/profile/';
             } else {
                 console.error('Error during removal of the element');
             }
@@ -25,7 +25,7 @@ function deleteFoodItem(foodItemId) {
 }
 
 
-var table  = document.getElementById('weightable');
+var table  = document.getElementById('weighttable');
 
 var recorded_weight = [];
 var recorded_date = [];
