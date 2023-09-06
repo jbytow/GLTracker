@@ -1,9 +1,8 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
-
 from django.contrib.auth import login, logout, authenticate
-
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from .forms import CreateUserForm, WeightLogForm
 from .models import Profile, WeightRecord
@@ -68,11 +67,28 @@ def profile_page(request):
     else:
         form = WeightLogForm()
 
-    user_weight_log = WeightRecord.objects.filter(profile__user=request.user)
+    user_weight_log = WeightRecord.objects.filter(profile__user=request.user).order_by('-entry_date')
+
+    paginator = Paginator(user_weight_log, 10)
+
+    page = request.GET.get('page')
+
+    try:
+        user_weight_log = paginator.page(page)
+    except PageNotAnInteger:
+        # Jeśli 'page' nie jest liczbą całkowitą, pobieramy pierwszą stronę.
+        user_weight_log = paginator.page(1)
+    except EmptyPage:
+        # Jeśli 'page' jest poza zakresem, pobieramy ostatnią stronę.
+        user_weight_log = paginator.page(paginator.num_pages)
+
+    serialized_data = [{'weight': record.weight, 'entry_date': record.entry_date.strftime('%Y-%m-%d')} for record in
+                       user_weight_log]
 
     return render(request, 'profile.html', {
         'user_weight_log': user_weight_log,
         'form': form,
+        'weight_data': serialized_data
     })
 
 
