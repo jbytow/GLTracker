@@ -76,13 +76,11 @@ def profile_page(request):
     try:
         user_weight_log = paginator.page(page)
     except PageNotAnInteger:
-        # Jeśli 'page' nie jest liczbą całkowitą, pobieramy pierwszą stronę.
         user_weight_log = paginator.page(1)
     except EmptyPage:
-        # Jeśli 'page' jest poza zakresem, pobieramy ostatnią stronę.
         user_weight_log = paginator.page(paginator.num_pages)
 
-    serialized_data = [{'weight': record.weight, 'entry_date': record.entry_date.strftime('%Y-%m-%d')} for record in
+    serialized_data = [{'weight': str(record.weight), 'entry_date': record.entry_date.strftime('%Y-%m-%d')} for record in
                        user_weight_log]
 
     return render(request, 'profile.html', {

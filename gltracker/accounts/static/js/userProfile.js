@@ -24,38 +24,33 @@ function deleteWeightRecord(weightRecordId) {
     }
 }
 
+var weightDataElement = document.getElementById('weight-data');
+console.log(weightDataElement);
+var weightDataJSON = weightDataElement.getAttribute('data-weight-data');
+var weightData = JSON.parse(weightDataJSON);
 
-var table  = document.getElementById('weighttable');
 
-var recorded_weight = [];
-var recorded_date = [];
+var weights = weightData.map(function(record) {
+    return record.weight;
+});
 
-for(var i = 1; i < table.rows.length; i++) {
-    recorded_weight.push([
-        parseFloat(table.rows[i].cells[0].innerHTML)
-    ]);
-
-    recorded_date.push([
-        table.rows[i].cells[1].innerHTML
-    ]);
-}
-
-var values = recorded_weight.flat();
-
+var entryDates = weightData.map(function(record) {
+    return record.entry_date;
+});
 
 // Set new default font family and font color to mimic Bootstrap's default styling
 Chart.defaults.global.defaultFontFamily = 'system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"';
 Chart.defaults.global.defaultFontColor = '#858796';
 
 // Area Chart - Weight History
-var ctx = document.getElementById('myChart');
+var ctx = document.getElementById('myChart').getContext('2d');
 var myChart = new Chart(ctx, {
     type: 'line',
     data: {
-        labels: [...recorded_date],
+        labels: entryDates,
         datasets: [{
             label: 'Weight',
-            data: values,
+            data: weights,
             lineTension: 0.3,
             backgroundColor: 'rgba(2,117,216,0.2)',
             borderColor: 'rgba(2,117,216,1)',
