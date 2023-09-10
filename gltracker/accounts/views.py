@@ -4,7 +4,6 @@ from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
-from json import dumps
 
 from .forms import CreateUserForm, WeightLogForm
 from .models import Profile, WeightRecord
@@ -71,7 +70,7 @@ def profile_page(request):
 
     user_weight_log = WeightRecord.objects.filter(profile__user=request.user).order_by('-entry_date')
 
-    serialized_data = [{'weight': str(record.weight), 'entry_date': record.entry_date.strftime('%Y-%m-%d')} for record in
+    serialized_data = [{'weight': record.weight, 'entry_date': record.entry_date.strftime('%Y-%m-%d')} for record in
                        user_weight_log]
 
     paginator = Paginator(user_weight_log, 10)
@@ -84,7 +83,6 @@ def profile_page(request):
         user_weight_log = paginator.page(1)
     except EmptyPage:
         user_weight_log = paginator.page(paginator.num_pages)
-
 
     return render(request, 'profile.html', {
         'user_weight_log': user_weight_log,

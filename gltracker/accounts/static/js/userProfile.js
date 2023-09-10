@@ -25,6 +25,7 @@ function deleteWeightRecord(weightRecordId) {
 }
 
 var jsonWeightData = JSON.parse(document.getElementById("weight-data").textContent);
+jsonWeightData.reverse()
 console.log(jsonWeightData);
 
 
