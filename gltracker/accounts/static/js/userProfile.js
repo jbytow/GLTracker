@@ -24,17 +24,15 @@ function deleteWeightRecord(weightRecordId) {
     }
 }
 
-var weightDataElement = document.getElementById('weight-data');
-console.log(weightDataElement);
-var weightDataJSON = weightDataElement.getAttribute('data-weight-data');
-var weightData = JSON.parse(weightDataJSON);
+var jsonWeightData = JSON.parse(document.getElementById("weight-data").textContent);
+console.log(jsonWeightData);
 
 
-var weights = weightData.map(function(record) {
+var weights = jsonWeightData.map(function(record) {
     return record.weight;
 });
 
-var entryDates = weightData.map(function(record) {
+var entryDates = jsonWeightData.map(function(record) {
     return record.entry_date;
 });
 
