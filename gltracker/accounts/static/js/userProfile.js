@@ -111,3 +111,58 @@ var myChart = new Chart(ctx, {
         }
     }
 });
+
+document.getElementById('date-range').addEventListener('change', function() {
+    var selectedRange = this.value; // Pobierz wybrany zakres dat
+
+    // Tutaj możesz wykonać akcję po wybraniu zakresu dat, np. zaaktualizować wykres
+
+    // Przykład: zaaktualizuj wykres tylko z danymi z wybranego zakresu dat
+    var today = new Date(); // Pobierz dzisiejszą datę
+    var filteredWeights = [];
+    var filteredEntryDates = [];
+
+    // Określ datę początkową na podstawie wybranego zakresu
+    var startDate = new Date();
+    switch (selectedRange) {
+        case '1-month':
+            startDate.setMonth(today.getMonth() - 1);
+            break;
+        case '3-months':
+            startDate.setMonth(today.getMonth() - 3);
+            break;
+        case '6-months':
+            startDate.setMonth(today.getMonth() - 6);
+            break;
+        case '1-year':
+            startDate.setFullYear(today.getFullYear() - 1);
+            break;
+        case '2-years':
+            startDate.setFullYear(today.getFullYear() - 2);
+            break;
+        case '3-years':
+            startDate.setFullYear(today.getFullYear() - 3);
+            break;
+        case 'all':
+            startDate = new Date(1900, 0, 1); // Przykład: od stycznia 2000 roku
+            break;
+        default:
+            // Domyślny zakres dat, np. cały dostępny czas
+            startDate = new Date(1900, 0, 1); // Przykład: od stycznia 2000 roku
+            break;
+    }
+
+    // Filtruj dane na podstawie wybranego zakresu dat
+    for (var i = 0; i < jsonWeightData.length; i++) {
+        var entryDate = new Date(jsonWeightData[i].entry_date);
+
+        if (entryDate >= startDate && entryDate <= today) {
+            filteredWeights.push(jsonWeightData[i].weight);
+            filteredEntryDates.push(jsonWeightData[i].entry_date);
+        }
+    }
+
+    myChart.data.labels = filteredEntryDates;
+    myChart.data.datasets[0].data = filteredWeights;
+    myChart.update();
+});
