@@ -113,16 +113,13 @@ var myChart = new Chart(ctx, {
 });
 
 document.getElementById('date-range').addEventListener('change', function() {
-    var selectedRange = this.value; // Pobierz wybrany zakres dat
+    var selectedRange = this.value; // Download the data range
 
-    // Tutaj możesz wykonać akcję po wybraniu zakresu dat, np. zaaktualizować wykres
-
-    // Przykład: zaaktualizuj wykres tylko z danymi z wybranego zakresu dat
-    var today = new Date(); // Pobierz dzisiejszą datę
+    var today = new Date(); // get today's data
     var filteredWeights = [];
     var filteredEntryDates = [];
 
-    // Określ datę początkową na podstawie wybranego zakresu
+    // Start data for period
     var startDate = new Date();
     switch (selectedRange) {
         case '1-month':
@@ -144,15 +141,11 @@ document.getElementById('date-range').addEventListener('change', function() {
             startDate.setFullYear(today.getFullYear() - 3);
             break;
         case 'all':
-            startDate = new Date(1900, 0, 1); // Przykład: od stycznia 2000 roku
-            break;
-        default:
-            // Domyślny zakres dat, np. cały dostępny czas
-            startDate = new Date(1900, 0, 1); // Przykład: od stycznia 2000 roku
+            startDate = new Date(1900, 0, 1);
             break;
     }
 
-    // Filtruj dane na podstawie wybranego zakresu dat
+    // filter the data on the range
     for (var i = 0; i < jsonWeightData.length; i++) {
         var entryDate = new Date(jsonWeightData[i].entry_date);
 

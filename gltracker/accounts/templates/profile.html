@@ -24,31 +24,42 @@
                                     <h4>Hi, <strong>{{ user.username }}</strong>!</h4>
                                 </div>
                                 <div class='card-body'>
+                                    <div class='row'>
+                                        <div class='col-md-6'>
+                                            <div class='d-flex w-100 justify-content-between'>
+                                                <p class='mb-1'>
+                                                    Username: <strong>{{ user.username }}</strong>
+                                                </p>
+                                            </div>
 
-                                    <div class='d-flex w-100 justify-content-between'>
-                                        <p class='mb-1'>
-                                            Username: <strong>{{ user.username }}</strong>
-                                        </p>
+                                            <div class='d-flex w-100 justify-content-between'>
+                                                <p class='mb-1'>
+                                                    Email: <strong>{{ user.email }}</strong>
+                                                </p>
+                                            </div>
+
+                                            <div class='d-flex w-100 justify-content-between'>
+                                                <p class='mb-1'>
+                                                    Date joined: <strong>{{ user.date_joined }}</strong>
+                                                </p>
+                                            </div>
+
+                                            <div class='d-flex w-100 justify-content-between'>
+                                                <p class='mb-1'>
+                                                    Last login: <strong>{{ user.last_login }}</strong>
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div class='col-md-6 text-right'>
+                                            <form method="post">
+                                                {% csrf_token %}
+                                                {{ profile_form.as_p }}
+                                                <div class="float-right">
+                                                    <button type="submit" class="btn btn-primary">Save profile</button>
+                                                </div>
+                                            </form>
+                                        </div>
                                     </div>
-
-                                    <div class='d-flex w-100 justify-content-between'>
-                                        <p class='mb-1'>
-                                            Email: <strong>{{ user.email }}</strong>
-                                        </p>
-                                    </div>
-
-                                    <div class='d-flex w-100 justify-content-between'>
-                                        <p class='mb-1'>
-                                            Date joined: <strong>{{ user.date_joined }}</strong>
-                                        </p>
-                                    </div>
-
-                                    <div class='d-flex w-100 justify-content-between'>
-                                        <p class='mb-1'>
-                                            Last login: <strong>{{ user.last_login }}</strong>
-                                        </p>
-                                    </div>
-
                                 </div>
                             </div>
 
@@ -64,12 +75,12 @@
                                             {% csrf_token %}
                                             <div class="form-group row">
                                                 <div class="col-5">
-                                                    {{ form.entry_date.label_tag }}
-                                                    {{ form.entry_date }}
+                                                    {{ weight_log_form.entry_date.label_tag }}
+                                                    {{ weight_log_form.entry_date }}
                                                 </div>
                                                 <div class="col-5">
-                                                    {{ form.weight.label_tag }}
-                                                    {{ form.weight }}
+                                                    {{ weight_log_form.weight.label_tag }}
+                                                    {{ weight_log_form.weight }}
                                                 </div>
                                                 <div class="col-2">
                                                     <button type="submit" class="btn btn-primary ">Add</button>
@@ -143,13 +154,13 @@
                                     <form id="date-range-form">
                                         <label for="date-range">Data range:</label>
                                         <select id="date-range" name="date-range">
+                                            <option value="all">all</option>
                                             <option value="1-month">1m</option>
                                             <option value="3-months">3m</option>
                                             <option value="6-months">6m</option>
                                             <option value="1-year">1y</option>
                                             <option value="2-years">2y</option>
                                             <option value="3-years">3y</option>
-                                            <option value="all">all</option>
                                         </select>
                                     </form>
 

@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 
-from .forms import CreateUserForm, WeightLogForm
+from .forms import CreateUserForm, ProfileForm, WeightLogForm
 from .models import Profile, WeightRecord
 
 
@@ -58,15 +58,30 @@ def logout_user(request):
 
 @login_required()
 def profile_page(request):
+    try:
+        profile = Profile.objects.get(user=request.user)
+    except Profile.DoesNotExist:
+        profile = None
+
     if request.method == 'POST':
-        form = WeightLogForm(request.POST)
-        if form.is_valid():
-            weight_log = form.save(commit=False)
+        weight_log_form = WeightLogForm(request.POST)
+        profile_form = ProfileForm(request.POST, instance=profile)
+
+        if weight_log_form.is_valid():
+            weight_log = weight_log_form.save(commit=False)
             weight_log.profile = Profile.objects.get(user=request.user)
             weight_log.save()
             return redirect('profile')
+
+        if profile_form.is_valid():
+            user_profile = profile_form.save(commit=False)
+            user_profile.user = request.user
+            user_profile.save()
+            return redirect('profile')
+
     else:
-        form = WeightLogForm()
+        weight_log_form = WeightLogForm()
+        profile_form = ProfileForm(instance=profile)
 
     user_weight_log = WeightRecord.objects.filter(profile__user=request.user).order_by('-entry_date')
 
@@ -86,7 +101,8 @@ def profile_page(request):
 
     return render(request, 'profile.html', {
         'user_weight_log': user_weight_log,
-        'form': form,
+        'weight_log_form': weight_log_form,
+        'profile_form': profile_form,
         'weight_data': serialized_data
     })
 
