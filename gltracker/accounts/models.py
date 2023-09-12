@@ -14,11 +14,5 @@ class WeightRecord(models.Model):
     weight = models.DecimalField(max_digits=7, decimal_places=2)
     entry_date = models.DateField()
 
-    def calculate_bmi(self):
-        if self.profile and self.profile.height:
-            bmi = self.weight / (self.profile.height ** 2)
-            return round(bmi, 2)
-        return None
-
     def __str__(self):
         return f"{self.profile.user.username} - {self.entry_date}"

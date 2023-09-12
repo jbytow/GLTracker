@@ -85,6 +85,13 @@ def profile_page(request):
 
     user_weight_log = WeightRecord.objects.filter(profile__user=request.user).order_by('-entry_date')
 
+    if user_weight_log:
+        latest_weight = float(user_weight_log[0].weight)    # changed number to float for later conversion to m from cm
+        height = profile.height
+        bmi = round(latest_weight / ((height/100) ** 2), 2)
+    else:
+        bmi = None
+
     serialized_data = [{'weight': record.weight, 'entry_date': record.entry_date.strftime('%Y-%m-%d')} for record in
                        user_weight_log]
 
@@ -101,6 +108,9 @@ def profile_page(request):
 
     return render(request, 'profile.html', {
         'user_weight_log': user_weight_log,
+        'height': height,
+        'latest_weight': latest_weight,
+        'bmi': bmi,
         'weight_log_form': weight_log_form,
         'profile_form': profile_form,
         'weight_data': serialized_data
