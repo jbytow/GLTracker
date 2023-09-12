@@ -60,8 +60,10 @@ def logout_user(request):
 def profile_page(request):
     try:
         profile = Profile.objects.get(user=request.user)
+        target_weight = profile.target_weight
     except Profile.DoesNotExist:
         profile = None
+        target_weight = None
 
     if request.method == 'POST':
         weight_log_form = WeightLogForm(request.POST)
@@ -111,6 +113,7 @@ def profile_page(request):
         'height': height,
         'latest_weight': latest_weight,
         'bmi': bmi,
+        'target_weight': target_weight,
         'weight_log_form': weight_log_form,
         'profile_form': profile_form,
         'weight_data': serialized_data
