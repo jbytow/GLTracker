@@ -34,9 +34,18 @@ class FoodDailyRequirements(models.Model):
 
 class FoodLog(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    meals = models.ManyToManyField(Meal, blank=True, through='MealEntry')
-    foods = models.ManyToManyField(Food, blank=True, through='FoodEntry')
+    foods = models.ManyToManyField(FoodItem, blank=True, through='FoodLogFoodItem')
+    meals = models.ManyToManyField(Meal, blank=True, through='FoodLogMeal')
     date = models.DateField()
+
+    def calculate_total_macros_log(self):
+        total_kcal = 0
+        total_carbohydrates = 0
+        total_fats = 0
+        total_proteins = 0
+
+
+
 
     def __str__(self):
         return f"{self.user.username}'s Food Log - {self.date}"
@@ -45,12 +54,12 @@ class FoodLog(models.Model):
 class FoodLogFoodItem(models.Model):
     food_log = models.ForeignKey(FoodLog, on_delete=models.CASCADE)
     food_item = models.ForeignKey(FoodItem, on_delete=models.CASCADE)
-    quantity = models.DecimalField(max_digits=6, decimal_places=2)
+    quantity = models.PositiveIntegerField(default=1)
 
 
 class FoodLogMeal(models.Model):
     food_log = models.ForeignKey(FoodLog, on_delete=models.CASCADE)
     meal = models.ForeignKey(Meal, on_delete=models.CASCADE)
-    quantity = models.DecimalField(max_digits=6, decimal_places=2)
+    quantity = models.PositiveIntegerField(default=1)
 
 

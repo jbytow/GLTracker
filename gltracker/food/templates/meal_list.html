@@ -23,7 +23,7 @@
               <div class="card-body">
 
                 <h4 class='card-title'> <strong>{{ meal.name }}</strong></h4>
-                {% with macros=meal.calculate_total_macros %}
+                {% with macros=meal.calculate_total_macros_meal %}
                   <p>Kcal in 100g: {{ macros.total_kcal_per_100g }}</p>
                   <p>Carbohydrates in 100g: {{ macros.total_carbohydrates_per_100g }}</p>
                   <p>Fats in 100g: {{ macros.total_fats_per_100g }}</p>

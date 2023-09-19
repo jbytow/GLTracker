@@ -46,7 +46,7 @@ class Meal(models.Model):
     image = models.ImageField(upload_to=meal_image_upload_to, blank=True, null=True)
     meal_items = models.ManyToManyField('FoodItem', through='MealItem', related_name='meals')
 
-    def calculate_total_macros(self):
+    def calculate_total_macros_meal(self):
         total_kcal = 0
         total_carbohydrates = 0
         total_fats = 0

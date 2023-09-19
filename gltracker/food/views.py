@@ -73,7 +73,7 @@ def meal_details(request, meal_id):
     if request.user != meal.user:
         return HttpResponseForbidden("You do not have permission to view this meal.")
 
-    meal_macros = meal.calculate_total_macros()
+    meal_macros = meal.calculate_total_macros_meal()
 
     message = request.session.pop('message', None)
 
