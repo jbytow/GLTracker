@@ -4,9 +4,8 @@ from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
-
-from .forms import CreateUserForm, ProfileForm, WeightLogForm
-from .models import Profile, WeightRecord
+from .models import Profile, WeightRecord, FoodLog
+from .forms import CreateUserForm, ProfileForm, WeightLogForm, FoodDailyRequirementsForm
 
 
 def register_page(request):

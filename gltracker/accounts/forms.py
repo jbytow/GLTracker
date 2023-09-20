@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from django import forms
 from django.forms.widgets import DateInput
 
-from .models import Profile, WeightRecord, FoodDailyRequirements
+from .models import Profile, WeightRecord, FoodDailyRequirements, FoodLog
 
 
 class CreateUserForm(UserCreationForm):
@@ -27,7 +27,19 @@ class WeightLogForm(forms.ModelForm):
         }
 
 
-class DailyRequirementsForm(forms.ModelForm):
+class FoodDailyRequirementsForm(forms.ModelForm):
     class Meta:
-        model = FoodDailyRequirements  # Zmiana modelu na FoodDailyRequirements
+        model = FoodDailyRequirements
         fields = ['calories', 'carbohydrates', 'fats', 'proteins']
+
+
+class FoodLogFoodItemForm(forms.ModelForm):
+    class Meta:
+        model = FoodLog
+        fields = ['date', 'foods']
+
+
+class FoodLogMealForm(forms.ModelForm):
+    class Meta:
+        model = FoodLog
+        fields = ['date', 'meals']
