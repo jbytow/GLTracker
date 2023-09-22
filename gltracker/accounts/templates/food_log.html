@@ -1,45 +1,21 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="container mt-4">
-    <h2>Your Food Log</h2>
-
+<h1>Food Log</h1>
     <form method="post">
         {% csrf_token %}
-        {{ food_log_food_item_form.as_p }}
-        <button type="submit" class="btn btn-primary">Add Food Items</button>
+        {{ form.as_p }}
+        <button type="submit">Select Date</button>
     </form>
 
-    <form method="post">
-        {% csrf_token %}
-        {{ food_log_meal_form.as_p }}
-        <button type="submit" class="btn btn-primary">Add Meals</button>
-    </form>
+    <h2>Selected Date: {{ food_log.date }}</h2>
 
-    <hr>
-
-    <h3>Calories and Macros for {{ total_macros.log_total_kcal }} Kcal</h3>
-    <p>Carbohydrates: {{ total_macros.log_total_carbohydrates }} g</p>
-    <p>Fats: {{ total_macros.log_total_fats }} g</p>
-    <p>Proteins: {{ total_macros.log_total_proteins }} g</p>
-
-    <hr>
-
-    <!-- Pagination -->
-    <ul class="pagination">
-        {% if page > 1 %}
-            <li class="page-item"><a class="page-link" href="?page=1">First</a></li>
-            <li class="page-item"><a class="page-link" href="?page={{ page|add:'-1' }}">Previous</a></li>
-        {% endif %}
-        
-        {% for p in 1..num_pages %}
-            <li class="page-item {% if p == page %}active{% endif %}"><a class="page-link" href="?page={{ p }}">{{ p }}</a></li>
-        {% endfor %}
-        
-        {% if page < num_pages %}
-            <li class="page-item"><a class="page-link" href="?page={{ page|add:'1' }}">Next</a></li>
-            <li class="page-item"><a class="page-link" href="?page={{ num_pages }}">Last</a></li>
-        {% endif %}
+    <h3>Total Macros:</h3>
+    <ul>
+        <li>Total Calories: {{ total_macros.log_total_kcal }}</li>
+        <li>Total Carbohydrates: {{ total_macros.log_total_carbohydrates }}</li>
+        <li>Total Fats: {{ total_macros.log_total_fats }}</li>
+        <li>Total Proteins: {{ total_macros.log_total_proteins }}</li>
     </ul>
-</div>
+
 {% endblock %}

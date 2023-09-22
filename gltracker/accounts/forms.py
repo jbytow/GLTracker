@@ -33,6 +33,16 @@ class FoodDailyRequirementsForm(forms.ModelForm):
         fields = ['calories', 'carbohydrates', 'fats', 'proteins']
 
 
+class DateForm(forms.Form):
+    date = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}))
+
+    def __init__(self, *args, **kwargs):
+        initial_date = kwargs.pop('initial_date', None)
+        super().__init__(*args, **kwargs)
+        if initial_date:
+            self.fields['date'].initial = initial_date
+
+
 class FoodLogFoodItemForm(forms.ModelForm):
     class Meta:
         model = FoodLogFoodItem

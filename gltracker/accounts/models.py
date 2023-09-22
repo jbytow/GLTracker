@@ -56,7 +56,7 @@ class FoodLog(models.Model):
         # Calories and macronutrients from FoodLogMeal - divided by 100 as Meals have values per 100g
         for food_log_meal in self.foodlogmeal_set.all():
             meal = food_log_meal.meal
-            meal_macros = meal.calculate_total_macros()
+            meal_macros = meal.calculate_total_macros_meal()
             quantity = food_log_meal.quantity
             log_total_kcal += meal_macros['total_kcal_per_100g'] * quantity/100
             log_total_carbohydrates += meal_macros['total_carbohydrates_per_100g'] * quantity/100
