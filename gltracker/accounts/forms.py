@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from django import forms
 from django.forms.widgets import DateInput
 
-from .models import Profile, WeightRecord, FoodDailyRequirements, FoodLog
+from .models import Profile, WeightRecord, FoodDailyRequirements, FoodLogFoodItem, FoodLogMeal
 
 
 class CreateUserForm(UserCreationForm):
@@ -35,11 +35,11 @@ class FoodDailyRequirementsForm(forms.ModelForm):
 
 class FoodLogFoodItemForm(forms.ModelForm):
     class Meta:
-        model = FoodLog
-        fields = ['date', 'foods']
+        model = FoodLogFoodItem
+        fields = ['food_item', 'quantity']
 
 
 class FoodLogMealForm(forms.ModelForm):
     class Meta:
-        model = FoodLog
-        fields = ['date', 'meals']
+        model = FoodLogMeal
+        fields = ['meal', 'quantity']
