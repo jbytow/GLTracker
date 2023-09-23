@@ -2,20 +2,28 @@
 
 {% block content %}
 <h1>Food Log</h1>
+
+    <!-- Formularz do wyboru daty -->
     <form method="post">
         {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Select Date</button>
+        {{ date_form.as_p }}
+        <button type="submit">Wybierz datę</button>
     </form>
 
-    <h2>Selected Date: {{ food_log.date }}</h2>
+    <!-- Wyświetlanie makroskładników -->
+    {% if total_macros %}
+        <h2>Makroskładniki</h2>
+        <p>Kalorie: {{ total_macros.log_total_kcal }}</p>
+        <p>Węglowodany: {{ total_macros.log_total_carbohydrates }} g</p>
+        <p>Tłuszcze: {{ total_macros.log_total_fats }} g</p>
+        <p>Białko: {{ total_macros.log_total_proteins }} g</p>
+    {% endif %}
 
-    <h3>Total Macros:</h3>
-    <ul>
-        <li>Total Calories: {{ total_macros.log_total_kcal }}</li>
-        <li>Total Carbohydrates: {{ total_macros.log_total_carbohydrates }}</li>
-        <li>Total Fats: {{ total_macros.log_total_fats }}</li>
-        <li>Total Proteins: {{ total_macros.log_total_proteins }}</li>
-    </ul>
+    <!-- Formularz do dodawania FoodItem -->
+    <form method="post">
+        {% csrf_token %}
+        {{ food_item_form.as_p }}
+        <button type="submit">Dodaj FoodItem</button>
+    </form>
 
 {% endblock %}

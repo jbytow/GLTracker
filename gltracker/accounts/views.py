@@ -136,24 +136,37 @@ def weight_delete(request, weight_id):
 
 @login_required
 def food_log(request):
+    # Inicjalizacja zmiennych
+    food_log = None
+    total_macros = {}
+
     if request.method == 'POST':
-        form = DateForm(request.POST)
-        if form.is_valid():
-            selected_date = form.cleaned_data['date']
+        # Przesłano formularz
+        date_form = DateForm(request.POST)
+        food_item_form = FoodLogFoodItemForm(request.POST)
+
+        if date_form.is_valid():
+            selected_date = date_form.cleaned_data['date']
             food_log, created = FoodLog.objects.get_or_create(user=request.user, date=selected_date)
             total_macros = food_log.calculate_total_macros_log()
-            return render(request, 'food_log.html', {'food_log': food_log, 'form': form, 'total_macros': total_macros})
+
+        if food_item_form.is_valid():
+            # Obsługa formularza FoodLogFoodItemForm
+            food_log_food_item = food_item_form.save(commit=False)
+            food_log_food_item.food_log = food_log
+            food_log_food_item.save()
+
     else:
-        # Spróbuj pobrać FoodLog dla dzisiejszej daty, jeśli taki istnieje
+        # Wyświetlanie strony bez przesłanego formularza
         today = timezone.now().date()
-        food_log_today = FoodLog.objects.filter(user=request.user, date=today).first()
+        food_log = FoodLog.objects.filter(user=request.user, date=today).first()
+        date_form = DateForm(initial={'date': today})
 
-        # Jeśli FoodLog dla dzisiejszej daty istnieje, ustaw go jako początkową datę w formularzu
-        if food_log_today:
-            form = DateForm(initial_date=today)
-            total_macros = food_log_today.calculate_total_macros_log()
-        else:
-            form = DateForm()
-            total_macros = {}
+        if food_log:
+            total_macros = food_log.calculate_total_macros_log()
 
-    return render(request, 'food_log.html', {'form': form, 'total_macros': total_macros})
+    food_item_form = FoodLogFoodItemForm()
+
+    return render(request, 'food_log.html',
+                  {'food_log': food_log, 'date_form': date_form, 'food_item_form': food_item_form,
+                   'total_macros': total_macros})
