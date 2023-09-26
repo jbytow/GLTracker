@@ -9,5 +9,5 @@ urlpatterns = [
     path('logout/', accounts.views.logout_user, name='logout'),
     path('profile/', accounts.views.profile_page, name='profile'),
     path('profile/delete/<int:weight_id>/', accounts.views.weight_delete, name='weight_delete'),
-    path('food-log/', accounts.views.food_log, name='food-log'),
+    path('food_log/', accounts.views.food_log, name='food_log'),
 ]

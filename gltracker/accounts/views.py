@@ -136,37 +136,45 @@ def weight_delete(request, weight_id):
 
 @login_required
 def food_log(request):
-    # Inicjalizacja zmiennych
-    food_log = None
-    total_macros = {}
-
+    # Pobieranie obiektu FoodLog dla wybranej daty lub tworzenie nowego
     if request.method == 'POST':
-        # Przesłano formularz
         date_form = DateForm(request.POST)
         food_item_form = FoodLogFoodItemForm(request.POST)
-
         if date_form.is_valid():
             selected_date = date_form.cleaned_data['date']
             food_log, created = FoodLog.objects.get_or_create(user=request.user, date=selected_date)
-            total_macros = food_log.calculate_total_macros_log()
+        else:
+            food_log = None
+    else:
+        date_form = DateForm()
+        today = timezone.now().date()
+        food_log, created = FoodLog.objects.get_or_create(user=request.user, date=today)
 
+    if food_log:
+        food_items = FoodLogFoodItem.objects.filter(food_log=food_log)
+    else:
+        food_items = []
+
+    total_macros = {}  # Zainicjowanie zmiennej dla total macros
+
+    if request.method == 'POST':
+        # Obsługa formularza FoodLogFoodItemForm po jego przesłaniu
         if food_item_form.is_valid():
-            # Obsługa formularza FoodLogFoodItemForm
+            # Zapisanie nowego FoodLogFoodItem
             food_log_food_item = food_item_form.save(commit=False)
             food_log_food_item.food_log = food_log
             food_log_food_item.save()
 
-    else:
-        # Wyświetlanie strony bez przesłanego formularza
-        today = timezone.now().date()
-        food_log = FoodLog.objects.filter(user=request.user, date=today).first()
-        date_form = DateForm(initial={'date': today})
-
-        if food_log:
+            # Przeliczanie total macros dla obecnie wybranego FoodLog
             total_macros = food_log.calculate_total_macros_log()
 
-    food_item_form = FoodLogFoodItemForm()
+            # Przekierowanie na stronę food_log po zapisaniu FoodLogFoodItem
+            return redirect('food_log')
+    else:
+        # Wyświetlanie formularza FoodLogFoodItemForm
+        food_item_form = FoodLogFoodItemForm(initial={'food_log': food_log})
 
-    return render(request, 'food_log.html',
-                  {'food_log': food_log, 'date_form': date_form, 'food_item_form': food_item_form,
-                   'total_macros': total_macros})
+        # Przeliczanie total macros dla obecnie wybranego FoodLog
+        total_macros = food_log.calculate_total_macros_log()
+
+    return render(request, 'food_log.html', {'food_log': food_log, 'date_form': date_form, 'food_item_form': food_item_form, 'food_items': food_items, 'total_macros': total_macros})

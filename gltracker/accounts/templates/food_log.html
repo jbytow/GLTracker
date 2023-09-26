@@ -11,7 +11,7 @@
     </form>
 
     <!-- Wyświetlanie makroskładników -->
-    {% if total_macros %}
+    {% if food_log %}
         <h2>Makroskładniki</h2>
         <p>Kalorie: {{ total_macros.log_total_kcal }}</p>
         <p>Węglowodany: {{ total_macros.log_total_carbohydrates }} g</p>
@@ -25,5 +25,15 @@
         {{ food_item_form.as_p }}
         <button type="submit">Dodaj FoodItem</button>
     </form>
+
+    <!-- Lista dodanych FoodItem -->
+    {% if food_items %}
+        <h2>Dodane FoodItem</h2>
+        <ul>
+            {% for food_item in food_items %}
+                <li>{{ food_item.food_item.name }} - {{ food_item.quantity }} {{ food_item.food_item.unit }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
 
 {% endblock %}
