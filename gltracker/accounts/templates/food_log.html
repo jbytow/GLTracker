@@ -3,10 +3,18 @@
 {% block content %}
 <h1>Food Log</h1>
     <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Select Date</button>
-    </form>
+    {% csrf_token %}
+    {{ form.as_p }}  <!-- Formularz wyboru daty -->
+    <input type="submit" name="submit_date" value="Wybierz datę">
+</form>
+
+<!-- Formularz dodawania FoodItem -->
+<form method="post">
+    {% csrf_token %}
+    {{ fooditem_form.as_p }}
+    <input type="submit" name="submit_fooditem" value="Dodaj FoodItem">
+</form>
+
 
     <h2>Selected Date: {{ food_log.date }}</h2>
 
@@ -27,5 +35,11 @@
             {% endfor %}
         </ul>
     {% endif %}
+
+{% if error_message %}
+    <div class="alert alert-danger">
+        {{ error_message }}
+    </div>
+{% endif %}
 
 {% endblock %}
