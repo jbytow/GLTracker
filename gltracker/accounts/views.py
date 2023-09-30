@@ -9,7 +9,7 @@ from .forms import DateForm
 
 from datetime import datetime
 
-from .models import Profile, WeightRecord, FoodLog, FoodLogFoodItem, FoodLogMeal
+from .models import Profile, WeightRecord, FoodLog, FoodDailyRequirements
 from .forms import CreateUserForm, ProfileForm, WeightLogForm, \
     FoodDailyRequirementsForm, FoodLogFoodItemForm, FoodLogMealForm
 
@@ -138,6 +138,19 @@ def weight_delete(request, weight_id):
 
 @login_required
 def food_log(request):
+
+    # Obsługa formularza FoodDailyRequirementsForm
+    try:
+        daily_requirements_instance = FoodDailyRequirements.objects.get(user=request.user)
+    except FoodDailyRequirements.DoesNotExist:
+        daily_requirements_instance = None
+
+    daily_requirements_form = FoodDailyRequirementsForm(request.POST or None, instance=daily_requirements_instance)
+    if 'submit_daily_requirements' in request.POST and daily_requirements_form.is_valid():
+        daily_requirements = daily_requirements_form.save(commit=False)
+        daily_requirements.user = request.user
+        daily_requirements.save()
+
     today = timezone.now().date()  # Pobieramy dzisiejszą datę
 
     # Domyślnie ustawiamy selected_date na dzisiejszą datę
@@ -150,13 +163,13 @@ def food_log(request):
 
     # Jeśli jest wysłany formularz daty, aktualizujemy selected_date
     if 'submit_date' in request.POST:
-        form = DateForm(request.POST)
-        if form.is_valid():
-            selected_date = form.cleaned_data['date']
+        date_form = DateForm(request.POST)
+        if date_form.is_valid():
+            selected_date = date_form.cleaned_data['date']
             request.session['selected_date'] = selected_date.strftime('%Y-%m-%d')  # zapisanie w sesji
             return redirect('food_log')
     else:
-        form = DateForm(initial={'date': selected_date})  # Ustawiamy formularz z wybraną datą
+        date_form = DateForm(initial={'date': selected_date})  # Ustawiamy formularz z wybraną datą
 
     # Pobieramy lub tworzymy FoodLog dla wybranej daty
     food_log, created = FoodLog.objects.get_or_create(user=request.user, date=selected_date)
@@ -180,7 +193,8 @@ def food_log(request):
         return redirect('food_log')
 
     return render(request, 'food_log.html',
-                  {'form': form,
+                  {'daily_requirements_form': daily_requirements_form,
+                   'date_form': date_form,
                    'total_macros': total_macros,
                    'fooditem_form': fooditem_form,
                    'meal_form': meal_form,

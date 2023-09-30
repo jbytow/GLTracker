@@ -2,9 +2,17 @@
 
 {% block content %}
 <h1>Food Log</h1>
-    <form method="post">
+
+<form method="post">
+    {{ daily_requirements_form.as_p }}
+    <button type="submit" name="submit_daily_requirements">Aktualizuj wymagania</button>
     {% csrf_token %}
-    {{ form.as_p }}  <!-- Formularz wyboru daty -->
+</form>
+
+
+<form method="post">
+    {% csrf_token %}
+    {{ date_form.as_p }}  <!-- Formularz wyboru daty -->
     <input type="submit" name="submit_date" value="Wybierz datę">
 </form>
 
