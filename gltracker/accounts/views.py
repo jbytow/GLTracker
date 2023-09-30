@@ -182,8 +182,10 @@ def food_log(request):
     total_macros = food_log.calculate_total_macros_log()
 
     # Pobieramy wszystkie obiekty FoodLogFoodItem i FoodLogMeal powiązane z danym food_log
-    food_log_items = FoodLogFoodItem.objects.filter(food_log=food_log)
+    food_log_fooditems = FoodLogFoodItem.objects.filter(food_log=food_log)
     food_log_meals = FoodLogMeal.objects.filter(food_log=food_log)
+    food_log_items = list(food_log_fooditems) + list(food_log_meals)
+    food_log_items.sort(key=lambda x: x.id, reverse=True)
 
     # Obsługa formularza dodawania FoodItem
     if 'submit_fooditem' in request.POST:
@@ -211,10 +213,18 @@ def food_log(request):
                   {'daily_requirements_form': daily_requirements_form,
                    'date_form': date_form,
                    'selected_date': selected_date,
-                   'food_log_meals': food_log_meals,
                    'food_log_items': food_log_items,
                    'total_macros': total_macros,
                    'fooditem_form': fooditem_form,
                    'meal_form': meal_form})
 
+
+def food_log_item_delete(request, item_id):
+    # W zależności od tego, czy obiekt to FoodLogFoodItem czy FoodLogMeal, będziesz musiał zastosować odpowiednią logikę.
+    try:
+        item = FoodLogFoodItem.objects.get(pk=item_id)
+    except FoodLogFoodItem.DoesNotExist:
+        item = FoodLogMeal.objects.get(pk=item_id)
+
+    item.delete()
 

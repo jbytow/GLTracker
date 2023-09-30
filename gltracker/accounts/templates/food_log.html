@@ -42,9 +42,6 @@
 
     <h2>Food Consumed Today</h2>
 <ul>
-    {% for log_meal in food_log_meals %}
-        <li>{{ log_meal.meal.name }} - Quantity: {{ log_meal.quantity }}</li>
-    {% endfor %}
     {% for log_item in food_log_items %}
         <li>{{ log_item.food_item.name }} - Quantity: {{ log_item.quantity }}</li>
     {% endfor %}
