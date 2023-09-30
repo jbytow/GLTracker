@@ -9,7 +9,7 @@ from .forms import DateForm
 
 from datetime import datetime
 
-from .models import Profile, WeightRecord, FoodLog, FoodDailyRequirements
+from .models import Profile, WeightRecord, FoodLog, FoodDailyRequirements, FoodLogMeal, FoodLogFoodItem
 from .forms import CreateUserForm, ProfileForm, WeightLogForm, \
     FoodDailyRequirementsForm, FoodLogFoodItemForm, FoodLogMealForm
 
@@ -181,6 +181,10 @@ def food_log(request):
     # Obliczamy makroskładniki
     total_macros = food_log.calculate_total_macros_log()
 
+    # Pobieramy wszystkie obiekty FoodLogFoodItem i FoodLogMeal powiązane z danym food_log
+    food_log_items = FoodLogFoodItem.objects.filter(food_log=food_log)
+    food_log_meals = FoodLogMeal.objects.filter(food_log=food_log)
+
     # Obsługa formularza dodawania FoodItem
     if 'submit_fooditem' in request.POST:
         fooditem_form = FoodLogFoodItemForm(request.POST, user=request.user)
@@ -206,9 +210,11 @@ def food_log(request):
     return render(request, 'food_log.html',
                   {'daily_requirements_form': daily_requirements_form,
                    'date_form': date_form,
+                   'selected_date': selected_date,
+                   'food_log_meals': food_log_meals,
+                   'food_log_items': food_log_items,
                    'total_macros': total_macros,
                    'fooditem_form': fooditem_form,
-                   'meal_form': meal_form,
-                   'selected_date': selected_date})
+                   'meal_form': meal_form})
 
 

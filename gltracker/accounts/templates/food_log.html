@@ -40,20 +40,14 @@
         <li>Total Proteins: {{ total_macros.log_total_proteins }}</li>
     </ul>
 
-    <!-- Lista dodanych FoodItem -->
-    {% if food_items %}
-        <h2>Dodane FoodItem</h2>
-        <ul>
-            {% for food_item in food_items %}
-                <li>{{ food_item.food_item.name }} - {{ food_item.quantity }} {{ food_item.food_item.unit }}</li>
-            {% endfor %}
-        </ul>
-    {% endif %}
-
-{% if error_message %}
-    <div class="alert alert-danger">
-        {{ error_message }}
-    </div>
-{% endif %}
+    <h2>Food Consumed Today</h2>
+<ul>
+    {% for log_meal in food_log_meals %}
+        <li>{{ log_meal.meal.name }} - Quantity: {{ log_meal.quantity }}</li>
+    {% endfor %}
+    {% for log_item in food_log_items %}
+        <li>{{ log_item.food_item.name }} - Quantity: {{ log_item.quantity }}</li>
+    {% endfor %}
+</ul>
 
 {% endblock %}
