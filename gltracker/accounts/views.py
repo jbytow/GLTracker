@@ -154,6 +154,7 @@ def food_log(request):
         if form.is_valid():
             selected_date = form.cleaned_data['date']
             request.session['selected_date'] = selected_date.strftime('%Y-%m-%d')  # zapisanie w sesji
+            return redirect('food_log')
     else:
         form = DateForm(initial={'date': selected_date})  # Ustawiamy formularz z wybraną datą
 

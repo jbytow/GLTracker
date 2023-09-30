@@ -1,4 +1,5 @@
 from django import forms
+from django.db.models import Q
 from .models import FoodItem, MealItem, Meal
 
 
@@ -13,9 +14,9 @@ class MealItemForm(forms.ModelForm):
         model = MealItem
         fields = ['food_item', 'quantity']
 
-    def __init__(self, user, *args, **kwargs):
+    def __init__(self, user=None, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['food_item'].queryset = FoodItem.objects.filter(user=user, is_active=True) | FoodItem.objects.filter(user=None)
+        self.fields['food_item'].queryset = FoodItem.objects.filter(Q(user=user, is_active=True) | Q(user__isnull=True))
         self.fields['food_item'].empty_label = None
 
 
