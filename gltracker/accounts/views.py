@@ -164,17 +164,25 @@ def food_log(request):
     total_macros = food_log.calculate_total_macros_log()
 
     # Obsługa formularza dodawania FoodItem
-    fooditem_form = FoodLogFoodItemForm(request.POST or None)
+    fooditem_form = FoodLogFoodItemForm(request.POST or None, user=request.user)
     if 'submit_fooditem' in request.POST and fooditem_form.is_valid():
         food_item = fooditem_form.save(commit=False)
         food_item.food_log = food_log
         food_item.save()
         return redirect('food_log')
 
+    meal_form = FoodLogMealForm(request.POST or None, user=request.user)
+    if 'submit_meal' in request.POST and meal_form.is_valid():
+        meal = meal_form.savE(commit=False)
+        meal.food_log = food_log
+        meal.save()
+        return redirect('food_log')
+
     return render(request, 'food_log.html',
                   {'form': form,
                    'total_macros': total_macros,
                    'fooditem_form': fooditem_form,
+                   'meal_form': meal_form,
                    'selected_date': selected_date})
 
 

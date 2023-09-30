@@ -15,6 +15,12 @@
     <input type="submit" name="submit_fooditem" value="Dodaj FoodItem">
 </form>
 
+<form method="post">
+    {% csrf_token %}
+    {{ meal_form.as_p }}
+    <button type="submit" name="submit_meal">Dodaj Meal</button>
+</form>
+
 
     <h2>Selected Date: {{ selected_date|date:"F j, Y" }}</h2>
 

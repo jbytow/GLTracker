@@ -1,9 +1,10 @@
+from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from django import forms
 from django.forms.widgets import DateInput
+from django.db.models import Q
 
-from .models import Profile, WeightRecord, FoodDailyRequirements, FoodLogFoodItem, FoodLogMeal
+from .models import Profile, WeightRecord, FoodDailyRequirements, FoodLogFoodItem, FoodLogMeal, FoodItem, Meal
 
 
 class CreateUserForm(UserCreationForm):
@@ -48,8 +49,20 @@ class FoodLogFoodItemForm(forms.ModelForm):
         model = FoodLogFoodItem
         fields = ['food_item', 'quantity']
 
+    def __init__(self, *args, user=None, **kwargs):
+        super(FoodLogFoodItemForm, self).__init__(*args, **kwargs)
+        if user:
+            self.fields['food_item'].queryset = FoodItem.objects.filter(Q(user=user, is_active=True) | Q(user__isnull=True))
+
 
 class FoodLogMealForm(forms.ModelForm):
     class Meta:
         model = FoodLogMeal
         fields = ['meal', 'quantity']
+
+    def __init__(self, *args, user=None, **kwargs):
+        super(FoodLogMealForm, self).__init__(*args, **kwargs)
+        if user:
+            self.fields['meal'].queryset = Meal.objects.filter(user=user)
+
+
