@@ -48,20 +48,20 @@ class FoodLog(models.Model):
         for food_log_food_item in self.foodlogfooditem_set.all():
             food_item = food_log_food_item.food_item
             quantity = food_log_food_item.quantity
-            log_total_kcal += food_item.kcal * quantity/100
-            log_total_carbohydrates += food_item.carbohydrates * quantity/100
-            log_total_fats += food_item.fats * quantity/100
-            log_total_proteins += food_item.proteins * quantity/100
+            log_total_kcal += round(food_item.kcal * quantity/100, 2)
+            log_total_carbohydrates += round(food_item.carbohydrates * quantity/100, 2)
+            log_total_fats += round(food_item.fats * quantity/100, 2)
+            log_total_proteins += round(food_item.proteins * quantity/100, 2)
 
         # Calories and macronutrients from FoodLogMeal - divided by 100 as Meals have values per 100g
         for food_log_meal in self.foodlogmeal_set.all():
             meal = food_log_meal.meal
             meal_macros = meal.calculate_total_macros_meal()
             quantity = food_log_meal.quantity
-            log_total_kcal += meal_macros['total_kcal_per_100g'] * quantity/100
-            log_total_carbohydrates += meal_macros['total_carbohydrates_per_100g'] * quantity/100
-            log_total_fats += meal_macros['total_fats_per_100g'] * quantity/100
-            log_total_proteins += meal_macros['total_proteins_per_100g'] * quantity/100
+            log_total_kcal += round(meal_macros['total_kcal_per_100g'] * quantity/100, 2)
+            log_total_carbohydrates += round(meal_macros['total_carbohydrates_per_100g'] * quantity/100, 2)
+            log_total_fats += round(meal_macros['total_fats_per_100g'] * quantity/100, 2)
+            log_total_proteins += round(meal_macros['total_proteins_per_100g'] * quantity/100, 2)
 
         return {
             'log_total_kcal': log_total_kcal,

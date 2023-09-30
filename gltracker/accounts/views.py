@@ -138,44 +138,43 @@ def weight_delete(request, weight_id):
 
 @login_required
 def food_log(request):
-    selected_date_str = request.session.get('selected_date')
-    selected_date = datetime.strptime(selected_date_str, '%Y-%m-%d').date() if selected_date_str else None
+    today = timezone.now().date()  # Pobieramy dzisiejszą datę
 
-    # Obsługa formularza daty
+    # Domyślnie ustawiamy selected_date na dzisiejszą datę
+    selected_date = today
+
+    # Jeśli wybrana data jest zapisana w sesji, ustawiamy selected_date z sesji
+    if 'selected_date' in request.session:
+        selected_date_str = request.session['selected_date']
+        selected_date = datetime.strptime(selected_date_str, '%Y-%m-%d').date()
+
+    # Jeśli jest wysłany formularz daty, aktualizujemy selected_date
     if 'submit_date' in request.POST:
         form = DateForm(request.POST)
         if form.is_valid():
             selected_date = form.cleaned_data['date']
             request.session['selected_date'] = selected_date.strftime('%Y-%m-%d')  # zapisanie w sesji
-            food_log, created = FoodLog.objects.get_or_create(user=request.user, date=selected_date)
-            total_macros = food_log.calculate_total_macros_log()
     else:
-        today = timezone.now().date()
-        food_log_today = FoodLog.objects.filter(user=request.user, date=today).first()
-        if food_log_today:
-            form = DateForm(initial={'date': today})
-            total_macros = food_log_today.calculate_total_macros_log()
-        else:
-            form = DateForm()
-            total_macros = {}
+        form = DateForm(initial={'date': selected_date})  # Ustawiamy formularz z wybraną datą
+
+    # Pobieramy lub tworzymy FoodLog dla wybranej daty
+    food_log, created = FoodLog.objects.get_or_create(user=request.user, date=selected_date)
+
+    # Obliczamy makroskładniki
+    total_macros = food_log.calculate_total_macros_log()
 
     # Obsługa formularza dodawania FoodItem
     fooditem_form = FoodLogFoodItemForm(request.POST or None)
     if 'submit_fooditem' in request.POST and fooditem_form.is_valid():
-        if not selected_date:
-            return render(request, 'food_log.html', {
-                'form': form,
-                'total_macros': total_macros,
-                'fooditem_form': fooditem_form,
-                'error_message': 'Proszę wybrać datę przed dodaniem FoodItem.'
-            })
-
         food_item = fooditem_form.save(commit=False)
-        food_log, created = FoodLog.objects.get_or_create(user=request.user, date=selected_date)
         food_item.food_log = food_log
         food_item.save()
+        return redirect('food_log')
 
     return render(request, 'food_log.html',
-                  {'form': form, 'total_macros': total_macros, 'fooditem_form': fooditem_form})
+                  {'form': form,
+                   'total_macros': total_macros,
+                   'fooditem_form': fooditem_form,
+                   'selected_date': selected_date})
 
 
