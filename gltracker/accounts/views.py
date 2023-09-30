@@ -145,11 +145,15 @@ def food_log(request):
     except FoodDailyRequirements.DoesNotExist:
         daily_requirements_instance = None
 
-    daily_requirements_form = FoodDailyRequirementsForm(request.POST or None, instance=daily_requirements_instance)
-    if 'submit_daily_requirements' in request.POST and daily_requirements_form.is_valid():
-        daily_requirements = daily_requirements_form.save(commit=False)
-        daily_requirements.user = request.user
-        daily_requirements.save()
+    if 'submit_daily_requirements' in request.POST:
+        daily_requirements_form = FoodDailyRequirementsForm(request.POST, instance=daily_requirements_instance)
+        if daily_requirements_form.is_valid():
+            daily_requirements = daily_requirements_form.save(commit=False)
+            daily_requirements.user = request.user
+            daily_requirements.save()
+            return redirect('food_log')
+    else:
+        daily_requirements_form = FoodDailyRequirementsForm(instance=daily_requirements_instance)
 
     today = timezone.now().date()  # Pobieramy dzisiejszą datę
 
@@ -178,19 +182,26 @@ def food_log(request):
     total_macros = food_log.calculate_total_macros_log()
 
     # Obsługa formularza dodawania FoodItem
-    fooditem_form = FoodLogFoodItemForm(request.POST or None, user=request.user)
-    if 'submit_fooditem' in request.POST and fooditem_form.is_valid():
-        food_item = fooditem_form.save(commit=False)
-        food_item.food_log = food_log
-        food_item.save()
-        return redirect('food_log')
+    if 'submit_fooditem' in request.POST:
+        fooditem_form = FoodLogFoodItemForm(request.POST, user=request.user)
+        if fooditem_form.is_valid():
+            food_item = fooditem_form.save(commit=False)
+            food_item.food_log = food_log
+            food_item.save()
+            return redirect('food_log')
+    else:
+        fooditem_form = FoodLogFoodItemForm(user=request.user)
 
-    meal_form = FoodLogMealForm(request.POST or None, user=request.user)
-    if 'submit_meal' in request.POST and meal_form.is_valid():
-        meal = meal_form.savE(commit=False)
-        meal.food_log = food_log
-        meal.save()
-        return redirect('food_log')
+    # Obsługa formularza dodawania Meal
+    if 'submit_meal' in request.POST:
+        meal_form = FoodLogMealForm(request.POST, user=request.user)
+        if meal_form.is_valid():
+            meal = meal_form.save(commit=False)
+            meal.food_log = food_log
+            meal.save()
+            return redirect('food_log')
+    else:
+        meal_form = FoodLogMealForm(user=request.user)
 
     return render(request, 'food_log.html',
                   {'daily_requirements_form': daily_requirements_form,
