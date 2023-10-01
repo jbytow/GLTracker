@@ -1,0 +1,13 @@
+
+.select2-container .select2-selection--single {
+    height: 38px;  /* Dostosuj według potrzeb */
+}
+
+/* Dostosowanie wyrównania tekstu i ikony w dół w kontenerze Select2 */
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+    line-height: 38px;  /* Dostosuj według potrzeb */
+}
+
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+    height: 38px;  /* Dostosuj według potrzeb */
+}

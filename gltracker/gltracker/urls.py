@@ -26,6 +26,7 @@ urlpatterns = [
     path('', food.views.index, name="index"),
     path('accounts/', include('accounts.urls')),
     path('food/', include('food.urls')),
+    path("select2/", include("django_select2.urls")),
 
 ]
 

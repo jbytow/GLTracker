@@ -1,51 +1,147 @@
 {% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'accounts/css/accounts_styles.css' %}">
 
 {% block content %}
-<h1>Food Log</h1>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet">
 
-<form method="post">
-    {{ daily_requirements_form.as_p }}
-    <button type="submit" name="submit_daily_requirements">Aktualizuj wymagania</button>
-    {% csrf_token %}
-</form>
+<link rel="stylesheet" type="text/css" href="{% static 'accounts/css/accounts_styles.css' %}">
 
+<div class='py-4 mt-auto'>
+    <div class='container-fluid px-4'>
+        <div class='row justify-content-center'>
+            <div class='col-xl-12'>
+                <div class='row'>
+                    <div class='col-md-6 mt-4'>
+                        <!-- Daily Requirements Form -->
+                        <div class='card bg-secondary mb-3'>
+                            <div class='card-header'>
+                                <h5>Daily Requirements</h5>
+                            </div>
+                            <div class='card-body'>
+                                <form method="post">
+                                    {{ daily_requirements_form.as_p }}
+                                    <button type="submit" name="submit_daily_requirements" class='btn btn-primary'>Aktualizuj wymagania</button>
+                                    {% csrf_token %}
+                                </form>
+                            </div>
+                        </div>
 
-<form method="post">
-    {% csrf_token %}
-    {{ date_form.as_p }}  <!-- Formularz wyboru daty -->
-    <input type="submit" name="submit_date" value="Wybierz datę">
-</form>
+                        <!-- Date Form -->
+                        <div class='card bg-secondary mb-3'>
+                            <div class='card-header'>
+                                <h5>Select Date</h5>
+                            </div>
+                            <div class='card-body'>
+                                <form method="post">
+                                    {{ date_form.as_p }}
+                                    <button type="submit" name="submit_date" class='btn btn-primary'>Wybierz datę</button>
+                                    {% csrf_token %}
+                                </form>
+                            </div>
+                        </div>
 
-<!-- Formularz dodawania FoodItem -->
-<form method="post">
-    {% csrf_token %}
-    {{ fooditem_form.as_p }}
-    <input type="submit" name="submit_fooditem" value="Dodaj FoodItem">
-</form>
+                        <!-- Food Log Item Form -->
+                        <div class='card bg-secondary mb-3'>
+                            <div class='card-header'>
+                                <h5>Add Food</h5>
+                            </div>
+                            <div class='card-body'>
+                                <form method="post" class="form-group row align-items-end">
+                                    {% csrf_token %}
+                                    <div class="col-5">
+                                        {{ fooditem_form.food_item|as_crispy_field }}
+                                    </div>
+                                    <div class="col-5">
+                                        {{ fooditem_form.quantity|as_crispy_field }}
+                                    </div>
+                                    <div class="col-2">
+                                        <button type="submit" name="submit_fooditem" class='btn btn-primary'>Add</button>
+                                    </div>
+                                </form>
+                                <form method="post">
+                                    {{ meal_form.as_p }}
+                                    <button type="submit" name="submit_meal" class='btn btn-primary'>Dodaj Meal</button>
+                                    {% csrf_token %}
+                                </form>
+                            </div>
+                        </div>
 
-<form method="post">
-    {% csrf_token %}
-    {{ meal_form.as_p }}
-    <button type="submit" name="submit_meal">Dodaj Meal</button>
-</form>
+                        <!-- Food Log Display -->
+                        <div class='card bg-secondary mb-3'>
+                            <div class='card-header'>
+                                <h5>Food Consumed Today - {{ selected_date|date:"F j, Y" }}</h5>
+                            </div>
+                            <div class='card-body'>
+                                <table class='table table-hover'>
+                                    <thead>
+                                        <tr>
+                                            <th>Food Item</th>
+                                            <th>Quantity</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for log_item in food_log_items %}
+                                        <tr>
+                                            <td>{{ log_item.food_item.name }}</td>
+                                            <td>Quantity: {{ log_item.quantity }}</td>
+                                            <td>
+                                                <a class='btn btn-danger' href="{% url 'food_log_item_delete' log_item.id %}">
+                                                    <i class='fas fa-trash-alt'></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
 
+                    <div class='col-md-6 mt-4'>
+                        <!-- Daily Goal Display -->
+                        <div class='card bg-secondary mb-3'>
+                            <div class='card-header'>
+                                <h5>Daily Calorie Goal</h5>
+                            </div>
+                            <div class='card-body'>
+                                <!-- This can be expanded with actual logic/data -->
+                                <div class='progress' style="height: 40px;">
+                                    <div
+                                        id='progressBar'
+                                        class='progress-bar progress-bar-striped progress-bar-animated'
+                                        role='progressbar'
+                                        aria-valuenow='0'
+                                        aria-valuemin='0'
+                                        aria-valuemax='100'
+                                        style='width: 0%; font-size: 25px;'
+                                    >0%</div>
+                                </div>
+                            </div>
+                        </div>
 
-    <h2>Selected Date: {{ selected_date|date:"F j, Y" }}</h2>
-
-    <h3>Total Macros:</h3>
-    <ul>
-        <li>Total Calories: {{ total_macros.log_total_kcal }}</li>
-        <li>Total Carbohydrates: {{ total_macros.log_total_carbohydrates }}</li>
-        <li>Total Fats: {{ total_macros.log_total_fats }}</li>
-        <li>Total Proteins: {{ total_macros.log_total_proteins }}</li>
-    </ul>
-
-    <h2>Food Consumed Today</h2>
-<ul>
-    {% for log_item in food_log_items %}
-        <li>{{ log_item.food_item.name }} - Quantity: {{ log_item.quantity }}</li>
-        <a href="{% url 'food_log_item_delete' log_item.id %}">Usuń</a>
-    {% endfor %}
-</ul>
-
+                        <!-- Macros Display -->
+                        <div class='card bg-secondary mb-3'>
+                            <div class='card-header'>
+                                <h5>Macronutrients Breakdown</h5>
+                            </div>
+                            <div class='card-body'>
+                                <div class='chart-pie pt-4'>
+                                    <canvas id='myPieChart'></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+<script src="{% static 'django_select2/django_select2.js' %}"></script>
 {% endblock %}
+
