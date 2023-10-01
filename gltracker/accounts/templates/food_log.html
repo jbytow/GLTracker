@@ -46,25 +46,32 @@
                         <!-- Food Log Item Form -->
                         <div class='card bg-secondary mb-3'>
                             <div class='card-header'>
-                                <h5>Add Food</h5>
+                                <h5>Select food or meal to add to the Food Log (in g)</h5>
                             </div>
                             <div class='card-body'>
-                                <form method="post" class="form-group row align-items-end">
+                                <form method="post" class="form-group row">
                                     {% csrf_token %}
-                                    <div class="col-5">
+                                    <div class="col-8">
                                         {{ fooditem_form.food_item|as_crispy_field }}
                                     </div>
-                                    <div class="col-5">
+                                    <div class="col-2">
                                         {{ fooditem_form.quantity|as_crispy_field }}
                                     </div>
                                     <div class="col-2">
-                                        <button type="submit" name="submit_fooditem" class='btn btn-primary'>Add</button>
+                                        <button type="submit" name="submit_fooditem" class='btn btn-primary'>Add Food</button>
                                     </div>
                                 </form>
-                                <form method="post">
-                                    {{ meal_form.as_p }}
-                                    <button type="submit" name="submit_meal" class='btn btn-primary'>Dodaj Meal</button>
+                                <form method="post" class="form-group row">
                                     {% csrf_token %}
+                                    <div class="col-8">
+                                        {{ meal_form.meal|as_crispy_field }}
+                                    </div>
+                                    <div class="col-2">
+                                        {{ meal_form.quantity|as_crispy_field }}
+                                    </div>
+                                    <div class="col-2">
+                                        <button type="submit" name="submit_meal" class='btn btn-primary'>Add Meal</button>
+                                    </div>
                                 </form>
                             </div>
                         </div>
@@ -78,8 +85,13 @@
                                 <table class='table table-hover'>
                                     <thead>
                                         <tr>
-                                            <th>Food Item</th>
-                                            <th>Quantity</th>
+                                            <th>Log Item</th>
+                                            <th>Grams</th>
+                                            <th>Calories</th>
+                                            <th>Carbohydrates</th>
+                                            <th>Fats</th>
+                                            <th>Proteins</th>
+                                            <th>Glycemic Load</th>
                                             <th></th>
                                         </tr>
                                     </thead>
@@ -87,7 +99,12 @@
                                     {% for log_item in food_log_items %}
                                         <tr>
                                             <td>{{ log_item.food_item.name }}</td>
-                                            <td>Quantity: {{ log_item.quantity }}</td>
+                                            <td>{{ log_item.quantity }}</td>
+                                            <td>{{ log_item.food_item.kcal }}</td>
+                                            <td>{{ log_item.food_item.carbohydrates }}</td>
+                                            <td>{{ log_item.food_item.fats }}</td>
+                                            <td>{{ log_item.food_item.proteins }}</td>
+                                            <td>{{ log_item.food_item.glycemic_load }}</td>
                                             <td>
                                                 <a class='btn btn-danger' href="{% url 'food_log_item_delete' log_item.id %}">
                                                     <i class='fas fa-trash-alt'></i>

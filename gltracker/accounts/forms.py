@@ -50,6 +50,9 @@ class FoodLogFoodItemForm(forms.ModelForm):
     class Meta:
         model = FoodLogFoodItem
         fields = ['food_item', 'quantity']
+        labels = {'food_item': False,
+                  'quantity': False,
+                  }
 
         widgets = {
             'food_item': ModelSelect2Widget(
@@ -74,8 +77,23 @@ class FoodLogMealForm(forms.ModelForm):
     class Meta:
         model = FoodLogMeal
         fields = ['meal', 'quantity']
+        labels = {'meal': False,
+                  'quantity': False,
+                  }
+
+        widgets = {
+            'meal': ModelSelect2Widget(
+                model=Meal,
+                search_fields=['name__icontains'],
+                dependent_fields={'user': 'user'},
+                max_results=500,
+                attrs={
+                    'data-minimum-input-length': 0,
+                },
+            )
+        }
 
     def __init__(self, *args, user=None, **kwargs):
         super(FoodLogMealForm, self).__init__(*args, **kwargs)
         if user:
-            self.fields['meal'].queryset = Meal.objects.filter(user=user)
+            self.fields['meal'].queryset = Meal.objects.filter(user=user).order_by('name')
