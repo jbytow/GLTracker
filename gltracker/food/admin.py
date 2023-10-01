@@ -16,7 +16,7 @@ class MealAdmin(admin.ModelAdmin):
 
     def get_total_kcal(self, obj):
         # Get value 'total_kcal' for Meal Object
-        total_kcal = obj.calculate_total_macros()['total_kcal']
+        total_kcal = obj.calculate_total_macros_meal()['total_kcal']
         return total_kcal
 
     get_total_kcal.short_description = 'Total Kcal'  # Field Description

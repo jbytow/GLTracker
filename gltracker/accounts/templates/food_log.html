@@ -44,7 +44,7 @@
                         </div>
 
                         <!-- Food Log Item Form -->
-                        <div class='card bg-secondary mb-3'>
+                        <div class='card mb-3'>
                             <div class='card-header'>
                                 <h5>Select food or meal to add to the Food Log (in g)</h5>
                             </div>
@@ -77,34 +77,42 @@
                         </div>
 
                         <!-- Food Log Display -->
-                        <div class='card bg-secondary mb-3'>
+                        <div class='card mb-3'>
                             <div class='card-header'>
                                 <h5>Food Consumed Today - {{ selected_date|date:"F j, Y" }}</h5>
                             </div>
                             <div class='card-body'>
                                 <table class='table table-hover'>
-                                    <thead>
                                         <tr>
-                                            <th>Log Item</th>
-                                            <th>Grams</th>
-                                            <th>Calories</th>
-                                            <th>Carbohydrates</th>
-                                            <th>Fats</th>
-                                            <th>Proteins</th>
-                                            <th>Glycemic Load</th>
-                                            <th></th>
+                                            <td>Log Item</td>
+                                            <td>Grams</td>
+                                            <td>Calories</td>
+                                            <td>Carbohydrates</td>
+                                            <td>Fats</td>
+                                            <td>Proteins</td>
+                                            <td>Glycemic Load</td>
+                                            <td></td>
                                         </tr>
-                                    </thead>
                                     <tbody>
+                                        <tr style="font-weight: bold;">  <!-- Pogrubienie -->
+                                            <th>Total</th>
+                                            <th>{{ total_macros.log_total_quantity }}</th>
+                                            <th>{{ total_macros.log_total_kcal }}</th>
+                                            <th>{{ total_macros.log_total_carbohydrates }}</th>
+                                            <th>{{ total_macros.log_total_fats }}</th>
+                                            <th>{{ total_macros.log_total_proteins }}</th>
+                                            <th>{{ total_macros.log_total_glycemic_load }}</th>
+                                            <th></th>
+                                         </tr>
                                     {% for log_item in food_log_items %}
                                         <tr>
-                                            <td>{{ log_item.food_item.name }}</td>
+                                            <td>{{ log_item.get_name }}</td>
                                             <td>{{ log_item.quantity }}</td>
-                                            <td>{{ log_item.food_item.kcal }}</td>
-                                            <td>{{ log_item.food_item.carbohydrates }}</td>
-                                            <td>{{ log_item.food_item.fats }}</td>
-                                            <td>{{ log_item.food_item.proteins }}</td>
-                                            <td>{{ log_item.food_item.glycemic_load }}</td>
+                                            <td>{{ log_item.get_calories }}</td>
+                                            <td>{{ log_item.get_carbohydrates }}</td>
+                                            <td>{{ log_item.get_fats }}</td>
+                                            <td>{{ log_item.get_proteins }}</td>
+                                            <td>{{ log_item.get_glycemic_load }}</td>
                                             <td>
                                                 <a class='btn btn-danger' href="{% url 'food_log_item_delete' log_item.id %}">
                                                     <i class='fas fa-trash-alt'></i>

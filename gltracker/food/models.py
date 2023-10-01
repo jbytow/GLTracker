@@ -62,21 +62,21 @@ class Meal(models.Model):
             food_item = meal_item.food_item
             total_weight += quantity
 
-            total_kcal += food_item.kcal * quantity
-            total_carbohydrates += food_item.carbohydrates * quantity
-            total_fats += food_item.fats * quantity
-            total_proteins += food_item.proteins * quantity
-            total_glycemic_load += food_item.glycemic_load * quantity
-            total_glycemic_index += food_item.glycemic_index
-            weighted_glycemic_index += food_item.glycemic_index * quantity
+            total_kcal += food_item.kcal * quantity/100
+            total_carbohydrates += food_item.carbohydrates * quantity/100
+            total_fats += food_item.fats * quantity/100
+            total_proteins += food_item.proteins * quantity/100
+            total_glycemic_load += food_item.glycemic_load * quantity/100
+            total_glycemic_index += food_item.glycemic_index/100
+            weighted_glycemic_index += food_item.glycemic_index * quantity/100
 
         if total_weight != 0:
-            total_kcal_per_100g = round((total_kcal / total_weight), 2)
-            total_carbohydrates_per_100g = round((total_carbohydrates / total_weight), 2)
-            total_fats_per_100g = round((total_fats / total_weight), 2)
-            total_proteins_per_100g = round((total_proteins / total_weight), 2)
-            total_glycemic_load_per_100g = round((total_glycemic_load / total_weight), 2)
-            average_glycemic_index = round(weighted_glycemic_index / total_weight, 2)
+            total_kcal_per_100g = round((total_kcal / total_weight*100), 2)
+            total_carbohydrates_per_100g = round((total_carbohydrates / total_weight*100), 2)
+            total_fats_per_100g = round((total_fats / total_weight*100), 2)
+            total_proteins_per_100g = round((total_proteins / total_weight*100), 2)
+            total_glycemic_load_per_100g = round((total_glycemic_load / total_weight*100), 2)
+            average_glycemic_index = round(weighted_glycemic_index / total_weight*100, 2)
         else:
             total_kcal_per_100g = 0
             total_carbohydrates_per_100g = 0
