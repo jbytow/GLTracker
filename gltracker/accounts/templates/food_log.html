@@ -44,6 +44,7 @@
 <ul>
     {% for log_item in food_log_items %}
         <li>{{ log_item.food_item.name }} - Quantity: {{ log_item.quantity }}</li>
+        <a href="{% url 'food_log_item_delete' log_item.id %}">Usuń</a>
     {% endfor %}
 </ul>
 

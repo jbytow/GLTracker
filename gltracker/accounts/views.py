@@ -227,4 +227,5 @@ def food_log_item_delete(request, item_id):
         item = FoodLogMeal.objects.get(pk=item_id)
 
     item.delete()
+    return redirect('food_log')
 
