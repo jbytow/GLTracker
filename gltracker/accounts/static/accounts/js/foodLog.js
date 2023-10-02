@@ -10,18 +10,20 @@ console.log("Proteins:", proteins);
 
 
 // Calorie Goal Progress Bar
-
 // Get the calorie goal from the form input
-var calorieGoal = parseFloat(document.getElementById('id_calorie_goal').value) || 2000; // Default to 2000 if no value or invalid value
-console.log("Calorie Goal", calorieGoal)
+var calorieGoal = parseFloat(document.querySelector('#id_goals [name="calories"]').value) || 2000;
+var carbohydratesGoal = parseFloat(document.querySelector('#id_goals [name="carbohydrates"]').value) || 300;
+var fatsGoal = parseFloat(document.querySelector('#id_goals [name="fats"]').value) || 70;
+var proteinsGoal = parseFloat(document.querySelector('#id_goals [name="proteins"]').value) || 50;
 
-var caloriePercentage = (calories / calorieGoal) * 100;
-console.log("Calorie Percentage", caloriePercentage)
+var caloriePercentage = Math.round((calories / calorieGoal) * 100);
+var carbohydratesPercentage = Math.round((carbohydrates / carbohydratesGoal) * 100);
+var fatsPercentage = Math.round((fats / fatsGoal) * 100);
+var proteinsPercentage = Math.round((proteins / proteinsGoal) * 100);
 
-$('.progress-bar').animate({
-    width: caloriePercentage + '%',
-}, 500);
+console.log(carbohydratesPercentage)
 
-var interval = setInterval(function () {
-    $('.progress-bar').html(caloriePercentage.toFixed(2) + '%');
-}, 500);
+$('#calorieProgressBar').animate({ width: caloriePercentage + '%' }, 500).html(caloriePercentage + '%');
+$('#carbohydratesProgressBar').animate({ width: carbohydratesPercentage + '%' }, 500).html(carbohydratesPercentage + '%');
+$('#fatsProgressBar').animate({ width: fatsPercentage + '%' }, 500).html(fatsPercentage + '%');
+$('#proteinsProgressBar').animate({ width: proteinsPercentage + '%' }, 500).html(proteinsPercentage + '%');

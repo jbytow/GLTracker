@@ -21,19 +21,6 @@
             <div class='col-xl-12'>
                 <div class='row'>
                     <div class='col-md-6 mt-4'>
-                        <!-- Daily Requirements Form -->
-                        <div class='card bg-secondary mb-3'>
-                            <div class='card-header'>
-                                <h5>Daily Requirements</h5>
-                            </div>
-                            <div class='card-body'>
-                                <form method="post", id="id_calorie_goal">
-                                    {{ daily_requirements_form|crispy }}
-                                    <button type="submit" name="submit_daily_requirements" class='btn btn-primary'>Aktualizuj wymagania</button>
-                                    {% csrf_token %}
-                                </form>
-                            </div>
-                        </div>
 
                         <!-- Date Form -->
                         <div class='card bg-secondary mb-3'>
@@ -133,16 +120,31 @@
                     </div>
 
                     <div class='col-md-6 mt-4'>
+
+                         Daily Requirements Form
+                        <div class='card bg-secondary mb-3'>
+                            <div class='card-header'>
+                                <h5>Daily Requirements</h5>
+                            </div>
+                            <div class='card-body'>
+                                <form method="post", id="id_goals">
+                                    {{ daily_requirements_form|crispy }}
+                                    <button type="submit" name="submit_daily_requirements" class='btn btn-primary'>Aktualizuj wymagania</button>
+                                    {% csrf_token %}
+                                </form>
+                            </div>
+                        </div>
+
                         <!-- Daily Goal Display -->
                         <div class='card bg-secondary mb-3'>
                             <div class='card-header'>
                                 <h5>Daily Requirements</h5>
                             </div>
                             <div class='card-body'>
-                                <!-- This can be expanded with actual logic/data -->
+                                <!-- Calorie Progress Bar -->
                                 <div class='progress' style="height: 40px;">
                                     <div
-                                        id='progressBar'
+                                        id='calorieProgressBar'
                                         class='progress-bar progress-bar-striped progress-bar-animated'
                                         role='progressbar'
                                         aria-valuenow='50'
@@ -151,6 +153,46 @@
                                         style='width: 0%; font-size: 25px;'
                                     >0%</div>
                                 </div>
+
+                                <!-- Carbohydrates Progress Bar -->
+                                <div class='progress' style="height: 40px;">
+                                    <div
+                                        id='carbohydratesProgressBar'
+                                        class='progress-bar progress-bar-striped progress-bar-animated'
+                                        role='progressbar'
+                                        aria-valuenow='50'
+                                        aria-valuemin='0'
+                                        aria-valuemax='100'
+                                        style='width: 0%; font-size: 25px;'
+                                    >0%</div>
+                                </div>
+
+                                <!-- Fats Progress Bar -->
+                                <div class='progress' style="height: 40px;">
+                                    <div
+                                        id='fatsProgressBar'
+                                        class='progress-bar progress-bar-striped progress-bar-animated'
+                                        role='progressbar'
+                                        aria-valuenow='50'
+                                        aria-valuemin='0'
+                                        aria-valuemax='100'
+                                        style='width: 0%; font-size: 25px;'
+                                    >0%</div>
+                                </div>
+
+                                <!-- Proteins Progress Bar -->
+                                <div class='progress' style="height: 40px;">
+                                    <div
+                                        id='proteinsProgressBar'
+                                        class='progress-bar progress-bar-striped progress-bar-animated'
+                                        role='progressbar'
+                                        aria-valuenow='50'
+                                        aria-valuemin='0'
+                                        aria-valuemax='100'
+                                        style='width: 0%; font-size: 25px;'
+                                    >0%</div>
+                                </div>
+
                             </div>
                         </div>
 
