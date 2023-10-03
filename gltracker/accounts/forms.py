@@ -34,6 +34,10 @@ class FoodDailyRequirementsForm(forms.ModelForm):
     class Meta:
         model = FoodDailyRequirements
         fields = ['calories', 'carbohydrates', 'fats', 'proteins']
+        labels = {'calories': False,
+                  'carbohydrates': False,
+                  'fats': False,
+                  'proteins': False}
 
 
 class DateForm(forms.Form):
