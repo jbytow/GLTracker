@@ -44,6 +44,7 @@ class Meal(models.Model):
     name = models.CharField(max_length=200)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     image = models.ImageField(upload_to=meal_image_upload_to, blank=True, null=True)
+    description = models.TextField(blank=True, null=True)
     meal_items = models.ManyToManyField('FoodItem', through='MealItem', related_name='meals')
 
     def calculate_total_macros_meal(self):

@@ -23,77 +23,74 @@
 <a href="{% url 'edit_meal' meal.id %}" class='btn btn-outline-primary my-1 ml-auto mr-4 text-right float-right'>Edit Meal</a>
 <div class='py-1 mt-auto'>
     <div class='container-fluid px-4'>
-
-
         <h3>{{ meal.name }}</h3>
 
-        <div class='row justify-content-center'>
+        <div class='row'>
+            <!-- First Column - meal photo and description -->
             <div class='col-6'>
                 {% if meal.image %}
-                <img src="{{ meal.image.url }}" alt="{{ meal.name }}" class="img-fluid" style="width: 600px; height: 600px;">
+                    <img src="{{ meal.image.url }}" alt="{{ meal.name }}" class="img-fluid" style="width: 600px; max-height: 600px;">
                 {% else %}
-                <img src="{% static 'images/mealdefault.png' %}" alt="Default Image" class="img-fluid" style="width: 600px; height: 600px;">
+                    <img src="{% static 'images/mealdefault.png' %}" alt="Default Meal Image" class="img-fluid" style="width: 600px; max-height: 600px;">
                 {% endif %}
+
+                <div class="card mt-3">
+                    <div class="card-header">
+                        <h5>Description</h5>
+                    </div>
+                    <div class="card-body">
+                        <p>{{ meal.description|linebreaks }}</p>
+                    </div>
+                </div>
+
             </div>
+
+            <!-- Second column - meal info -->
             <div class='col-6'>
                 <div class='card text-white bg-info mb-3'>
                     <div class='card-header'>
                         <div class='d-flex w-100 justify-content-between'>
-                            <h5 class='card-title mb-1'>
-                                Calories per 100g:
-                            </h5>
+                            <h5 class='card-title mb-1'>Calories per 100g:</h5>
                             <p><strong>{{ meal_macros.total_kcal_per_100g }}</strong></p>
                         </div>
                         <div class='d-flex w-100 justify-content-between'>
-                            <h5 class='card-title mb-1'>
-                                Glycemic Index:
-                            </h5>
+                            <h5 class='card-title mb-1'>Glycemic Index:</h5>
                             <p><strong>{{ meal_macros.average_glycemic_index }}</strong></p>
                         </div>
                         <div class='d-flex w-100 justify-content-between'>
-                            <h5 class='card-title mb-1'>
-                                Glycemic Load per 100g:
-                            </h5>
+                            <h5 class='card-title mb-1'>Glycemic Load per 100g:</h5>
                             <p><strong>{{ meal_macros.total_glycemic_load_per_100g }}</strong></p>
                         </div>
-                     </div>
-            <div class='card-body'>
-                <div class='d-flex w-100 justify-content-between'>
-                    <h5 class='card-title'>
-                        Macronutrients (g) per 100g:
-                    </h5>
+                    </div>
+                    <div class='card-body'>
+                        <div class='d-flex w-100 justify-content-between'>
+                            <h5 class='card-title'>Macronutrients (g) per 100g:</h5>
+                        </div>
+                        <div class='d-flex w-100 justify-content-between'>
+                            <p class='mb-1'>Fat:</p>
+                            <p><strong>{{ meal_macros.total_fats_per_100g }}</strong></p>
+                        </div>
+                        <div class='d-flex w-100 justify-content-between'>
+                            <p class='mb-1'>Carbs:</p>
+                            <p><strong>{{ meal_macros.total_carbohydrates_per_100g }}</strong></p>
+                        </div>
+                        <div class='d-flex w-100 justify-content-between'>
+                            <p class='mb-1'>Protein:</p>
+                            <p><strong>{{ meal_macros.total_proteins_per_100g }}</strong></p>
+                        </div>
+                    </div>
                 </div>
-
-                <div class='d-flex w-100 justify-content-between'>
-                    <p class='mb-1'>Fat:</p>
-                    <p><strong>{{ meal_macros.total_fats_per_100g }}</strong></p>
-                </div>
-
-                <div class='d-flex w-100 justify-content-between'>
-                    <p class='mb-1'>Carbs:</p>
-                    <p><strong>{{ meal_macros.total_carbohydrates_per_100g }}</strong></p>
-                </div>
-
-                <div class='d-flex w-100 justify-content-between'>
-                    <p class='mb-1'>Protein:</p>
-                    <p><strong>{{ meal_macros.total_proteins_per_100g }}</strong></p>
+                <div class='card bg-secondary mb-3'>
+                    <div class='card-header'>
+                        <h4>Macronutrients breakdown</h4>
+                    </div>
+                    <div class='card-body justify-content-center'>
+                        <div class='chart-bar'>
+                            <canvas id='myBarChart' data-fats="{{ meal_macros.total_fats_per_100g }}" data-carbs="{{ meal_macros.total_carbohydrates_per_100g }}" data-proteins="{{ meal_macros.total_proteins_per_100g }}"></canvas>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-
-
-
-    <div class='card bg-secondary mb-3'>
-        <div class='card-header'>
-            <h4>Macronutrients breakdown</h4>
-        </div>
-        <div class='card-body justify-content-center'>
-            <div class='chart-bar'>
-                <canvas id='myBarChart' data-fats="{{ meal_macros.total_fats_per_100g }}" data-carbs="{{ meal_macros.total_carbohydrates_per_100g }}" data-proteins="{{ meal_macros.total_proteins_per_100g }}"></canvas>
-            </div>
-        </div>
-    </div>
-        </div>
         </div>
     </div>
 </div>

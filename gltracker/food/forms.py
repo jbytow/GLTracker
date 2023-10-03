@@ -28,7 +28,7 @@ class MealForm(forms.ModelForm):
 
     class Meta:
         model = Meal
-        fields = ['name', 'image']
+        fields = ['name', 'image', 'description']
 
         def __init__(self, *args, **kwargs):
             super().__init__(*args, **kwargs)
