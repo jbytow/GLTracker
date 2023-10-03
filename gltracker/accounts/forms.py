@@ -66,6 +66,7 @@ class FoodLogFoodItemForm(forms.ModelForm):
                 max_results=500,
                 attrs={
                     'data-minimum-input-length': 0,
+                    'data-placeholder': 'Select food to add to the food log',
                 },
             )
         }
@@ -93,6 +94,7 @@ class FoodLogMealForm(forms.ModelForm):
                 max_results=500,
                 attrs={
                     'data-minimum-input-length': 0,
+                    'data-placeholder': 'Select meal to add to the food log',
                 },
             )
         }
