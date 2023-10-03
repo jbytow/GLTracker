@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load humanize %}
 {% load crispy_forms_tags %}
 
 
@@ -89,8 +90,8 @@
                                     <tbody>
                                         <tr style="font-weight: bold;">
                                             <th>Total</th>
-                                            <th>{{ total_macros.log_total_quantity }}</th>
-                                            <th data-calories="{{ total_macros.log_total_kcal }}">{{ total_macros.log_total_kcal }}</th>
+                                            <th>{{ total_macros.log_total_quantity |intcomma }}</th>
+                                            <th data-calories="{{ total_macros.log_total_kcal }}">{{ total_macros.log_total_kcal |intcomma }}</th>
                                             <th data-carbohydrates="{{ total_macros.log_total_carbohydrates }}">{{ total_macros.log_total_carbohydrates }}</th>
                                             <th data-fats="{{ total_macros.log_total_fats }}">{{ total_macros.log_total_fats }}</th>
                                             <th data-proteins="{{ total_macros.log_total_proteins }}">{{ total_macros.log_total_proteins }}</th>
@@ -100,8 +101,8 @@
                                     {% for log_item in food_log_items %}
                                         <tr>
                                             <td>{{ log_item.get_name }}</td>
-                                            <td>{{ log_item.quantity }}</td>
-                                            <td>{{ log_item.get_calories }}</td>
+                                            <td>{{ log_item.quantity |intcomma }}</td>
+                                            <td>{{ log_item.get_calories |intcomma }}</td>
                                             <td>{{ log_item.get_carbohydrates }}</td>
                                             <td>{{ log_item.get_fats }}</td>
                                             <td>{{ log_item.get_proteins }}</td>
@@ -130,6 +131,7 @@
 
                                     <!-- Calories -->
                                     <hr class="mt-4 mb-4">
+                                    <h6>Calories</h6>
                                     <div class="row mb-4">
                                         <div class="col-md-9"> <!-- 3/4 for progress bar -->
                                             <div class='progress' style="height: 40px;">

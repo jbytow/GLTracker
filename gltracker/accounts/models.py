@@ -23,10 +23,10 @@ class WeightRecord(models.Model):
 
 class FoodDailyRequirements(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    calories = models.DecimalField(max_digits=7, decimal_places=2, default=0)
-    carbohydrates = models.DecimalField(max_digits=5, decimal_places=2, default=0)
-    fats = models.DecimalField(max_digits=5, decimal_places=2, default=0)
-    proteins = models.DecimalField(max_digits=5, decimal_places=2, default=0)
+    calories = models.IntegerField(default=0)
+    carbohydrates = models.IntegerField(default=0)
+    fats = models.IntegerField(default=0)
+    proteins = models.IntegerField(default=0)
 
     def __str__(self):
         return f"Daily Requirements for {self.user.username}"
@@ -50,11 +50,11 @@ class FoodLog(models.Model):
         for food_log_food_item in self.foodlogfooditem_set.all():
             food_item = food_log_food_item.food_item
             quantity = food_log_food_item.quantity
-            log_total_kcal += round(food_item.kcal * quantity/100, 2)
-            log_total_carbohydrates += round(food_item.carbohydrates * quantity/100, 2)
-            log_total_fats += round(food_item.fats * quantity/100, 2)
-            log_total_proteins += round(food_item.proteins * quantity/100, 2)
-            log_total_glycemic_load += round(food_item.glycemic_load * quantity / 100, 2)
+            log_total_kcal += round(food_item.kcal * quantity/100)
+            log_total_carbohydrates += round(food_item.carbohydrates * quantity/100)
+            log_total_fats += round(food_item.fats * quantity/100)
+            log_total_proteins += round(food_item.proteins * quantity/100)
+            log_total_glycemic_load += round(food_item.glycemic_load * quantity / 100)
             log_total_quantity += quantity
 
         # Calories and macronutrients from FoodLogMeal - divided by 100 as Meals have values per 100g
@@ -62,11 +62,11 @@ class FoodLog(models.Model):
             meal = food_log_meal.meal
             meal_macros = meal.calculate_total_macros_meal()
             quantity = food_log_meal.quantity
-            log_total_kcal += round(meal_macros['total_kcal_per_100g'] * quantity/100, 2)
-            log_total_carbohydrates += round(meal_macros['total_carbohydrates_per_100g'] * quantity/100, 2)
-            log_total_fats += round(meal_macros['total_fats_per_100g'] * quantity/100, 2)
-            log_total_proteins += round(meal_macros['total_proteins_per_100g'] * quantity/100, 2)
-            log_total_glycemic_load += round(meal_macros['total_glycemic_load_per_100g'] * quantity / 100, 2)
+            log_total_kcal += round(meal_macros['total_kcal_per_100g'] * quantity/100)
+            log_total_carbohydrates += round(meal_macros['total_carbohydrates_per_100g'] * quantity/100)
+            log_total_fats += round(meal_macros['total_fats_per_100g'] * quantity/100)
+            log_total_proteins += round(meal_macros['total_proteins_per_100g'] * quantity/100)
+            log_total_glycemic_load += round(meal_macros['total_glycemic_load_per_100g'] * quantity / 100)
             log_total_quantity += quantity
 
         return {
@@ -92,19 +92,19 @@ class FoodLogFoodItem(models.Model):
         return self.food_item.name
 
     def get_calories(self):
-        return round(float(self.quantity / 100) * float(self.food_item.kcal), 2)
+        return round(float(self.quantity / 100) * float(self.food_item.kcal))
 
     def get_carbohydrates(self):
-        return round(float(self.quantity / 100) * float(self.food_item.carbohydrates), 2)
+        return round(float(self.quantity / 100) * float(self.food_item.carbohydrates))
 
     def get_fats(self):
-        return round(float(self.quantity / 100) * float(self.food_item.fats), 2)
+        return round(float(self.quantity / 100) * float(self.food_item.fats))
 
     def get_proteins(self):
-        return round(float(self.quantity / 100) * float(self.food_item.proteins), 2)
+        return round(float(self.quantity / 100) * float(self.food_item.proteins))
 
     def get_glycemic_load(self):
-        return round(float(self.quantity / 100) * float(self.food_item.glycemic_load), 2)
+        return round(float(self.quantity / 100) * float(self.food_item.glycemic_load))
 
 
 class FoodLogMeal(models.Model):
@@ -117,20 +117,20 @@ class FoodLogMeal(models.Model):
 
     def get_calories(self):
         macros = self.meal.calculate_total_macros_meal()
-        return round(float(self.quantity / 100) * float(macros['total_kcal_per_100g']), 2)
+        return round(float(self.quantity / 100) * float(macros['total_kcal_per_100g']))
 
     def get_carbohydrates(self):
         macros = self.meal.calculate_total_macros_meal()
-        return round(float(self.quantity / 100) * float(macros['total_carbohydrates_per_100g']), 2)
+        return round(float(self.quantity / 100) * float(macros['total_carbohydrates_per_100g']))
 
     def get_fats(self):
         macros = self.meal.calculate_total_macros_meal()
-        return round(float(self.quantity / 100) * float(macros['total_fats_per_100g']), 2)
+        return round(float(self.quantity / 100) * float(macros['total_fats_per_100g']))
 
     def get_proteins(self):
         macros = self.meal.calculate_total_macros_meal()
-        return round(float(self.quantity / 100) * float(macros['total_proteins_per_100g']), 2)
+        return round(float(self.quantity / 100) * float(macros['total_proteins_per_100g']))
 
     def get_glycemic_load(self):
         macros = self.meal.calculate_total_macros_meal()
-        return round(float(self.quantity / 100) * float(macros['total_glycemic_load_per_100g']), 2)
+        return round(float(self.quantity / 100) * float(macros['total_glycemic_load_per_100g']))
