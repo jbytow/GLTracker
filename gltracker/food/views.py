@@ -9,10 +9,6 @@ from .models import FoodItem, Meal, MealItem
 from .forms import FoodItemForm, MealItemForm, MealForm
 
 
-def index(request):
-    return render(request, "index.html")
-
-
 @login_required()
 def fooditem_list(request):
     public_items = FoodItem.objects.filter(user=None)  # Default, database fooditems

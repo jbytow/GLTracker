@@ -19,11 +19,11 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
 
-import food.views
+import accounts.views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', food.views.index, name="index"),
+    path('', accounts.views.profile_page, name="main_profile"),
     path('accounts/', include('accounts.urls')),
     path('food/', include('food.urls')),
     path("select2/", include("django_select2.urls")),

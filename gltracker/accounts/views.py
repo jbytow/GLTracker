@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth import login, logout, authenticate
+from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.utils import timezone
@@ -42,23 +43,30 @@ def login_page(request):
         return redirect('index')
 
     if request.method == 'POST':
-        username = request.POST.get('username')
+        identifier = request.POST.get('username')
         password = request.POST.get('password')
 
-        user = authenticate(request, username=username, password=password)
+        user = authenticate(request, username=identifier, password=password)
+
+        if user is None:
+            try:
+                found_user = User.objects.get(email=identifier)
+                user = authenticate(request, username=found_user.username, password=password)
+            except User.DoesNotExist:
+                pass
 
         if user is not None:
             login(request, user)
-            return redirect('index')
+            return redirect('profile')
         else:
-            messages.error(request, 'Invalid username or password.')
+            messages.error(request, 'Invalid username/email or password.')
 
     return render(request, 'login.html')
 
 
 def logout_user(request):
     logout(request)
-    return redirect('index')
+    return redirect('login')
 
 
 @login_required()
