@@ -139,7 +139,7 @@ def weight_delete(request, weight_id):
 @login_required
 def food_log(request):
 
-    # Obsługa formularza FoodDailyRequirementsForm
+    # Handling the FoodDailyRequirementsForm
     try:
         daily_requirements_instance = FoodDailyRequirements.objects.get(user=request.user)
     except FoodDailyRequirements.DoesNotExist:
@@ -155,39 +155,39 @@ def food_log(request):
     else:
         daily_requirements_form = FoodDailyRequirementsForm(instance=daily_requirements_instance)
 
-    today = timezone.now().date()  # Pobieramy dzisiejszą datę
+    today = timezone.now().date()  # Get today's date
 
-    # Domyślnie ustawiamy selected_date na dzisiejszą datę
+    # By default, set selected_date to today's date
     selected_date = today
 
-    # Jeśli wybrana data jest zapisana w sesji, ustawiamy selected_date z sesji
+    # If the selected date is stored in the session, set selected_date from the session
     if 'selected_date' in request.session:
         selected_date_str = request.session['selected_date']
         selected_date = datetime.strptime(selected_date_str, '%Y-%m-%d').date()
 
-    # Jeśli jest wysłany formularz daty, aktualizujemy selected_date
+    # If the date form is submitted, update selected_date
     if 'submit_date' in request.POST:
         date_form = DateForm(request.POST)
         if date_form.is_valid():
             selected_date = date_form.cleaned_data['date']
-            request.session['selected_date'] = selected_date.strftime('%Y-%m-%d')  # zapisanie w sesji
+            request.session['selected_date'] = selected_date.strftime('%Y-%m-%d')  # save in session
             return redirect('food_log')
     else:
-        date_form = DateForm(initial={'date': selected_date})  # Ustawiamy formularz z wybraną datą
+        date_form = DateForm(initial={'date': selected_date})  # Set the form with the selected date
 
-    # Pobieramy lub tworzymy FoodLog dla wybranej daty
+    # Fetch or create FoodLog for the selected date
     food_log, created = FoodLog.objects.get_or_create(user=request.user, date=selected_date)
 
-    # Obliczamy makroskładniki
+    # Calculate macronutrients
     total_macros = food_log.calculate_total_macros_log()
 
-    # Pobieramy wszystkie obiekty FoodLogFoodItem i FoodLogMeal powiązane z danym food_log
+    # Fetch all FoodLogFoodItem and FoodLogMeal objects related to the food_log
     food_log_fooditems = FoodLogFoodItem.objects.filter(food_log=food_log)
     food_log_meals = FoodLogMeal.objects.filter(food_log=food_log)
     food_log_items = list(food_log_fooditems) + list(food_log_meals)
     food_log_items.sort(key=lambda x: x.id, reverse=True)
 
-    # Obsługa formularza dodawania FoodItem
+    # Handling the FoodItem form submission
     if 'submit_fooditem' in request.POST:
         fooditem_form = FoodLogFoodItemForm(request.POST, user=request.user)
         if fooditem_form.is_valid():
@@ -198,7 +198,7 @@ def food_log(request):
     else:
         fooditem_form = FoodLogFoodItemForm(user=request.user)
 
-    # Obsługa formularza dodawania Meal
+    # Handling the Meal form submission
     if 'submit_meal' in request.POST:
         meal_form = FoodLogMealForm(request.POST, user=request.user)
         if meal_form.is_valid():
@@ -220,7 +220,7 @@ def food_log(request):
 
 
 def food_log_item_delete(request, item_id):
-    # W zależności od tego, czy obiekt to FoodLogFoodItem czy FoodLogMeal, będziesz musiał zastosować odpowiednią logikę.
+    # Depending on whether the object is a FoodLogFoodItem or FoodLogMeal, you will need to apply the appropriate logic.
     try:
         item = FoodLogFoodItem.objects.get(pk=item_id)
     except FoodLogFoodItem.DoesNotExist:

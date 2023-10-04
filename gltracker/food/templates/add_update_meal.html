@@ -26,10 +26,14 @@
 
                         {% for field in form %}
                             {% if field.name == 'image' %}
-                                {% if form.instance.image %}
-                                    <img src="{{ form.instance.image.url }}" alt="Meal Image" class="img-fluid" style="width: 200px; height: 200px;">
-                                {% endif %}
-                                {{ field|as_crispy_field }}
+                                <div class="card mb-3">
+                                    <div class="card-body">
+                                        {% if form.instance.image %}
+                                            <img src="{{ form.instance.image.url }}" alt="Meal Image" class="img-fluid mb-3" style="max-width: 200px;">
+                                        {% endif %}
+                                        {{ field|as_crispy_field }}
+                                    </div>
+                                </div>
                             {% else %}
                                 {{ field|as_crispy_field }}
                             {% endif %}
