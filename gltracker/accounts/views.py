@@ -17,7 +17,7 @@ from .forms import CreateUserForm, ProfileForm, WeightLogForm, \
 
 def register_page(request):
     if request.user.is_authenticated:
-        return redirect('index')
+        return redirect('profile')
     else:
         if request.method == "POST":
             form = CreateUserForm(request.POST)
