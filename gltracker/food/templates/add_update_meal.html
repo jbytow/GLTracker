@@ -23,15 +23,16 @@
                 <div class="card-body">
                     <form action='.' method="Post" enctype="multipart/form-data">
                         {% csrf_token %}
+
                         {% for field in form %}
                             {% if field.name == 'image' %}
-            {% if form.instance.image %}
-                <img src="{{ form.instance.image.url }}" alt="Meal Image" class="img-fluid" style="width: 200px; height: 200px;">
-            {% endif %}
-            {{ field|as_crispy_field }}
-        {% else %}
-            {{ field|as_crispy_field }}
-        {% endif %}
+                                {% if form.instance.image %}
+                                    <img src="{{ form.instance.image.url }}" alt="Meal Image" class="img-fluid" style="width: 200px; height: 200px;">
+                                {% endif %}
+                                {{ field|as_crispy_field }}
+                            {% else %}
+                                {{ field|as_crispy_field }}
+                            {% endif %}
                             <div class="field-separator"></div>
                         {% endfor %}
 
@@ -39,14 +40,18 @@
                             <h3>Ingredients</h3>
                             {{ formset.management_form }}
                             <div id="ingredient-form-list">
-                                {% for form in formset %}
+                                {% for sub_form in formset %}
                                     <div class="ingredient-form">
-                                        {{ form.as_p }}
+                                        {% for sub_field in sub_form %}
+                                            {{ sub_field|as_crispy_field }}
+                                        {% endfor %}
                                     </div>
                                 {% endfor %}
                             </div>
-
-                            <div id="empty-form" class="hidden">{{ formset.empty_form.as_p }}</div>
+                            <div id="empty-form" class="hidden">
+                                {% for sub_field in formset.empty_form %}
+                                    {{ sub_field|as_crispy_field }}
+                                {% endfor %}</div>
                             <button id="add-more" type="button" class="btn btn-secondary mb-2">Add Ingredients</button>
                         {% endif %}
                         <button style="margin-top:10px;" type="submit" class="btn btn-primary">Save</button>
