@@ -7,6 +7,18 @@ class FoodItemForm(forms.ModelForm):
     class Meta:
         model = FoodItem
         exclude = ['user', 'is_active']
+        labels = {
+            'kcal': 'Kcal (in 100g)',
+            'carbohydrates': 'Carbohydrates (in 100g)',
+            'fats': 'Fats (in 100g)',
+            'proteins': 'Proteins (in 100g)',
+            'glycemic_load': 'Glycemic Load (in 100g)'
+        }
+        widgets = {
+            'glycemic_load': forms.NumberInput(attrs={
+                'placeholder': "If no value is provided, it will be calculated automatically: "
+                               "GL = GI x carbohydrates / 100"}),
+        }
 
 
 class MealItemForm(forms.ModelForm):

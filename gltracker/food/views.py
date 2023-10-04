@@ -1,6 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.contrib import messages
 from django.http import HttpResponseForbidden
 from django.forms import modelformset_factory
 
@@ -33,7 +34,10 @@ def fooditem_add(request):
             fooditem = form.save(commit=False)
             fooditem.user = request.user
             fooditem.save()
-            return redirect('fooditem_list')
+
+            messages.success(request, 'Food item has been added!')
+
+            return redirect('fooditem_add')
     else:
         form = FoodItemForm()
     return render(request, 'add_fooditem.html', {'form': form})

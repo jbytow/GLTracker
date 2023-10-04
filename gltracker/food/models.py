@@ -7,7 +7,7 @@ import os
 
 class FoodItem(models.Model):
     name = models.CharField(max_length=200)
-    kcal = models.DecimalField(max_digits=5, decimal_places=2, default=0, blank=True)
+    kcal = models.DecimalField(max_digits=5, decimal_places=2, default=0)
     carbohydrates = models.DecimalField(max_digits=5, decimal_places=2, default=0)
     fats = models.DecimalField(max_digits=5, decimal_places=2, default=0)
     proteins = models.DecimalField(max_digits=5, decimal_places=2, default=0)
