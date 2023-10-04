@@ -75,9 +75,15 @@ def meal_details(request, meal_id):
 
     meal_macros = meal.calculate_total_macros_meal()
 
+    meal_items = meal.mealitem_set.all()
+
     message = request.session.pop('message', None)
 
-    return render(request, 'meal_details.html', {'meal': meal, 'meal_macros': meal_macros, 'message': message})
+    return render(request, 'meal_details.html', {
+        'meal': meal,
+        'meal_macros': meal_macros,
+        'meal_items': meal_items,
+        'message': message})
 
 
 @login_required()

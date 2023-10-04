@@ -26,14 +26,37 @@
         <h3>{{ meal.name }}</h3>
 
         <div class='row'>
-            <!-- First Column - meal photo and description -->
+            <!-- First Column - meal photo, ingredients and description -->
             <div class='col-6'>
-                {% if meal.image %}
-                    <img src="{{ meal.image.url }}" alt="{{ meal.name }}" class="img-fluid" style="width: 600px; max-height: 600px;">
-                {% else %}
-                    <img src="{% static 'images/mealdefault.png' %}" alt="Default Meal Image" class="img-fluid" style="width: 600px; max-height: 600px;">
-                {% endif %}
 
+                <!-- Meal photo and ingredients container -->
+                <div class="d-flex align-items-start">
+
+                    <!-- Meal photo -->
+                    <div class="pr-3">
+                        {% if meal.image %}
+                            <img src="{{ meal.image.url }}" alt="{{ meal.name }}" class="img-fluid" style="width: 300px; max-height: 300px;">
+                        {% else %}
+                            <img src="{% static 'images/mealdefault.png' %}" alt="Default Meal Image" class="img-fluid" style="width: 300px; max-height: 300px;">
+                        {% endif %}
+                    </div>
+
+                    <!-- Meal ingredients -->
+                    <div class="card" style="flex-grow: 1;">
+                        <div class="card-header">
+                            <h5>Ingredients</h5>
+                        </div>
+                        <div class="card-body">
+                            <ul>
+                                {% for item in meal.mealitem_set.all %}
+                                    <li>{{ item.food_item.name }} - {{ item.quantity }}g</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Description card below the photo and items -->
                 <div class="card mt-3">
                     <div class="card-header">
                         <h5>Description</h5>
