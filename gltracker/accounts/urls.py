@@ -9,6 +9,6 @@ urlpatterns = [
     path('logout/', accounts.views.logout_user, name='logout'),
     path('profile/', accounts.views.profile_page, name='profile'),
     path('profile/delete/<int:weight_id>/', accounts.views.weight_delete, name='weight_delete'),
-    path('food_log/', accounts.views.food_log, name='food_log'),
-    path('food_log/delete_item/<int:item_id>/', accounts.views.food_log_item_delete, name='food_log_item_delete'),
+    path('food-log/', accounts.views.food_log, name='food_log'),
+    path('food-log/delete_item/<int:item_id>/', accounts.views.food_log_item_delete, name='food_log_item_delete'),
 ]

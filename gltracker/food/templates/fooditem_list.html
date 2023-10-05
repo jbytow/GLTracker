@@ -10,170 +10,178 @@
     .custom-button {
      font-size: 8px;
     }
+
+
 </style>
+
+<link rel="stylesheet" type="text/css" href="{% static 'food/css/food_styles.css' %}">
 
 {% block content %}
 
+<link rel="stylesheet" type="text/css" href="{% static 'food/css/food_styles.css' %}">
+
 <script src="{% static 'js/foodItemList.js' %}"></script>
 
-<div style="display: flex; align-items: center;">
-  <h2 style="margin-right: auto;"><strong>My Added Products</strong></h2>
-  <a href="{% url 'fooditem_add' %}" class="add-button">
-    <i class="fas fa-plus"></i>
-    Add Product
-  </a>
-</div>
+<div class="container-fluid mt-3">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h2><strong>My Added Products</strong></h2>
+    <a href="{% url 'fooditem_add' %}" class="btn btn-primary">
+      <i class="fas fa-plus"></i> Add Product
+    </a>
+  </div>
      <!-- # User fooditems -->
-<div class="table-container">
-<table id="food-table-user">
-  <thead>
-    <tr>
-      <th data-column-index="0" onclick="sortTable('food-table-user', this)">
-        Name
-        <button class="btn btn-sm custom-button">
-          <i class="fas fa-arrow-up"></i>
-          <i class="fas fa-arrow-down"></i>
-        </button>
-      </th>
-      <th data-column-index="1" onclick="sortTable('food-table-user', this)">
-        Calories
-        <button class="btn btn-sm custom-button">
-          <i class="fas fa-arrow-up"></i>
-          <i class="fas fa-arrow-down"></i>
-        </button>
-      </th>
-      <th data-column-index="2" onclick="sortTable('food-table-user', this)">
-        Carbohydrates
-        <button class="btn btn-sm custom-button">
-          <i class="fas fa-arrow-up"></i>
-          <i class="fas fa-arrow-down"></i>
-        </button>
-      </th>
-      <th data-column-index="3" onclick="sortTable('food-table-user', this)">
-        Fats
-        <button class="btn btn-sm custom-button">
-          <i class="fas fa-arrow-up"></i>
-          <i class="fas fa-arrow-down"></i>
-        </button>
-      </th>
-      <th data-column-index="4" onclick="sortTable('food-table-user', this)">
-        Proteins
-        <button class="btn btn-sm custom-button">
-          <i class="fas fa-arrow-up"></i>
-          <i class="fas fa-arrow-down"></i>
-        </button>
-      </th>
-      <th data-column-index="5" onclick="sortTable('food-table-user', this)">
-        Glycemic Index
-        <button class="btn btn-sm custom-button">
-          <i class="fas fa-arrow-up"></i>
-          <i class="fas fa-arrow-down"></i>
-        </button>
-      </th>
-      <th data-column-index="6" onclick="sortTable('food-table-user', this)">
-        Glycemic Load
-        <button class="btn btn-sm custom-button">
-          <i class="fas fa-arrow-up"></i>
-          <i class="fas fa-arrow-down"></i>
-        </button>
-      </th>
-    </tr>
-  </thead>
-  <tbody>
+  <div class="table-responsive shadow mb-4 rounded">
+      <table class="table table-striped table-hover" id="food-table-user">
+        <thead>
+          <tr>
+            <th class="col-name" data-column-index="0" onclick="sortTable('food-table-user', this)">
+              Name
+              <button class="btn btn-sm custom-button">
+                <i class="fas fa-arrow-up"></i>
+                <i class="fas fa-arrow-down"></i>
+              </button>
+            </th>
+            <th class="col-other" data-column-index="1" onclick="sortTable('food-table-user', this)">
+              Calories
+              <button class="btn btn-sm custom-button">
+                <i class="fas fa-arrow-up"></i>
+                <i class="fas fa-arrow-down"></i>
+              </button>
+            </th>
+            <th class="col-other" data-column-index="2" onclick="sortTable('food-table-user', this)">
+              Carbohydrates
+              <button class="btn btn-sm custom-button">
+                <i class="fas fa-arrow-up"></i>
+                <i class="fas fa-arrow-down"></i>
+              </button>
+            </th>
+            <th class="col-other" data-column-index="3" onclick="sortTable('food-table-user', this)">
+              Fats
+              <button class="btn btn-sm custom-button">
+                <i class="fas fa-arrow-up"></i>
+                <i class="fas fa-arrow-down"></i>
+              </button>
+            </th>
+            <th class="col-other" data-column-index="4" onclick="sortTable('food-table-user', this)">
+              Proteins
+              <button class="btn btn-sm custom-button">
+                <i class="fas fa-arrow-up"></i>
+                <i class="fas fa-arrow-down"></i>
+              </button>
+            </th>
+            <th class="col-other" data-column-index="5" onclick="sortTable('food-table-user', this)">
+              Glycemic Index
+              <button class="btn btn-sm custom-button">
+                <i class="fas fa-arrow-up"></i>
+                <i class="fas fa-arrow-down"></i>
+              </button>
+            </th>
+            <th class="col-other" data-column-index="6" onclick="sortTable('food-table-user', this)">
+              Glycemic Load
+              <button class="btn btn-sm custom-button">
+                <i class="fas fa-arrow-up"></i>
+                <i class="fas fa-arrow-down"></i>
+              </button>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
 
-  {% for fooditem in user_items %}
-    <tr>
-      <td>
-        {{ fooditem.name }}
-          <button class="btn btn-sm custom-button delete-button" onclick="deleteFoodItem({{ fooditem.id }})">
-            <i class="fas fa-trash"></i>
-          </button>
-      </td>
-      <td>{{ fooditem.kcal }}</td>
-      <td>{{ fooditem.carbohydrates }}</td>
-      <td>{{ fooditem.fats }}</td>
-      <td>{{ fooditem.proteins }}</td>
-      <td>{{ fooditem.glycemic_index }}</td>
-      <td>{{ fooditem.glycemic_load }}</td>
-    </tr>
-  {% endfor %}
-  </tbody>
-</table>
+        {% for fooditem in user_items %}
+          <tr>
+            <td class="col-name">
+              {{ fooditem.name }}
+                <button class="btn btn-sm custom-button delete-button" onclick="deleteFoodItem({{ fooditem.id }})">
+                  <i class="fas fa-trash"></i>
+                </button>
+            </td>
+            <td class="col-other">{{ fooditem.kcal }}</td>
+            <td class="col-other">{{ fooditem.carbohydrates }}</td>
+            <td class="col-other">{{ fooditem.fats }}</td>
+            <td class="col-other">{{ fooditem.proteins }}</td>
+            <td class="col-other">{{ fooditem.glycemic_index }}</td>
+            <td class="col-other">{{ fooditem.glycemic_load }}</td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+  </div>
+
+<!-- # Default, database fooditems -->
+ <h2 class="mb-4"><strong>Default Products List</strong></h2>
+
+  <div class="table-responsive shadow rounded">
+    <table class="table table-striped table-hover" id="food-table-default">
+      <thead>
+        <tr>
+          <th class="col-name" data-column-index="0" onclick="sortTable('food-table-default', this)">
+            Name
+            <button class="btn btn-sm custom-button">
+              <i class="fas fa-arrow-up"></i>
+              <i class="fas fa-arrow-down"></i>
+            </button>
+          </th>
+          <th data-column-index="1" onclick="sortTable('food-table-default', this)">
+            Calories
+            <button class="btn btn-sm custom-button">
+              <i class="fas fa-arrow-up"></i>
+              <i class="fas fa-arrow-down"></i>
+            </button>
+          </th>
+          <th class="col-other" data-column-index="2" onclick="sortTable('food-table-default', this)">
+            Carbohydrates
+            <button class="btn btn-sm custom-button">
+              <i class="fas fa-arrow-up"></i>
+              <i class="fas fa-arrow-down"></i>
+            </button>
+          </th>
+          <th class="col-other" data-column-index="3" onclick="sortTable('food-table-default', this)">
+            Fats
+            <button class="btn btn-sm custom-button">
+              <i class="fas fa-arrow-up"></i>
+              <i class="fas fa-arrow-down"></i>
+            </button>
+          </th>
+          <th class="col-other" data-column-index="4" onclick="sortTable('food-table-default', this)">
+            Proteins
+            <button class="btn btn-sm custom-button">
+              <i class="fas fa-arrow-up"></i>
+              <i class="fas fa-arrow-down"></i>
+            </button>
+          </th>
+          <th class="col-other" data-column-index="5" onclick="sortTable('food-table-default', this)">
+            Glycemic Index
+            <button class="btn btn-sm custom-button">
+              <i class="fas fa-arrow-up"></i>
+              <i class="fas fa-arrow-down"></i>
+            </button>
+          </th>
+          <th class="col-other" data-column-index="6" onclick="sortTable('food-table-default', this)">
+            Glycemic Load
+            <button class="btn btn-sm custom-button">
+              <i class="fas fa-arrow-up"></i>
+              <i class="fas fa-arrow-down"></i>
+            </button>
+          </th>
+        </tr>
+      </thead>
+    <tbody>
+
+    {% for item in public_items %}
+      <tr>
+        <td class="col-name">{{ item.name }}</td>
+        <td class="col-other">{{ item.kcal }}</td>
+        <td class="col-other">{{ item.carbohydrates }}</td>
+        <td class="col-other">{{ item.fats }}</td>
+        <td class="col-other">{{ item.proteins }}</td>
+        <td class="col-other">{{ item.glycemic_index }}</td>
+        <td class="col-other">{{ item.glycemic_load }}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+    </table>
+    </div>
 </div>
-
-<h2><strong>Default Products List</strong></h2>     <!-- # Default, database fooditems -->
-<div class="table-container">
-<table id="food-table-default">
-  <thead>
-    <tr>
-      <th data-column-index="0" onclick="sortTable('food-table-default', this)">
-        Name
-        <button class="btn btn-sm custom-button">
-          <i class="fas fa-arrow-up"></i>
-          <i class="fas fa-arrow-down"></i>
-        </button>
-      </th>
-      <th data-column-index="1" onclick="sortTable('food-table-default', this)">
-        Calories
-        <button class="btn btn-sm custom-button">
-          <i class="fas fa-arrow-up"></i>
-          <i class="fas fa-arrow-down"></i>
-        </button>
-      </th>
-      <th data-column-index="2" onclick="sortTable('food-table-default', this)">
-        Carbohydrates
-        <button class="btn btn-sm custom-button">
-          <i class="fas fa-arrow-up"></i>
-          <i class="fas fa-arrow-down"></i>
-        </button>
-      </th>
-      <th data-column-index="3" onclick="sortTable('food-table-default', this)">
-        Fats
-        <button class="btn btn-sm custom-button">
-          <i class="fas fa-arrow-up"></i>
-          <i class="fas fa-arrow-down"></i>
-        </button>
-      </th>
-      <th data-column-index="4" onclick="sortTable('food-table-default', this)">
-        Proteins
-        <button class="btn btn-sm custom-button">
-          <i class="fas fa-arrow-up"></i>
-          <i class="fas fa-arrow-down"></i>
-        </button>
-      </th>
-      <th data-column-index="5" onclick="sortTable('food-table-default', this)">
-        Glycemic Index
-        <button class="btn btn-sm custom-button">
-          <i class="fas fa-arrow-up"></i>
-          <i class="fas fa-arrow-down"></i>
-        </button>
-      </th>
-      <th data-column-index="6" onclick="sortTable('food-table-default', this)">
-        Glycemic Load
-        <button class="btn btn-sm custom-button">
-          <i class="fas fa-arrow-up"></i>
-          <i class="fas fa-arrow-down"></i>
-        </button>
-      </th>
-    </tr>
-  </thead>
-  <tbody>
-
-  {% for item in public_items %}
-    <tr>
-      <td>{{ item.name }}</td>
-      <td>{{ item.kcal }}</td>
-      <td>{{ item.carbohydrates }}</td>
-      <td>{{ item.fats }}</td>
-      <td>{{ item.proteins }}</td>
-      <td>{{ item.glycemic_index }}</td>
-      <td>{{ item.glycemic_load }}</td>
-    </tr>
-  {% endfor %}
-  </tbody>
-</table>
-</div>
-
 
 
 {% endblock %}

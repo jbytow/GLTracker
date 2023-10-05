@@ -4,8 +4,8 @@ import food.views
 
 urlpatterns = [
 
-    path('fooditem_add/', food.views.fooditem_add, name='fooditem_add'),
-    path('fooditem_list/', food.views.fooditem_list, name='fooditem_list'),
+    path('fooditem-add/', food.views.fooditem_add, name='fooditem_add'),
+    path('fooditem-list/', food.views.fooditem_list, name='fooditem_list'),
     path('fooditem/delete/<int:food_item_id>/', food.views.fooditem_delete, name='fooditem_delete'),
     path('meals/', food.views.meal_list, name='meal_list'),
     path('meals/<int:meal_id>', food.views.meal_details, name='meal_details'),

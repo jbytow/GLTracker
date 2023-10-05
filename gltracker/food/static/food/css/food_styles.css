@@ -1,0 +1,25 @@
+
+.shadow {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.table-responsive {
+  overflow: auto;
+  max-height: 1000px;
+}
+
+.col-name {
+    width: 18% !important;
+}
+
+.col-other {
+    width: 12% !important;
+}
+
+.manual-striped {
+  background-color: rgba(0,0,0,.05);
+}
+
+.manual-hover:hover {
+  background-color: rgba(0,0,0,.10);
+}

@@ -22,6 +22,17 @@ function sortTable(tableId, header) {
 
   table.setAttribute('data-sort', ascending ? 'desc' : 'asc');
 
+  // add class 'manual-striped' for very 1st, 'manual-hover' for every row
+  for(let i = 0; i < sortedRows.length; i++) {
+    if (i % 2 === 1) {
+      sortedRows[i].classList.remove('manual-striped');
+    } else {
+      sortedRows[i].classList.add('manual-striped');
+    }
+
+    sortedRows[i].classList.add('manual-hover');
+  }
+
   sortedRows.unshift(rows[0]);
 
   while (table.firstChild) {
@@ -31,6 +42,7 @@ function sortTable(tableId, header) {
   sortedRows.forEach(row => {
     table.appendChild(row);
   });
+
 }
 
 //deleting FoodItems
