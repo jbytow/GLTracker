@@ -6,8 +6,10 @@
 
 {% block content %}
 
+<link rel="stylesheet" type="text/css" href="{% static 'food/css/food_styles.css' %}">
+
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="{% static 'js/mealDetails.js' %}"></script>
+<script src="{% static 'food/js/mealDetails.js' %}"></script>
 
 {% if message %}
 <div class="alert alert-success" role="alert">
