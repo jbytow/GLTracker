@@ -52,7 +52,7 @@ def fooditem_delete(request, food_item_id):   # doesn't really delete but change
 
 @login_required()
 def meal_list(request):
-    meals = Meal.objects.filter(user=request.user)
+    meals = Meal.objects.filter(user=request.user).order_by('-id')
 
     paginator = Paginator(meals, 4)
     page = request.GET.get('page')

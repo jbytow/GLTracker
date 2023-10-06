@@ -2,6 +2,19 @@
   border: 1px solid #000;
 }
 
+.meal-image {
+    height: 200px;
+}
+
+.fixed-card-width {
+    width: 250px;
+}
+
+.pagination-container {
+    display: flex;
+    justify-content: center;
+}
+
 .ingredient-form {
     border-bottom: 1px solid black;
     margin-bottom: 15px;

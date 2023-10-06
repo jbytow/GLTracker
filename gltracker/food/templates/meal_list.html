@@ -8,53 +8,47 @@
 
 <link rel="stylesheet" type="text/css" href="{% static 'food/css/food_styles.css' %}">
 
+<div class="container my-4">
+    <h2 class="mb-4">My Meals</h2>
 
-  <h2>My Meals</h2>
-
-  <div class='py-4 mt-auto'>
-    <div class='container px-4'>
-
-      <div class="row meal-tiles">
+    <div class="row">
         {% for meal in pages %}
-          <div class="col-sm-12 col-md-12 col-lg-4 col-xl-3 d-flex align-items-stretch meal-tile">
-            <div class="card mb-3 meal-tile-border">
-                {% if meal.image %}
-                  <img src="{{ meal.image.url }}" alt="{{ meal.name }}" class="img-fluid" style="height: 200px;">
-                {% else %}
-                  <img src="{% static 'images/mealdefault.png' %}" alt="Default Image" class="img-fluid" style="height: 200px;">
-                {% endif %}
-
-              <div class="card-body">
-
-                <h4 class='card-title'> <strong>{{ meal.name }}</strong></h4>
-                {% with macros=meal.calculate_total_macros_meal %}
-                  <p>Kcal in 100g: {{ macros.total_kcal_per_100g }}</p>
-                  <p>Carbohydrates in 100g: {{ macros.total_carbohydrates_per_100g }}</p>
-                  <p>Fats in 100g: {{ macros.total_fats_per_100g }}</p>
-                  <p>Proteins in 100g: {{ macros.total_proteins_per_100g }}</p>
-                  <p>Glycemic Load in 100g: {{ macros.total_glycemic_load_per_100g }}</p>
-                  <p>Glycemic Index: {{ macros.average_glycemic_index }}</p>
-                {% endwith %}
-
-                  <div class='mt-auto'>
-                      <a href="{% url 'meal_details' meal.id %}" type='button' class='btn btn-link'>
-                          View details
-                      </a>
-                  </div>
-              </div>
-
+            <div class="col-sm-12 col-md-6 col-lg-4 col-xl-3 mb-4 d-flex align-items-stretch">
+                <div class="card fixed-card-width meal-tile-border">
+                    {% if meal.image %}
+                        <img src="{{ meal.image.url }}" alt="{{ meal.name }}" class="card-img-top meal-image">
+                    {% else %}
+                        <img src="{% static 'images/mealdefault.png' %}" alt="Default Image" class="card-img-top meal-image">
+                    {% endif %}
+                    <div class="card-body">
+                        <h5 class="card-title"><Strong>{{ meal.name }}</Strong></h5>
+                        {% with macros=meal.calculate_total_macros_meal %}
+                            <p class="card-text">
+                                <p>Kcal in 100g: {{ macros.total_kcal_per_100g }}</p>
+                                <p>Carbohydrates in 100g: {{ macros.total_carbohydrates_per_100g }}</p>
+                                <p>Fats in 100g: {{ macros.total_fats_per_100g }}</p>
+                                <p>Proteins in 100g: {{ macros.total_proteins_per_100g }}</p>
+                                <p>Glycemic Load in 100g: {{ macros.total_glycemic_load_per_100g }}</p>
+                                <p>Glycemic Index: {{ macros.average_glycemic_index }}</p>
+                            </p>
+                        {% endwith %}
+                        <a href="{% url 'meal_details' meal.id %}" class="btn btn-primary">View details</a>
+                    </div>
+                </div>
             </div>
-          </div>
         {% empty %}
-          <div class="col-12">
-            <p>No meals found.</p>
-          </div>
+            <div class="col-12">
+                <div class="alert alert-warning" role="alert">
+                    No meals found.
+                </div>
+            </div>
         {% endfor %}
-      </div>
+    </div>
 
       {% if pages.has_other_pages %}
-            <div class='d-flex justify-content-center'>
-                <ul class='pagination'>
+        <div class="d-flex justify-content-center mt-4">
+            <nav aria-label="Meal pages navigation">
+                <ul class="pagination">
                     {% if pages.has_previous %}
                         <li class='page-item'>
                             <a class='page-link' href='?page={{ pages.previous_page_number }}'>&laquo;</a>
@@ -85,14 +79,12 @@
                         </li>
                     {% endif %}
                 </ul>
-            </div>
-        {% endif %}
+            </nav>
+        </div>
+    {% endif %}
 
-    </div>
   </div>
 
-    </div>
-  </div>
 {% endblock %}
 
 
