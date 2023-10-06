@@ -2,7 +2,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib import messages
-from django.http import HttpResponseForbidden
+from django.http import HttpResponseForbidden, JsonResponse
 from django.forms import modelformset_factory
 
 from .models import FoodItem, Meal, MealItem
@@ -39,15 +39,15 @@ def fooditem_add(request):
     return render(request, 'add_fooditem.html', {'form': form})
 
 
-def fooditem_delete(request, food_item_id):   # doesn't really delete but change record to inactive
+def fooditem_delete(request, food_item_id):   # doesn't really delete but changes record to inactive
     food_item = get_object_or_404(FoodItem, id=food_item_id)
 
     if request.method == 'POST':
         food_item.is_active = False
         food_item.save()
-        return redirect('fooditem_list')
+        return JsonResponse({'status': 'success'})
 
-    return redirect('fooditem_list')
+    return JsonResponse({'status': 'error', 'message': 'Invalid request method'})
 
 
 @login_required()

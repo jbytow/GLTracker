@@ -59,9 +59,10 @@ function deleteFoodItem(foodItemId) {
                 'X-CSRFToken': csrfToken,
             },
         })
-        .then(function(response) {
-            if (response.ok) {
-                window.location.href = '/food/fooditem_list/';
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                location.reload();
             } else {
                 console.error('Error during removal of the element');
             }

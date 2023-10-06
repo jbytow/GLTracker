@@ -2,9 +2,12 @@
 
 {% load static %}
 
+
 {% block title %}GLTracker | Food List{% endblock %}
 
 {% block content %}
+
+{% csrf_token %}
 
 <link rel="stylesheet" type="text/css" href="{% static 'food/css/food_styles.css' %}">
 
