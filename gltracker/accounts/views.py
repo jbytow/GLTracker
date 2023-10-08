@@ -11,7 +11,7 @@ from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes, force_str
 from django.core.mail import EmailMessage
 
-from .forms import DateForm
+from .forms import DateForm, SetPasswordForm
 
 from datetime import datetime
 
@@ -105,6 +105,23 @@ def login_page(request):
             messages.error(request, 'Invalid username/email or password.')
 
     return render(request, 'login.html')
+
+
+@login_required()
+def password_change(request):
+    user = request.user
+    if request.method == 'POST':
+        form = SetPasswordForm(user, request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Your password has been changed")
+            return redirect('login')
+        else:
+            for error in list(form.errors.values()):
+                messages.error(request, error)
+
+    form = SetPasswordForm(user)
+    return render(request, 'password_change.html', {'form': form})
 
 
 def logout_user(request):

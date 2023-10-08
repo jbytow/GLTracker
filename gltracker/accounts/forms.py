@@ -1,6 +1,7 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm
 from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from django.forms.widgets import DateInput
 from django.db.models import Q
 
@@ -30,6 +31,11 @@ class ProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
         fields = ['height', 'target_weight']
+
+
+class SetPasswordForm(PasswordChangeForm):
+    class Meta:
+        model = get_user_model()
 
 
 class WeightLogForm(forms.ModelForm):
