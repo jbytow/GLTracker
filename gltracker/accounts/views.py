@@ -1,10 +1,15 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
-from django.contrib.auth import login, logout, authenticate
+from django.contrib.auth import login, logout, authenticate, get_user_model
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.utils import timezone
+from django.template.loader import render_to_string
+from django.contrib.sites.shortcuts import get_current_site
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.utils.encoding import force_bytes, force_str
+from django.core.mail import EmailMessage
 
 from .forms import DateForm
 
@@ -13,6 +18,44 @@ from datetime import datetime
 from .models import Profile, WeightRecord, FoodLog, FoodDailyRequirements, FoodLogMeal, FoodLogFoodItem
 from .forms import CreateUserForm, ProfileForm, WeightLogForm, \
     FoodDailyRequirementsForm, FoodLogFoodItemForm, FoodLogMealForm
+from .tokens import account_activation_token
+
+
+def activateEmail(request, user, to_email):
+    mail_subject = "Activate your user account."
+    message = render_to_string('accounts/template_activate_account.html', {
+        'user': user.username,
+        'domain': get_current_site(request).domain,
+        'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+        'token': account_activation_token.make_token(user),
+        'protocol': 'https' if request.is_secure() else 'http'
+    })
+    email = EmailMessage(mail_subject, message, to=[to_email])
+    if email.send():
+        messages.success(request, f'Account was successfully created. Please activate your e-mail. \
+        Note: Check your spam folder')
+    else:
+        messages.error(request, f'Problem sending confirmation email to {to_email}, check if you typed it correctly.')
+
+
+def activate(request, uidb64, token):
+    User = get_user_model()
+    try:
+        uid = force_str(urlsafe_base64_decode(uidb64))
+        user = User.objects.get(pk=uid)
+    except(TypeError, ValueError, OverflowError, User.DoesNotExist):
+        user = None
+
+    if user is not None and account_activation_token.check_token(user, token):
+        user.is_active = True
+        user.save()
+
+        messages.success(request, 'Thank you for your email confirmation. Now you can login your account.')
+        return redirect('login')
+    else:
+        messages.error(request, 'Activation link is invalid!')
+
+    return redirect('profile')
 
 
 def register_page(request):
@@ -22,14 +65,14 @@ def register_page(request):
         if request.method == "POST":
             form = CreateUserForm(request.POST)
             if form.is_valid():
-                user = form.save()
-
+                user = form.save(commit=False)
+                user.is_active = False
+                user.save()
                 Profile.objects.create(
                     user=user,
                     name=user.username,
                 )
-
-                messages.success(request, 'Account was successfully created')
+                activateEmail(request, user, form.cleaned_data.get('email'))
                 return redirect('login')
         else:
             form = CreateUserForm()
@@ -100,10 +143,11 @@ def profile_page(request):
 
     user_weight_log = WeightRecord.objects.filter(profile__user=request.user).order_by('-entry_date')
 
-    if user_weight_log:
-        latest_weight = float(user_weight_log[0].weight)    # changed number to float for later conversion to m from cm
-        height = profile.height
-        bmi = round(latest_weight / ((height/100) ** 2), 2)
+    height = profile.height
+    latest_weight = None
+
+    if user_weight_log and latest_weight is not None and height is not None:
+        bmi = round(latest_weight / ((height / 100) ** 2), 2)
     else:
         bmi = None
 
@@ -236,4 +280,3 @@ def food_log_item_delete(request, item_id):
 
     item.delete()
     return redirect('food_log')
-
