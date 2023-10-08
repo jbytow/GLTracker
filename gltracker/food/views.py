@@ -11,7 +11,7 @@ from .forms import FoodItemForm, MealItemForm, MealForm
 
 @login_required()
 def fooditem_list(request):
-    public_items = FoodItem.objects.filter(user=None)  # Default, database fooditems
+    public_items = FoodItem.objects.filter(user=None).order_by('name')  # Default, database fooditems
     user_items = FoodItem.objects.filter(user=request.user, is_active=True)  # User fooditems
 
     context = {

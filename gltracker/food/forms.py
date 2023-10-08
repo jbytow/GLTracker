@@ -1,5 +1,5 @@
 from django import forms
-from django.db.models import Q
+from django.db.models import Q, Case, When, Value, IntegerField
 from .models import FoodItem, MealItem, Meal
 
 
@@ -28,7 +28,17 @@ class MealItemForm(forms.ModelForm):
 
     def __init__(self, user=None, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['food_item'].queryset = FoodItem.objects.filter(Q(user=user, is_active=True) | Q(user__isnull=True))
+        self.fields['food_item'].queryset = (
+            FoodItem.objects.filter(Q(user=user, is_active=True) | Q(user__isnull=True))
+            .annotate(
+                sort_order=Case(
+                    When(user__isnull=True, then=Value(1)),
+                    default=Value(0),
+                    output_field=IntegerField()
+                )
+            )
+            .order_by('sort_order', 'name')
+        )
         self.fields['food_item'].empty_label = None
 
 
