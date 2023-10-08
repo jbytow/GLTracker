@@ -5,12 +5,14 @@ from django.forms.widgets import DateInput
 from django.db.models import Q
 
 from django_select2.forms import ModelSelect2Widget
+from captcha.fields import ReCaptchaField
 
 from .models import Profile, WeightRecord, FoodDailyRequirements, FoodLogFoodItem, FoodLogMeal, FoodItem, Meal
 
 
 class CreateUserForm(UserCreationForm):
     email = forms.EmailField(required=True)
+    captcha = ReCaptchaField()
 
     class Meta:
         model = User
