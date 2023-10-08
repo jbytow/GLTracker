@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.forms.widgets import DateInput
 from django.db.models import Q
 
+from datetime import date
 from django_select2.forms import ModelSelect2Widget
 from captcha.fields import ReCaptchaField
 
@@ -32,6 +33,10 @@ class ProfileForm(forms.ModelForm):
 
 
 class WeightLogForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(WeightLogForm, self).__init__(*args, **kwargs)
+        self.fields['entry_date'].initial = date.today()
+
     class Meta:
         model = WeightRecord
         fields = ['entry_date', 'weight']

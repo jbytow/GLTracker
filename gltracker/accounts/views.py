@@ -144,12 +144,18 @@ def profile_page(request):
     user_weight_log = WeightRecord.objects.filter(profile__user=request.user).order_by('-entry_date')
 
     height = profile.height
-    latest_weight = None
 
-    if user_weight_log and latest_weight is not None and height is not None:
-        bmi = round(latest_weight / ((height / 100) ** 2), 2)
+    if user_weight_log.exists():
+        latest_weight = float(user_weight_log[0].weight)
+        height = profile.height
+
+        if latest_weight is not None and height is not None:
+            bmi = round(latest_weight / ((height / 100) ** 2), 2)
+        else:
+            bmi = None
     else:
         bmi = None
+        latest_weight = None
 
     serialized_data = [{'weight': record.weight, 'entry_date': record.entry_date.strftime('%Y-%m-%d')} for record in
                        user_weight_log]
