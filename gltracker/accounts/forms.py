@@ -1,5 +1,5 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm
+from django.contrib.auth.forms import UserCreationForm, SetPasswordForm, PasswordChangeForm, PasswordResetForm
 from django.contrib.auth.models import User
 from django.contrib.auth import get_user_model
 from django.forms.widgets import DateInput
@@ -7,7 +7,7 @@ from django.db.models import Q
 
 from datetime import date
 from django_select2.forms import ModelSelect2Widget
-from captcha.fields import ReCaptchaField
+from captcha.fields import ReCaptchaField, ReCaptchaV2Checkbox
 
 from .models import Profile, WeightRecord, FoodDailyRequirements, FoodLogFoodItem, FoodLogMeal, FoodItem, Meal
 
@@ -33,9 +33,21 @@ class ProfileForm(forms.ModelForm):
         fields = ['height', 'target_weight']
 
 
-class SetPasswordForm(PasswordChangeForm):
+class PasswordChangeForm(PasswordChangeForm):
     class Meta:
         model = get_user_model()
+
+
+class PasswordSetForm(SetPasswordForm):
+    class Meta:
+        model = get_user_model()
+
+
+class PasswordResetForm(PasswordResetForm):
+    def __init__(self, *args, **kwargs):
+        super(PasswordResetForm, self).__init__(*args, **kwargs)
+
+    captcha = ReCaptchaField(widget=ReCaptchaV2Checkbox())
 
 
 class WeightLogForm(forms.ModelForm):
