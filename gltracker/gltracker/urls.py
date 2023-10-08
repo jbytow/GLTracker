@@ -23,7 +23,7 @@ import accounts.views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', accounts.views.profile_page, name="main_profile"),
+    path('', accounts.views.profile_page, name="index"),
     path('accounts/', include('accounts.urls')),
     path('food/', include('food.urls')),
     path("select2/", include("django_select2.urls")),
