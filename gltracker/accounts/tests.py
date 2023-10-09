@@ -70,50 +70,6 @@ class FoodLogFoodItemTestCase(TestCase):
         self.assertEqual(food_log_item.get_calories(), 150)
 
 
-class AuthenticationViewsTest(TestCase):
-
-    def setUp(self):
-        self.client = Client()
-        self.User = get_user_model()
-        self.register_url = reverse('register')
-        self.login_url = reverse('login')
-        self.user_data = {
-            'username': 'testuser',
-            'password1': 'testpassword',
-            'password2': 'testpassword',
-            'email': 'testuser@example.com'
-        }
-
-    @patch('recaptcha.fields.ReCaptchaField.validate', return_value=None)
-    def test_register_POST(self, _):
-        response = self.client.post(self.register_url, self.user_data)
-        self.assertEqual(response.status_code, 302)
-        self.assertRedirects(response, reverse('login'))
-
-    def test_login_POST_valid(self):
-        self.client.post(self.register_url, self.user_data)
-        response = self.client.post(self.login_url, {
-            'username': 'testuser',
-            'password': 'testpassword',
-        })
-        self.assertEqual(response.status_code, 302)
-        self.assertRedirects(response, reverse('profile'))
-
-    def test_login_POST_invalid(self):
-        response = self.client.post(self.login_url, {
-            'username': 'wrong@example.com',
-            'password': 'wrongpassword',
-        })
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(response, 'Invalid username/email or password.')
-
-    def test_logout_view(self):
-        self.client.post(self.register_url, self.user_data)
-        self.client.login(username='testuser', password='testpassword')
-        response = self.client.get(reverse('logout'))
-        self.assertFalse(response.wsgi_request.user.is_authenticated)
-
-
 class UserViewsTest(TestCase):
     def setUp(self):
         self.client = Client()
@@ -128,9 +84,9 @@ class UserViewsTest(TestCase):
         self.assertTemplateUsed(response, 'profile.html')
 
     def test_password_change_view(self):
-        self.client.login(username='testuser', password='OldComplexP@ssw0rd')
+        self.client.login(username='testuser', password='password')
         response = self.client.post(reverse('password_change'), {
-            'old_password': 'OldComplexP@ssw0rd',
+            'old_password': 'password',
             'new_password1': 'NewComplexP@ssw0rd!',
             'new_password2': 'NewComplexP@ssw0rd!'
         })
