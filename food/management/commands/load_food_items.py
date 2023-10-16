@@ -15,7 +15,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         csv_file = options['csv_file']
 
-        with open(csv_file, 'r') as file:
+        with open(csv_file, 'r', encoding='ISO-8859-1') as file:
             reader = csv.DictReader(file)
             for row in reader:
                 name = row['name']
