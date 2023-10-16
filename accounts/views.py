@@ -94,12 +94,16 @@ def login_page(request):
         identifier = request.POST.get('username')
         password = request.POST.get('password')
 
-        user = authenticate(request, username=identifier, password=password)
+        try:
+            user_by_username = User.objects.get(username__iexact=identifier)
+            user = authenticate(request, username=user_by_username.username, password=password)
+        except User.DoesNotExist:
+            user = None
 
         if user is None:
             try:
-                found_user = User.objects.get(email=identifier)
-                user = authenticate(request, username=found_user.username, password=password)
+                user_by_email = User.objects.get(email__iexact=identifier)
+                user = authenticate(request, username=user_by_email.username, password=password)
             except User.DoesNotExist:
                 pass
 
