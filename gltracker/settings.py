@@ -31,7 +31,7 @@ SECRET_KEY = os.environ['SECRET_KEY']
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['165.232.64.173']
+ALLOWED_HOSTS = ['165.232.64.173', 'gltracker.eu', 'www.gltracker.eu']
 
 
 # Application definition
