@@ -35,8 +35,7 @@ def meal_default_image():
 
 
 def meal_image_upload_to(instance, filename):
-    path = os.path.join('meal_images', instance.name, filename)
-    return path
+    return os.path.join('meal_images', instance.name, filename)
 
 
 class Meal(models.Model):
