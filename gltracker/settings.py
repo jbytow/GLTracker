@@ -161,3 +161,15 @@ EMAIL_HOST_PASSWORD = os.environ['EMAIL_HOST_PASSWORD']
 
 RECAPTCHA_PUBLIC_KEY = os.environ['RECAPTCHA_PUBLIC_KEY']
 RECAPTCHA_PRIVATE_KEY = os.environ['RECAPTCHA_PRIVATE_KEY']
+
+
+CACHES = {
+'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+    },
+'select2': {
+    'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
+    'LOCATION': 'select2_cache_table',
+    }
+}
+SELECT2_CACHE_BACKEND: str = 'select2'
