@@ -24,7 +24,7 @@ class FoodItem(models.Model):
         glycemic_load = self.carbohydrates * self.glycemic_index / 100
         return glycemic_load
 
-    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
 
     def __str__(self):
         return self.name
