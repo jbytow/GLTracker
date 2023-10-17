@@ -1,5 +1,5 @@
 # GLTracker
-GLTracker is webb application developed for my household to keep tracking on diet I'm on as the excel food log I've prepared wasn't good enough. 
+GLTracker is webb application for DESKTOP usage developed for my household to keep tracking on diet I'm on as the excel food log I've prepared wasn't good enough. 
 
 ## Features
 
