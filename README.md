@@ -8,6 +8,11 @@ GLTracker is webb application for DESKTOP usage developed for my household to ke
 * Food Log: Log to keep tracking of what was eaten each day vs Daily Requirements set by user, can add both Meals and food Items, also has macronutrients breakdown
 * Profile: User profile that's also weight history vs target weight and shows user data such as BMI
 
+## Using APP
+App is accessible at: https://www.gltracker.eu/, either you can make own account or user testuser:
+login: testuser
+password: TeSt135!
+
 ## Built With
 * Python
 * Django
@@ -19,10 +24,8 @@ GLTracker is webb application for DESKTOP usage developed for my household to ke
 * Javascript
 * JQuery
 
-## Using APP
-App is accessible at: https://www.gltracker.eu/, either you can make own account or user testuser:
-login: testuser
-password: TeSt135!
+## Test Coverage
+75% based on coverage.py report
 
 ## Installation on local
 1. Clone the Repository
