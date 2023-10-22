@@ -27,6 +27,13 @@ password: TeSt135!
 * Javascript
 * JQuery
 
+## Challenges during development:
+* Application and it's functionalities project
+* Frontend/JS, especially adding dynamic forms
+* Getting default food item data and loading it into the database
+* Food Log view logic
+* Deployment
+
 ## Installation on local
 1. Clone the Repository
 ```bash
