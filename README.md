@@ -13,6 +13,9 @@ App is accessible at: https://www.gltracker.eu/, either you can make own account
 login: testuser
 password: TeSt135!
 
+## Test Coverage
+75% based on coverage.py report
+
 ## Built With
 * Python
 * Django
@@ -23,9 +26,6 @@ password: TeSt135!
 * Bootstrap
 * Javascript
 * JQuery
-
-## Test Coverage
-75% based on coverage.py report
 
 ## Installation on local
 1. Clone the Repository
