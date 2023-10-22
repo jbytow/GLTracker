@@ -144,7 +144,12 @@ class FoodItemViewsTest(TestCase):
 
     def test_fooditem_delete_view_POST(self):
         response = self.client.post(reverse('fooditem_delete', args=[self.food_item.id]))
-        self.assertEqual(response.status_code, 302)
+
+        self.assertEqual(response.status_code, 200)
+
+        response_data = response.json()
+        self.assertEqual(response_data['status'], 'success')
+
         self.food_item.refresh_from_db()
         self.assertFalse(self.food_item.is_active)
 
