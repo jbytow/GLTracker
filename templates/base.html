@@ -12,30 +12,32 @@
 
 
 <body>
-    {% include 'navbar.html' %}
+    <main>
+        {% include 'navbar.html' %}
 
-    {% block content %}
+        {% block content %}
 
-    {% endblock %}
-
+        {% endblock %}
+    </main>
     <hr>
 <footer class="bg-dark text-white py-4">
     <div class="container">
-        <div class="row">
-            <div class="col-md-6">
+        <div class="row align-items-center">
+            <div class="col-sm-12 col-md-6 mb-3">
                 <h5>GLTracker</h5>
                 <p>Diet app for tracking glycemic load and calories</p>
                 <p>© 2023 GLTracker Jakub Bytow</p>
             </div>
-            <div class="col-md-6">
+            <div class="col-sm-12 col-md-6">
                 <h5>Contact</h5>
-                    <p><a href="mailto:jakub.bytow@gmail.com">jakub.bytow@gmail.com</a></p>
-                    <p><a href="https://github.com/jbytow/" target="_blank">https://github.com/jbytow/</a></p>
-                    <p><a href="https://www.linkedin.com/in/jakub-bytow-086184185/" target="_blank">https://www.linkedin.com/in/jakub-bytow-086184185/</a></p>
+                <p class="mb-2"><a href="mailto:jakub.bytow@gmail.com">jakub.bytow@gmail.com</a></p>
+                <p class="mb-2"><a href="https://github.com/jbytow/" target="_blank">https://github.com/jbytow/</a></p>
+                <p><a href="https://www.linkedin.com/in/jakub-bytow-086184185/" target="_blank">https://www.linkedin.com/in/jakub-bytow-086184185/</a></p>
             </div>
         </div>
     </div>
 </footer>
+
 
 
 
